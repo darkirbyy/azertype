@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AzerType</title>
+    <link href="styles/global.css" rel="stylesheet" />
+    <link href="styles/game.css" rel="stylesheet" />
+    <link href="styles/popup.css" rel="stylesheet" />
+    <link href="styles/media.css" rel="stylesheet" />
+    <script src="scripts/config.js" defer></script>
+    <script src="scripts/motalea.js" defer></script>
+    <script src="scripts/game.js" defer></script>
+    <script src="scripts/popup.js" defer></script>
+    <script src="scripts/main.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>AzerType</h1>
+        <h2>L'application pour écrire plus vite !</h2>
+    </header>
+
+    <main>
+        <section id="game">
+            <form autocomplete="off">
+                <div>
+                    <h2>Tout de suite... le JEU !</h2>
+                    <p>
+                        Le but est d'écrire le plus rapidement possible une série de mots choisis aléatoirement.
+                    </p>
+                    <p>
+                        La partie démarre quand vous écrivez la première lettre.<br />
+                        Validez avec Entrer ou en cliquant sur le bouton.
+                    </p>
+
+                    <p>Ecrivez en minuscules, avec les éventuels accents et tirets.</p>
+                </div>
+
+                <div id="game_mot">
+                    <div id="game_mot_actuel">???</div>
+                    <div id="game_mot_compteur">
+                        <span id="game_mot_compteur_valeur">?</span>/<span id="game_mot_compteur_total">?</span>
+                    </div>
+                </div>
+                <div id="game_reponse">
+                    <input type="text" id="game_reponse_texte" placeholder="..." />
+                    <input type="submit" id="game_reponse_bouton" value="Valider" />
+                </div>
+
+                <div id="game_nouvelle">
+                    <input type="submit" id="game_nouvelle_bouton" value="Nouvelle Partie" />
+                </div>
+                <div id="game_temps">
+                    Temps : <span id="game_temps_valeur">0.0s</span>
+                </div>
+            </form>
+        </section>
+
+        <section id="popup">
+            <div id="popup_content">
+                <form>
+                    <div id="popup_fermer">
+                        <input type="button" id="popup_fermer_bouton" value="X" />
+                    </div>
+                </form>
+                <h2>Partie terminée</h2>
+                <div id="popup_resultat">
+                    <div class="popup_resultat_gauche">Temps total</div>
+                    <div class="popup_resultat_droite" id="popup_resultat_temps">0.0s</div>
+                </div>
+                <div id="popup_resultat">
+                    <div class="popup_resultat_gauche">Erreur(s) </div>
+                    <div class="popup_resultat_droite" id="popup_resultat_erreur">0</div>
+                </div>
+                <table id="popup_detail">
+                    <caption>Détails</caption>
+                    <tr>
+                        <td class="popup_detail_gauche">Exemple</td>
+                        <td class="popup_detail_droite">1.0s</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        @Copyright : OpenClassrooms.
+    </footer>
+
+
+</body>
+</html>
