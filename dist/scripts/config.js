@@ -5,7 +5,7 @@ const number_of_digit = Math.log10(1000 / interval_size)
 // nombre de mot par partie et type de mot autorisé
 const mot_par_partie = 10
 const url_alea2 = "https://random-word-api.herokuapp.com/word?lang=fr&number=" + mot_par_partie *2
-const url_alea = "http://localhost:8000/api.php"
+const url_alea = "http://localhost:8000/src/api.php"
 const regex_mot = new RegExp("^[a-zéèçàù-]{2,15}$")
 const activer_alea = true
 
