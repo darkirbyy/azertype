@@ -2,7 +2,7 @@
 
 class Cache{
 
-    const CACHE_DIRECTORY = "cache/";
+    const CACHE_DIRECTORY = ".database.cache/";
     protected string $cachePath;
 
     function __construct(string $cacheName){
