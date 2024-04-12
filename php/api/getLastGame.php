@@ -6,17 +6,24 @@ header("Content-Type: text/html");
 header("Access-Control-Allow-Origin: *");
 
 try{
-    if(file_exists($cache_path) && ($cache = file_get_contents($cache_path)) !== false && strlen($cache) > 0)
-        echo $cache;
-    else {
+
+    // Rerieve the last game from cache if exists
+    // or from last database entry otherwise
+    $cache = new Cache('lastGame');
+    $lastGame = $cache->read();
+    if(!isset($lastGame)) {
         $db = new DbHandler();
         $lastGame = $db->getLastGame();
-        //echo json_encode($lastGame);
-        echo $lastGame['words'];
+        $cache->store($lastGame);
     }
+
+    // Compare the timestamp to the last valid one
+
+    http_response_code(200);
+    echo $lastGame['words'];
 } catch(Throwable $e){
-   //echo json_encode(['error'=>$e->getMessage()]);
-   echo 'error';
+    http_response_code(503);
+   //echo 'error';
 }
 
 

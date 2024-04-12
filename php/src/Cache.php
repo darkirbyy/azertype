@@ -11,12 +11,12 @@ class Cache{
             fopen($this->cachePath, "w");
     }
 
-    function read() : ?string {
+    function read() : ?array {
         $data = file_get_contents($this->cachePath);
-        return ($data !== false) ? $data : null;
+        return ($data !== false && strlen($data) > 0) ? json_decode($data, true) : null;
     }
 
-    function store(mixed $data) : bool {
-        return file_put_contents($this->cachePath, $data, LOCK_EX);
+    function store(array $data) : bool {
+        return file_put_contents($this->cachePath, json_encode($data), LOCK_EX);
     }
 }
