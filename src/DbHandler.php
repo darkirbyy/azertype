@@ -16,7 +16,7 @@ class DbHandler{
     function createTables(): void{
         $this->pdo->query(" CREATE TABLE IF NOT EXISTS games (
                             game_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                            creation_time TIMESTAMP,
+                            creation_time INTEGER NOT NULL,
                             words TEXT) ");
     }
 
@@ -27,4 +27,6 @@ class DbHandler{
         $lastGame = $stmt->fetch();
         return $lastGame !== false ? $lastGame : null;
     }
+
+    
 }

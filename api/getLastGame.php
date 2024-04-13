@@ -1,20 +1,10 @@
 <?php
-// $interval = 10;
-// date_default_timezone_set("Europe/Paris");
-// $diff = time() - strtotime(date("Y-m-d"));
-// $diff -= $diff % $interval;
-// echo $diff ."<br>";
-// echo "<br>";
-
-// time();
-// die();
-
 require_once '../vendor/autoload.php';
 
 use Azertype\CacheArray;
 use Azertype\Config;
 use Azertype\DbHandler;
-
+use Azertype\TimeInterval;
 
 header("Content-Type: text/html");
 header("Access-Control-Allow-Origin: *");
@@ -31,13 +21,30 @@ try{
         $lastGame = $db->getLastGame();
         $cache->store($lastGame);
     }
-    if(!isset($lastGame))
+
+    /*
+    Return 404 if neither the cache nor the db have
+    proper variables
+    */
+    if(!isset($lastGame)
+     || !key_exists('game_id', $lastGame)
+     || !key_exists('creation_timestamp', $lastGame)
+     || !key_exists('words', $lastGame))
     {
         http_response_code(404);
         return;
     }
         
-    // Compare the timestamp to the last valid one
+    /*
+    Compare the current timestamp to the lastGame one
+    if not in same interval, generate new game
+    */
+    if(TimeInterval::areInSameInterval(
+        TimeInterval::getCurrentTimestamp(), $lastGame['creation_timestamp']))
+        echo 'oui';
+    else
+        echo 'non';
+
 
     http_response_code(200);
     echo $lastGame['words'];

@@ -10,11 +10,8 @@ class Config{
 
     const DB_DIRECTORY = "db".DIRECTORY_SEPARATOR;
     const DB_FILENAME = "db1.sqlite";
+
+    // between 1 and 1440, best to be a divisor of 1440
+    const INTERVAL_BETWEEN_GAME = 1;
 }
 
-/*
-define('ROOT',dirname(__DIR__).DIRECTORY_SEPARATOR);
-define('CACHE_DIRNAME',".db.cache".DIRECTORY_SEPARATOR);
-define('DB_DIRECTORY',"db".DIRECTORY_SEPARATOR);
-define('DB_FILENAME',"db1.sqlite");
-*/
