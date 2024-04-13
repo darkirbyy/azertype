@@ -5,27 +5,29 @@ require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SE
 
 class CacheInFile{
 
-    protected string $cacheFilePath;
+    protected string $cacheFileName;
 
     /*
     If the cache directory don't exist, create it
     */ 
     function __construct(string $cacheFileName){
-        $cacheDirPath = Config::getRootPath().Config::CACHE_DIRNAME;
-        $this->cacheFilePath = $cacheDirPath.$cacheFileName;
-        if (!is_dir($cacheDirPath)) {
-            mkdir($cacheDirPath);       
-        } 
+        $this->cacheFileName = $cacheFileName;
+
+    }
+
+    protected function getCacheFilePath() : string {
+        return Config::getRootPath().Config::CACHE_DIRNAME.$this->cacheFileName;
     }
 
     /*
     If the cached file exists, can be read and is not empty,
     decode the json and return the array, null otherwise
     */ 
-    function read() : ?array {
-        if(!file_exists($this->cacheFilePath))
+    public function read() : ?array {
+        $cacheFilePath = $this->getCacheFilePath();
+        if(!file_exists($cacheFilePath))
             return null;
-        $data = file_get_contents($this->cacheFilePath);
+        $data = file_get_contents($cacheFilePath);
         if($data === false || strlen($data) === 0)
             return null;
         else
@@ -36,10 +38,14 @@ class CacheInFile{
     If the array is not null, not empty and the write
     operation succeed return true, false otherwise
     */ 
-    function store(?array $data) : bool {
+    public function store(?array $data) : bool {
+        $cacheFilePath = $this->getCacheFilePath();
+        /*if (!is_dir($cacheDirPath)) {
+            mkdir($cacheDirPath);       
+        } */
         if ($data === null || empty($data)) 
             return false;
         else
-            return file_put_contents($this->cacheFilePath, json_encode($data), LOCK_EX);
+            return file_put_contents($cacheFilePath, json_encode($data), LOCK_EX);
     }
 }

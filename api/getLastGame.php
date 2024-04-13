@@ -9,8 +9,7 @@
 // time();
 // die();
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/src/DbHandler.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/src/CacheInFile.php';
+require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 
 header("Content-Type: text/html");
 header("Access-Control-Allow-Origin: *");

@@ -11,11 +11,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(Config::class)]
 final class CacheInFileTest extends TestCase
 {
-    //use PHPMock;
 
     public static function setUpBeforeClass(): void
     {
-        mkdir(".tests.cache");
+        //mkdir($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR."cache");
     }
 
     public static function tearDownAfterClass(): void
@@ -31,15 +30,18 @@ final class CacheInFileTest extends TestCase
     {
     }
 
-    public function testRead():void
+    public function testStore():void
     {
-        
-        // $time = $this->getFunctionMock(__NAMESPACE__, "time");
-        // $time->expects($this->once())->willReturn(3);
-        // $this->assertEquals(3, time());
+        $configMock = $this->createMock(Config::class);
         $cache = new CacheInFile("emptyfile");
+
+        $configMock->expects($this->once())
+                    ->method('getRootPath')
+                    ->willReturn('.tests.cache'.DIRECTORY_SEPARATOR);
+
         $cache->store(array(1,2));
-        $this->assertEquals(3, 3);
+        $this->assertEquals(true,
+        file_exists($_SERVER['DOCUMENT_ROOT'].'.tests.cache/.db.cache/emptyFile'));
     }
 
 }
