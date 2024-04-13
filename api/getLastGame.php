@@ -10,13 +10,11 @@
 // die();
 
 require_once '../vendor/autoload.php';
-require_once '../src/Config.php';
 
 use Azertype\CacheArray;
 use Azertype\Config;
 use Azertype\DbHandler;
 
-die();
 
 header("Content-Type: text/html");
 header("Access-Control-Allow-Origin: *");

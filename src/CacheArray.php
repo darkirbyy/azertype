@@ -25,10 +25,10 @@ class CacheArray{
         if(!file_exists($this->cacheFilePath))
             return null;
         $data = file_get_contents($this->cacheFilePath);
-        if($data === false)
+        if($data === false || ($decode = json_decode($data, true)) === null)
             return null;
         else
-            return json_decode($data, true);
+            return $decode;
     }
 
     /*

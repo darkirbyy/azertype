@@ -3,7 +3,8 @@
 namespace Azertype;
 
 class Config{
-    const ROOT = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR;
+    const ROOT = __DIR__.DIRECTORY_SEPARATOR.
+                "..".DIRECTORY_SEPARATOR;
     
     const CACHE_DIRNAME = ".db.cache".DIRECTORY_SEPARATOR;
 
