@@ -1,17 +1,13 @@
 <?php
 
 namespace Azertype;
-require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
-
 use PDO;
 
 class DbHandler{
-
-
     protected PDO $pdo;
 
     function __construct(){
-        $dbFilePath = Config::getRootPath().Config::DB_DIRECTORY.Config::DB_FILENAME;
+        $dbFilePath = Config::ROOT.Config::DB_DIRECTORY.Config::DB_FILENAME;
         $this->pdo = new PDO("sqlite:".$dbFilePath);
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -37,9 +37,5 @@
     <logging>
         <testdoxHtml outputFile=".coverage/testdox.html"/>
     </logging>
-
-     <php>
-        <server name="DOCUMENT_ROOT" value="." />
-    </php>
     
 </phpunit>

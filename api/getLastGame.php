@@ -9,7 +9,14 @@
 // time();
 // die();
 
-require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
+require_once '../vendor/autoload.php';
+require_once '../src/Config.php';
+
+use Azertype\CacheArray;
+use Azertype\Config;
+use Azertype\DbHandler;
+
+die();
 
 header("Content-Type: text/html");
 header("Access-Control-Allow-Origin: *");
@@ -19,10 +26,10 @@ try{
     Retrieve the last game from cache if exists
     or from last database entry otherwise
     */
-    $cache = new Azertype\CacheInFile('lastGame');
+    $cache = new CacheArray('lastGame');
     $lastGame = $cache->read();
     if(!isset($lastGame)) {
-        $db = new Azertype\DbHandler();
+        $db = new DbHandler();
         $lastGame = $db->getLastGame();
         $cache->store($lastGame);
     }
