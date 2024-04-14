@@ -1,57 +1,38 @@
 <?php
 require_once '../vendor/autoload.php';
 
-use Azertype\CacheInFile as Cache;
+use Azertype\Game;
 use Azertype\Config;
-use Azertype\DbHandler;
-use Azertype\TimeInterval;
-use Azertype\FakeGenerator as Generator;
+use Azertype\Helper\DbHandler as Db;
+use Azertype\Cache\CacheInFile as Cache;
+use Azertype\Generator\FakeGenerator as Generator;
+use Azertype\Helper\TimeInterval as Interval;
 
-header("Content-Type: text/html");
+header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
 try{
-    /*
-    Retrieve the last game from cache if exists and 
-    have correct keys, or from last database entry otherwise
-    */
+    $db = new Db();
     $cache = new Cache('lastGame');
-    $lastGame = $cache->read();
-    if (!isset($lastGame) ||
-        0 !== count(array_diff(['game_id', 'timestamp', 'words'],
-                    array_keys($lastGame)))){
-        $db = new DbHandler();
-        $lastGame = $db->getLastGame();
-    }
+    $generator = new Generator();
+    $game = new Game($db, $cache, $generator);
 
-    /*
-    If there is not game in db, or the game is too old,
-    generate a new one
-    */
-    $currentGame = $lastGame;
-    $currentTimestamp = TimeInterval::getCurrentTimestamp();
-    if(!isset($currentGame) ||
-    !TimeInterval::areInSameInterval($currentGame['timestamp'],$currentTimestamp))
+    $nextDraw = $game->getLastDraw();
+
+    $currentTimestamp = Interval::getCurrentTimestamp();
+    if(!isset($nextDraw) || 
+       !Interval::areInSameInterval($nextDraw['timestamp'],$currentTimestamp))
     {
-        $generator = new Generator();
-        $words = $generator->generate(5);
-        if(!isset($words))
-            throw new Exception("Word generator does not respond");
-        $currentGame['words'] = $words;
-        $currentGame['timestamp'] =  $currentTimestamp;
-        $db = new DbHandler();
-        $db->addNewGame($currentTimestamp, $words);
+        $game->generateDraw($currentTimestamp);
+        $nextDraw = $game->getLastDraw();
     }
-
-    if($currentGame !== $lastGame)
-        $cache->store($currentGame);
 
     http_response_code(200);
-    echo  $currentGame['words'];
+    echo  $game->formatDraw($nextDraw, $currentTimestamp);
+
 } catch(Throwable $e){
     http_response_code(500);
     echo (string)$e;
-
     return;
 }
 

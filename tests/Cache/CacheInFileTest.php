@@ -1,17 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Azertype;
+namespace Azertype\Cache;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Azertype\Config;
 
-class Config{
-    const ROOT = __DIR__.DIRECTORY_SEPARATOR.
-                "..".DIRECTORY_SEPARATOR.
-                ".tests.cache".DIRECTORY_SEPARATOR;
-    const FILECACHE_DIRNAME = ".file.cache".DIRECTORY_SEPARATOR;
-}
 #[CoversClass(CacheInFile::class)]
 #[UsesClass(Config::class)]
 final class CacheInFileTest extends TestCase
@@ -31,7 +26,6 @@ final class CacheInFileTest extends TestCase
         rmdir(Config::ROOT.config::FILECACHE_DIRNAME);
         rmdir(Config::ROOT);
     }
-
 
     public function setUp():void
     {
@@ -92,6 +86,21 @@ final class CacheInFileTest extends TestCase
         $cache->store(array(1));
  
         $this->assertSame('[1]', file_get_contents($this->filePath));
+    }
+
+    public function testClearNonExistingFile():void{
+        $cache = new CacheInFile($this->fileName);
+        $cache->clear();
+ 
+        $this->assertSame(false, file_exists($this->filePath));
+    }
+
+    public function testClearExistingFile():void{
+        $cache = new CacheInFile($this->fileName);
+        file_put_contents($this->filePath, $this->testJson);
+        $cache->clear();
+ 
+        $this->assertSame(false, file_exists($this->filePath));
     }
 
 }

@@ -1,10 +1,15 @@
 <?php
 
-namespace Azertype;
+namespace Azertype\Cache;
+use Azertype\Config;
+
+// interface Cache{
+
+// }
 
 class CacheInFile{
 
-    protected string $cacheFilePath;
+    private string $cacheFilePath;
 
     /*
     If the cache directory don't exist, create it
@@ -40,5 +45,15 @@ class CacheInFile{
             return false;
         else
             return file_put_contents($this->cacheFilePath, json_encode($data), LOCK_EX);
+    }
+
+
+    /*
+    Delete the cache file if exists
+    */ 
+    public function clear() : bool {
+        if (!file_exists($this->cacheFilePath))
+            return true;
+        return unlink($this->cacheFilePath); 
     }
 }

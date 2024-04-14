@@ -1,6 +1,7 @@
 <?php
 
-namespace Azertype;
+namespace Azertype\Generator;
+use Azertype\Config;
 
 class HeroGenerator{
 
@@ -12,14 +13,13 @@ class HeroGenerator{
         curl_setopt($this->ch, CURLOPT_HEADER, 0);
     }
 
-    function generate(int $size) : ?string {
+    function generate(int $size) : string {
         curl_setopt($this->ch, CURLOPT_URL, Config::HERO_URL.(string)$size);
         $data = curl_exec($this->ch);
         if($data === false)
-            return null;
+            throw new \Exception("Generator failed to find words.");
         //$data = '["salifiâmes","débouchaient","corrigeriez","atrophiaient","réaniment"]';
         $data = str_replace(['[', '"', ']'], '',$data);
-        //$array= explode(',', $data);
         return $data;
     }
 

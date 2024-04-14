@@ -14,6 +14,9 @@ class Config{
     const DB_DIRECTORY = "db".DIRECTORY_SEPARATOR;
     const DB_FILENAME = "db1.sqlite";
 
+    // Timezone used to calculate and compare timestamp
+    const TIMEZONE = "Europe/Paris";
+
     // How many minutes between each game
     // (between 1 and 1440, best to be a divisor of 1440)
     const INTERVAL_BETWEEN_GAME = 1;
