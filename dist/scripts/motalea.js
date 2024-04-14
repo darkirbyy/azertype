@@ -1,10 +1,4 @@
 ﻿function TirerMotAlea(partie, reponse = "") {
-    // if (!activer_alea) {
-    //     for (let i = 0; i < mot_par_partie; i++)
-    //         partie.liste_mot.push('a')
-    //     NouvellePartiePrete(partie)
-    // }
-    // else {
     if (reponse !== "") {
         let tableau = reponse.replace(/(\[|]|")/gi, '').split(',')
         tableau.forEach((element) => {
@@ -16,7 +10,6 @@
         HttpGetAsync(url_alea, partie)
     else
         NouvellePartiePrete(partie)
-    // }
 }
 
 function HttpGetAsync(theUrl, partie) {
