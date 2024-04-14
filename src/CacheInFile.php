@@ -2,7 +2,7 @@
 
 namespace Azertype;
 
-class CacheArray{
+class CacheInFile{
 
     protected string $cacheFilePath;
 
@@ -10,7 +10,7 @@ class CacheArray{
     If the cache directory don't exist, create it
     */ 
     function __construct(string $cacheFileName){
-        $cacheDirPath = Config::ROOT.Config::CACHE_DIRNAME;
+        $cacheDirPath = Config::ROOT.Config::FILECACHE_DIRNAME;
         $this->cacheFilePath = $cacheDirPath.$cacheFileName;
         if (!is_dir($cacheDirPath)) {
             mkdir($cacheDirPath);       

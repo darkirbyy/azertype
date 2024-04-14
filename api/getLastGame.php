@@ -1,7 +1,7 @@
 <?php
 require_once '../vendor/autoload.php';
 
-use Azertype\CacheArray;
+use Azertype\CacheInFile as Cache;
 use Azertype\Config;
 use Azertype\DbHandler;
 use Azertype\TimeInterval;
@@ -14,7 +14,7 @@ try{
     Retrieve the last game from cache if exists
     or from last database entry otherwise
     */
-    $cache = new CacheArray('lastGame');
+    $cache = new Cache('lastGame');
     $lastGame = $cache->read();
     if(!isset($lastGame)) {
         $db = new DbHandler();

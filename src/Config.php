@@ -6,7 +6,7 @@ class Config{
     const ROOT = __DIR__.DIRECTORY_SEPARATOR.
                 "..".DIRECTORY_SEPARATOR;
     
-    const CACHE_DIRNAME = ".db.cache".DIRECTORY_SEPARATOR;
+    const FILECACHE_DIRNAME = ".file.cache".DIRECTORY_SEPARATOR;
 
     const DB_DIRECTORY = "db".DIRECTORY_SEPARATOR;
     const DB_FILENAME = "db1.sqlite";
