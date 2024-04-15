@@ -7,16 +7,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Azertype\Config;
 
-#[CoversClass(CacheInFile::class)]
+#[CoversClass(FileCache::class)]
 #[UsesClass(Config::class)]
-final class CacheInFileTest extends TestCase
+final class FileCacheTest extends TestCase
 {
     private static string $testsRoot;
     private static string $fileName;
     private static string $filePath;
     private array $testArray;
     private string $testJson;
-    private CacheInFile $cache;
+    private FileCache $cache;
 
     public static function setUpBeforeClass(): void
     {
@@ -34,7 +34,7 @@ final class CacheInFileTest extends TestCase
     {
         $this->testArray = array('game_id' => 2, 'words' => 'aaa,bbb');
         $this->testJson = '{"game_id":2,"words":"aaa,bbb"}';
-        $this->cache = new CacheInFile(self::$testsRoot.Config::FILECACHE_DIRNAME, self::$fileName);
+        $this->cache = new FileCache(self::$testsRoot.Config::FILECACHE_DIRNAME, self::$fileName);
     }
 
     public function tearDown():void

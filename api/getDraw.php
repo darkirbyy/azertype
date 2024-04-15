@@ -4,7 +4,7 @@ require_once '../vendor/autoload.php';
 use Azertype\Game;
 use Azertype\Config;
 use Azertype\Helper\DbHandler as Db;
-use Azertype\Cache\CacheInFile as Cache;
+use Azertype\Cache\FileCache as Cache;
 use Azertype\Generator\FakeGenerator as Generator;
 use Azertype\Helper\TimeInterval as Interval;
 

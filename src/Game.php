@@ -2,17 +2,17 @@
 
 namespace Azertype;
 
-use Azertype\Helper\DbHandler as Db;
-use Azertype\Cache\CacheInFile as Cache;
+use Azertype\Helper\DbHandler;
+use Azertype\Cache\AbstractCache;
 use Azertype\Generator\AbstractGenerator;
 use Azertype\Helper\TimeInterval;
 
 class Game{
-    private Db $db; 
-    private Cache $cache;
+    private DbHandler $db; 
+    private AbstractCache $cache;
     private AbstractGenerator $generator;
 
-    function __construct(Db $db, Cache $cache, AbstractGenerator $generator){
+    function __construct(DbHandler $db, AbstractCache $cache, AbstractGenerator $generator){
         $this->db = $db;
         $this->cache = $cache;
         $this->generator = $generator;

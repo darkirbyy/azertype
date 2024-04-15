@@ -3,7 +3,7 @@
 namespace Azertype\Cache;
 use Azertype\Config;
 
-class CacheInFile{
+class FileCache extends AbstractCache{
 
     private string $filePath;
 
