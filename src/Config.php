@@ -11,8 +11,8 @@ class Config{
     const FILECACHE_DIRNAME = ".file.cache".DIRECTORY_SEPARATOR;
 
     // Directory and database name created at root to store sqlite file
-    const DB_DIRECTORY = "db".DIRECTORY_SEPARATOR;
-    const DB_FILENAME = "db1.sqlite";
+    const DB_DIRECTORY = "database".DIRECTORY_SEPARATOR;
+    const DB_FILENAME = "dev.sqlite";
 
     // Timezone used to calculate and compare timestamp
     const TIMEZONE = "Europe/Paris";

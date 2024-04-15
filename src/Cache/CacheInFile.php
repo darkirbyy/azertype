@@ -9,16 +9,15 @@ use Azertype\Config;
 
 class CacheInFile{
 
-    private string $cacheFilePath;
+    private string $filePath;
 
     /*
     If the cache directory don't exist, create it
     */ 
-    function __construct(string $cacheFileName){
-        $cacheDirPath = Config::ROOT.Config::FILECACHE_DIRNAME;
-        $this->cacheFilePath = $cacheDirPath.$cacheFileName;
-        if (!is_dir($cacheDirPath)) {
-            mkdir($cacheDirPath);       
+    function __construct(string $dirPath, string $fileName){
+        $this->filePath = $dirPath.$fileName;
+        if (!is_dir($dirPath)) {
+            mkdir($dirPath);       
         } 
     }
 
@@ -27,9 +26,9 @@ class CacheInFile{
     decode the json and return the array, null otherwise
     */ 
     public function read() : ?array {
-        if(!file_exists($this->cacheFilePath))
+        if(!file_exists($this->filePath))
             return null;
-        $data = file_get_contents($this->cacheFilePath);
+        $data = file_get_contents($this->filePath);
         if($data === false || ($decode = json_decode($data, true)) === null)
             return null;
         else
@@ -44,7 +43,7 @@ class CacheInFile{
         if ($data === null) 
             return false;
         else
-            return file_put_contents($this->cacheFilePath, json_encode($data), LOCK_EX);
+            return file_put_contents($this->filePath, json_encode($data), LOCK_EX);
     }
 
 
@@ -52,8 +51,8 @@ class CacheInFile{
     Delete the cache file if exists
     */ 
     public function clear() : bool {
-        if (!file_exists($this->cacheFilePath))
+        if (!file_exists($this->filePath))
             return true;
-        return unlink($this->cacheFilePath); 
+        return unlink($this->filePath); 
     }
 }

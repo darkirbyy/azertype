@@ -30,12 +30,12 @@
 
     <coverage>
         <report>
-            <html outputDirectory=".coverage" lowUpperBound="50" highLowerBound="90"/>
+            <html outputDirectory="storage/coverage" lowUpperBound="50" highLowerBound="90"/>
         </report>
     </coverage>
 
     <logging>
-        <testdoxHtml outputFile=".coverage/testdox.html"/>
+        <testdoxHtml outputFile="storage/testdox.html"/>
     </logging>
     
 </phpunit>

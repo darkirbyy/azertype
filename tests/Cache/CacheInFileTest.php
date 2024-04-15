@@ -11,96 +11,91 @@ use Azertype\Config;
 #[UsesClass(Config::class)]
 final class CacheInFileTest extends TestCase
 {
-    private string $fileName;
-    private string $filePath;
+    private static string $testsRoot;
+    private static string $fileName;
+    private static string $filePath;
     private array $testArray;
     private string $testJson;
+    private CacheInFile $cache;
 
     public static function setUpBeforeClass(): void
     {
-        mkdir(Config::ROOT);
+        self::$testsRoot = Config::ROOT.'.tests.cache'.DIRECTORY_SEPARATOR;
+        self::$fileName = 'foo.json';
+        self::$filePath = self::$testsRoot.Config::FILECACHE_DIRNAME.self::$fileName;
+        mkdir(self::$testsRoot);
     }
 
     public static function tearDownAfterClass(): void
     {
-        rmdir(Config::ROOT.config::FILECACHE_DIRNAME);
-        rmdir(Config::ROOT);
+        rmdir(self::$testsRoot.Config::FILECACHE_DIRNAME);
+        rmdir(self::$testsRoot);
     }
 
     public function setUp():void
     {
-        $this->fileName = 'foo.txt';
-        $this->filePath = Config::ROOT.Config::FILECACHE_DIRNAME.$this->fileName;
-
         $this->testArray = array('game_id' => 2, 'words' => 'aaa,bbb');
         $this->testJson = '{"game_id":2,"words":"aaa,bbb"}';
+        $this->cache = new CacheInFile(self::$testsRoot.Config::FILECACHE_DIRNAME, self::$fileName);
     }
 
     public function tearDown():void
     {
-        if(file_exists($this->filePath))
-            unlink($this->filePath);
+        if(file_exists(self::$filePath))
+            unlink(self::$filePath);
     }
 
     public function testReadNonExistingFile(): void{
-        $cache = new CacheInFile($this->fileName);
-        $outputArray = $cache->read();
+        $outputArray = $this->cache->read();
 
-        $this->assertSame(null,$outputArray);
+        $this->assertNull($outputArray);
     }
 
     public function testReadFail(): void{
-        $cache = new CacheInFile($this->fileName);
-        file_put_contents($this->filePath, "not_some_json");
-        $outputArray = $cache->read();
+        file_put_contents(self::$filePath, "not_some_json");
+        $outputArray = $this->cache->read();
 
-        $this->assertSame(null,$outputArray);
+        $this->assertNull($outputArray);
     }
 
     public function testReadArray(): void{
-        $cache = new CacheInFile($this->fileName);
-        file_put_contents($this->filePath, $this->testJson);
-        $outputArray = $cache->read();
+        file_put_contents(self::$filePath, $this->testJson);
+        $outputArray = $this->cache->read();
 
         $this->assertSame($this->testArray,$outputArray);
     }
 
     public function testStoreNull():void{
-        $cache = new CacheInFile($this->fileName);
-        $cache->store(null);
+        $this->cache->store(null);
  
-        $this->assertSame(false,file_exists($this->filePath));
+        $this->assertFileDoesNotExist(self::$filePath);
     }
 
     public function testStoreArrayOnNewFile():void{
-        $cache = new CacheInFile($this->fileName);
-        $cache->store($this->testArray);
+        $this->cache->store($this->testArray);
         
-         $this->assertSame(true,file_exists($this->filePath));
-         $this->assertSame($this->testJson, file_get_contents($this->filePath));
+        $this->assertFileExists(self::$filePath);
+        $this->assertJsonStringEqualsJsonFile(self::$filePath, $this->testJson);
     }
 
     public function testStoreArrayOnExistingFile():void{
-        $cache = new CacheInFile($this->fileName);
-        file_put_contents($this->filePath, "previous_string");
-        $cache->store(array(1));
+        file_put_contents(self::$filePath, "previous_string");
+        $this->cache->store($this->testArray);
  
-        $this->assertSame('[1]', file_get_contents($this->filePath));
+        $this->assertJsonStringEqualsJsonFile(self::$filePath, $this->testJson);
     }
 
     public function testClearNonExistingFile():void{
-        $cache = new CacheInFile($this->fileName);
-        $cache->clear();
+        $this->cache->clear();
  
-        $this->assertSame(false, file_exists($this->filePath));
+        $this->assertFileDoesNotExist(self::$filePath);
     }
 
     public function testClearExistingFile():void{
-        $cache = new CacheInFile($this->fileName);
-        file_put_contents($this->filePath, $this->testJson);
-        $cache->clear();
+        file_put_contents(self::$filePath, $this->testJson);
+        $this->cache->clear();
  
-        $this->assertSame(false, file_exists($this->filePath));
+        $this->assertFileDoesNotExist(self::$filePath);
     }
 
 }

@@ -25,7 +25,6 @@ class Game{
     Create the games table if necessary
     */
     function createTable(): void{
-        $this->db->connect();
         $this->db->writeQuery(" CREATE TABLE IF NOT EXISTS games (
                             game_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                             timestamp INTEGER NOT NULL,

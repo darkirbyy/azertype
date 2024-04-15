@@ -9,7 +9,7 @@ class TimeInterval{
         date_default_timezone_set("Europe/Paris");
     }*/
 
-    static function getCurrentTimestamp() : int{
+    static function currentTimestamp() : int{
         date_default_timezone_set(Config::TIMEZONE);
         return time();
     }

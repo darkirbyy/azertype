@@ -1,19 +1,21 @@
 <?php
 
 namespace Azertype\Helper;
-use Azertype\Config;
 use PDO;
 
 class DbHandler{
 
     private PDO $pdo;
 
+    public function getPDO(): PDO{
+        return $this->pdo;
+    }
+
     /*
     Open a PDO connection to sql
     */ 
-    function connect(){
-        $dbFilePath = Config::ROOT.Config::DB_DIRECTORY.Config::DB_FILENAME;
-        $this->pdo = new PDO("sqlite:".$dbFilePath);
+    function __construct(string $dbPath){
+        $this->pdo = new PDO("sqlite:".$dbPath);
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }

@@ -12,14 +12,14 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
 try{
-    $db = new Db();
-    $cache = new Cache('lastGame');
+    $db = new Db(Config::ROOT.Config::DB_DIRECTORY.Config::DB_FILENAME);
+    $cache = new Cache(Config::ROOT.Config::FILECACHE_DIRNAME, 'lastDraw.json');
     $generator = new Generator();
     $game = new Game($db, $cache, $generator);
 
     $nextDraw = $game->getLastDraw();
 
-    $currentTimestamp = Interval::getCurrentTimestamp();
+    $currentTimestamp = Interval::currentTimestamp();
     if(!isset($nextDraw) || 
        !Interval::areInSameInterval($nextDraw['timestamp'],$currentTimestamp))
     {
