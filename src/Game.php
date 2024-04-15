@@ -5,7 +5,7 @@ namespace Azertype;
 use Azertype\Helper\DbHandler;
 use Azertype\Cache\AbstractCache;
 use Azertype\Generator\AbstractGenerator;
-use Azertype\Helper\TimeInterval;
+use Azertype\Helper\Timer;
 
 class Game{
     private DbHandler $db; 
@@ -46,20 +46,20 @@ class Game{
     Delete the cache, generate a new set of words and
     add a new entry into the database 
     */
-    function generateDraw(int $timestamp) : void {
+    function generateDraw() : void {
         $this->cache->clear();
-        $words = $this->generator->generate(5);
+        $words = $this->generator->generate();
         $this->createTable();
         $this->db->writeQuery("INSERT INTO games (timestamp, words)
                                VALUES (:timestamp, :words)",
-                               array($timestamp, $words));
+                               array(Timer::currentTimestamp(), $words));
     }
 
     /*
     Format a draw into a complete json for front-end
     */
-    function formatDraw($draw, $timestamp) : string {
-        $draw['wait_time'] = TimeInterval::ceilInterval($draw['timestamp']) - $timestamp;
+    function formatDraw($draw) : string {
+        $draw['wait_time'] = Timer::ceilInterval($draw['timestamp']) - Timer::currentTimestamp();
         return json_encode($draw);
     }
 }

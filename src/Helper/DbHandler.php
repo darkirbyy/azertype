@@ -14,8 +14,9 @@ class DbHandler{
     /*
     Open a PDO connection to sql
     */ 
-    function __construct(string $dbPath){
-        $this->pdo = new PDO("sqlite:".$dbPath);
+    function __construct(){
+        $path = $_ENV['ROOT'].$_ENV['HELPER_DATABASE_DIRNAME'].$_ENV['HELPER_DATABASE_FILENAME'];
+        $this->pdo = new PDO("sqlite:".$path);
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }

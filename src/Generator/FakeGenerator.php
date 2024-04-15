@@ -1,13 +1,14 @@
 <?php
 
 namespace Azertype\Generator;
-use Azertype\Config;
 
 class FakeGenerator extends AbstractGenerator{
 
-    function generate(int $size = Config::WORDS_PER_GAME) : string {
+    function generate(?int $size = null) : string {
+        $size ??= $_ENV['GENERATOR_DEFAULTNBWORDS'];
         if($size < 1)
             return "";
+
         $words = "";
         for($i = 0; $i < $size ; $i++){
             $char = chr(ord('a') + rand(0,25));

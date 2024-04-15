@@ -5,13 +5,10 @@ namespace Azertype\Cache;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Azertype\Config;
 
 #[CoversClass(FileCache::class)]
-#[UsesClass(Config::class)]
 final class FileCacheTest extends TestCase
 {
-    private static string $testsRoot;
     private static string $fileName;
     private static string $filePath;
     private array $testArray;
@@ -20,21 +17,20 @@ final class FileCacheTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$testsRoot = Config::FIXTURE;
-        self::$fileName = 'foo.json';
-        self::$filePath = self::$testsRoot.Config::FILECACHE_DIRNAME.self::$fileName;
+        self::$fileName = 'foo';
+        self::$filePath = $_ENV['ROOT'].$_ENV['CACHE_FILE_DIRNAME'].self::$fileName.'.json';
     }
 
     public static function tearDownAfterClass(): void
     {
-        rmdir(self::$testsRoot.Config::FILECACHE_DIRNAME);
+        rmdir($_ENV['ROOT'].$_ENV['CACHE_FILE_DIRNAME']);
     }
 
     public function setUp():void
     {
         $this->testArray = array('game_id' => 2, 'words' => 'aaa,bbb');
         $this->testJson = '{"game_id":2,"words":"aaa,bbb"}';
-        $this->cache = new FileCache(self::$testsRoot.Config::FILECACHE_DIRNAME, self::$fileName);
+        $this->cache = new FileCache(self::$fileName);
     }
 
     public function tearDown():void

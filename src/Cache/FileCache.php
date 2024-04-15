@@ -1,7 +1,6 @@
 <?php
 
 namespace Azertype\Cache;
-use Azertype\Config;
 
 class FileCache extends AbstractCache{
 
@@ -10,8 +9,9 @@ class FileCache extends AbstractCache{
     /*
     If the cache directory don't exist, create it
     */ 
-    function __construct(string $dirPath, string $fileName){
-        $this->filePath = $dirPath.$fileName;
+    function __construct(string $fileName){
+        $dirPath = $_ENV['ROOT'].$_ENV['CACHE_FILE_DIRNAME'];
+        $this->filePath = $dirPath.$fileName.'.json';
         if (!is_dir($dirPath)) {
             mkdir($dirPath);       
         } 
