@@ -15,7 +15,7 @@ final class DbHandlerTest extends TestCase
     
     public function setUp():void
     {
-        $this->dbHandler = new DbHandler(Config::ROOT.Config::DB_DIRECTORY.'test.sqlite');
+        $this->dbHandler = new DbHandler(Config::FIXTURE.'test.sqlite');
         $this->dbHandler->getPDO()->beginTransaction();
     }
     

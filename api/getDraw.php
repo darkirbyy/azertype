@@ -14,7 +14,7 @@ header("Access-Control-Allow-Origin: *");
 try{
     $db = new Db(Config::ROOT.Config::DB_DIRECTORY.Config::DB_FILENAME);
     $cache = new Cache(Config::ROOT.Config::FILECACHE_DIRNAME, 'lastDraw.json');
-    $generator = new Generator();
+    $generator = new Generator(Config::HERO_FAKE_URL);
     $game = new Game($db, $cache, $generator);
 
     $nextDraw = $game->getLastDraw();
@@ -32,7 +32,7 @@ try{
 
 } catch(Throwable $e){
     http_response_code(500);
-    echo (string)$e;
+    echo json_encode(array('error' => (string)$e));
     return;
 }
 

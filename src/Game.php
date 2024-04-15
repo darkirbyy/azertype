@@ -4,18 +4,15 @@ namespace Azertype;
 
 use Azertype\Helper\DbHandler as Db;
 use Azertype\Cache\CacheInFile as Cache;
-use Azertype\Generator\FakeGenerator as Generator;
+use Azertype\Generator\AbstractGenerator;
 use Azertype\Helper\TimeInterval;
-use Exception;
-
-//use Azertype\Config;
 
 class Game{
     private Db $db; 
     private Cache $cache;
-    private Generator $generator;
+    private AbstractGenerator $generator;
 
-    function __construct(Db $db, Cache $cache, Generator $generator){
+    function __construct(Db $db, Cache $cache, AbstractGenerator $generator){
         $this->db = $db;
         $this->cache = $cache;
         $this->generator = $generator;

@@ -4,8 +4,10 @@ namespace Azertype;
 
 class Config{
     // where is the root of the project
-    const ROOT = __DIR__.DIRECTORY_SEPARATOR.
-                "..".DIRECTORY_SEPARATOR;
+    const ROOT = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR;
+
+    // where is the fixture directory
+    const FIXTURE = Config::ROOT.DIRECTORY_SEPARATOR."fixture".DIRECTORY_SEPARATOR;
 
     // Directory name created at root to store cache filed
     const FILECACHE_DIRNAME = ".file.cache".DIRECTORY_SEPARATOR;
@@ -25,6 +27,11 @@ class Config{
     const WORDS_PER_GAME  = 5;
 
     // URL of herokuapp api
-    const HERO_URL = "https://random-word-api.herokuapp.com/word?lang=fr&number=";
+    const HERO_TRUE_URL = "https://random-word-api.herokuapp.com/word?lang=fr&number=";
+    const HERO_FAKE_URL = "http://localhost:8001/fixture/hero.php?n=";
+
+    // Connection to external api timeout in seconds
+    const EXTERN_API_TIMEOUT = 2;
+
 }
 

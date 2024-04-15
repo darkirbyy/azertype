@@ -20,16 +20,14 @@ final class CacheInFileTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$testsRoot = Config::ROOT.'.tests.cache'.DIRECTORY_SEPARATOR;
+        self::$testsRoot = Config::FIXTURE;
         self::$fileName = 'foo.json';
         self::$filePath = self::$testsRoot.Config::FILECACHE_DIRNAME.self::$fileName;
-        mkdir(self::$testsRoot);
     }
 
     public static function tearDownAfterClass(): void
     {
         rmdir(self::$testsRoot.Config::FILECACHE_DIRNAME);
-        rmdir(self::$testsRoot);
     }
 
     public function setUp():void

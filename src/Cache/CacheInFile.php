@@ -3,10 +3,6 @@
 namespace Azertype\Cache;
 use Azertype\Config;
 
-// interface Cache{
-
-// }
-
 class CacheInFile{
 
     private string $filePath;

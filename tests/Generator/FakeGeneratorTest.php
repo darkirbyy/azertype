@@ -17,11 +17,11 @@ final class FakeGeneratorTest extends TestCase
         $this->assertStringEndsNotWith(',', $words);
         $this->assertEquals(3, strlen($words));
     }
-    public function testGenerateTenWords(): void{
+    public function testGenerateFiveWords(): void{
         $this->generator = new FakeGenerator();
-        $words = $this->generator->generate(10);
+        $words = $this->generator->generate(5);
         $this->assertStringEndsNotWith(',', $words);
-        $this->assertEquals(10, sizeof(explode(',',$words)));
+        $this->assertEquals(5, sizeof(explode(',',$words)));
     }
 
     public function testGenerateNoWord(): void{

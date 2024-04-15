@@ -3,7 +3,7 @@
 namespace Azertype\Generator;
 use Azertype\Config;
 
-class FakeGenerator{
+class FakeGenerator extends AbstractGenerator{
 
     function generate(int $size = Config::WORDS_PER_GAME) : string {
         if($size < 1)
