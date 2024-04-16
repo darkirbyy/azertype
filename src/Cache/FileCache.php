@@ -10,7 +10,7 @@ class FileCache extends AbstractCache{
     If the cache directory don't exist, create it
     */ 
     function __construct(string $fileName){
-        $dirPath = $_ENV['ROOT'].$_ENV['CACHE_FILE_DIRNAME'];
+        $dirPath = $_ENV['APP_ROOT'].$_ENV['CACHE_FILE_DIRNAME'];
         $this->filePath = $dirPath.$fileName.'.json';
         if (!is_dir($dirPath)) {
             mkdir($dirPath);       

@@ -7,15 +7,11 @@ class DbHandler{
 
     private PDO $pdo;
 
-    public function getPDO(): PDO{
-        return $this->pdo;
-    }
-
     /*
     Open a PDO connection to sql
     */ 
-    function __construct(){
-        $path = $_ENV['ROOT'].$_ENV['HELPER_DATABASE_DIRNAME'].$_ENV['HELPER_DATABASE_FILENAME'];
+    function __construct(?string $path = null){
+        $path ??= $_ENV['APP_ROOT'].'database/'.$_ENV['HELPER_DATABASE_FILENAME'];
         $this->pdo = new PDO("sqlite:".$path);
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -39,6 +35,14 @@ class DbHandler{
         $stmt = $this->pdo->prepare($query);
         $valid = $stmt->execute($param);
         return ($valid) ? $stmt->rowCount() : null;
+    }
+
+
+    /*
+    Execute as sql file
+    */ 
+    function exec(string $filePath) : int|false {
+        return $this->pdo->exec(file_get_contents($filePath));
     }
    
 }

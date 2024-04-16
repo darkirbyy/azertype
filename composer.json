@@ -8,7 +8,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^11.1",
-        "php-mock/php-mock-mockery": "^1.4"
+        "php-mock/php-mock-mockery": "^1.4",
+        "fakerphp/faker": "^1.23"
     },
     "license": "MIT",
     "autoload": {

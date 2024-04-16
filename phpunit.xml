@@ -26,6 +26,9 @@
         <include>
             <directory>src</directory>
         </include>
+        <exclude>
+            <file>src/loadDotenv.php</file>
+        </exclude>
     </source>
 
     <coverage>
@@ -39,8 +42,7 @@
     </logging>
 
     <php>
-        <env name="HELPER_DATABASE_DIRNAME" value="fixture/" force="true" />
-        <env name="HELPER_DATABASE_FILENAME" value="test.sqlite" force="true"/>
+        <env name="HELPER_DATABASE_FILENAME" value="tests.sqlite" force="true"/>
         <env name="CACHE_FILE_DIRNAME" value=".tests.cache" force="true"/>
     </php>
 </phpunit>

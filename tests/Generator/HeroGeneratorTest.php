@@ -5,15 +5,18 @@ namespace Azertype\Generator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use phpmock\mockery\PHPMockery;
+use Azertype\Fixture\GeneratorFixture;
+use Faker\Factory;
 use Exception;
 
 #[CoversClass(HeroGenerator::class)]
 final class HeroGeneratorTest extends TestCase
 {
+    private static $faker;
 
-    public function setUp():void
+    public static function setUpBeforeClass(): void
     {
-      
+        self::$faker = Factory::create();
     }
 
     public function tearDown():void
@@ -22,8 +25,10 @@ final class HeroGeneratorTest extends TestCase
     }
 
     public function testGenerateOneWord(): void{
-        PHPMockery::mock(__NAMESPACE__, "curl_exec")->andReturn('["éléphantiasiques"]');
-        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")->andReturn(200);
+        PHPMockery::mock(__NAMESPACE__, "curl_exec")
+                    ->andReturn(GeneratorFixture::HERO_ONEWORD);
+        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")
+                    ->andReturn(self::$faker->numberBetween(200,299));
 
         $generator = new HeroGenerator();
         $words = $generator->generate(1);
@@ -35,8 +40,9 @@ final class HeroGeneratorTest extends TestCase
 
     public function testGenerateFiveWords(): void{
         PHPMockery::mock(__NAMESPACE__, "curl_exec")
-            ->andReturn('["hennissant","déboulonné","légitimité","accoutrasse","coffrerez"]');
-        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")->andReturn(215);
+                    ->andReturn(GeneratorFixture::HERO_FIVEWORDS);
+        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")
+                    ->andReturn(self::$faker->numberBetween(200,299));
 
         $generator = new HeroGenerator();
         $words = $generator->generate(5);
@@ -47,8 +53,10 @@ final class HeroGeneratorTest extends TestCase
     }
 
     public function testGenerateNoWord(): void{
-        PHPMockery::mock(__NAMESPACE__, "curl_exec")->andReturn('["éléphantiasiques"]');
-        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")->andReturn(200);
+        PHPMockery::mock(__NAMESPACE__, "curl_exec")
+                    ->andReturn(GeneratorFixture::HERO_ONEWORD);
+        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")
+                    ->andReturn(self::$faker->numberBetween(200,299));
 
         $generator = new HeroGenerator();
         $words = $generator->generate(-1);
@@ -56,8 +64,10 @@ final class HeroGeneratorTest extends TestCase
     }
 
     public function testGenerateBadUrl(): void{
-        PHPMockery::mock(__NAMESPACE__, "curl_exec")->andReturn(false);
-        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")->andReturn(200);
+        PHPMockery::mock(__NAMESPACE__, "curl_exec")
+                    ->andReturn(false);
+        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")
+                    ->andReturn(self::$faker->numberBetween(200,299));
         
         $this->expectException(Exception::class);
         $generator = new HeroGenerator();
@@ -65,18 +75,22 @@ final class HeroGeneratorTest extends TestCase
     }
 
     public function testGenerateBadHttpCode(): void{
-        PHPMockery::mock(__NAMESPACE__, "curl_exec")->andReturn('["éléphantiasiques"]');
-        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")->andReturn(404);
+        PHPMockery::mock(__NAMESPACE__, "curl_exec")
+                    ->andReturn(GeneratorFixture::HERO_ONEWORD);
+        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")
+                    ->andReturn(self::$faker->numberBetween(300,999));
 
         $this->expectException(Exception::class);
         $generator = new HeroGenerator();
         $words = $generator->generate(5);
     }
 
-    public function testGenerateBadBody(): void{
-        PHPMockery::mock(__NAMESPACE__, "curl_exec")->andReturn('<!DOCTYPE html><body>test</body>');
-        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")->andReturn(200);
-
+    public function testGenerateXSSInjection(): void{
+        PHPMockery::mock(__NAMESPACE__, "curl_exec")
+                    ->andReturn(GeneratorFixture::HERO_XSSWORDS);
+        PHPMockery::mock(__NAMESPACE__, "curl_getinfo")
+                    ->andReturn(self::$faker->numberBetween(200,299));
+        
         $this->expectException(Exception::class);
         $generator = new HeroGenerator();
         $words = $generator->generate(5);
