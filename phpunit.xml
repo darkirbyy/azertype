@@ -44,7 +44,8 @@
     </logging>
 
     <php>
-        <env name="DATABASE_FILENAME" value="tests.sqlite" force="true"/>
-        <env name="CACHEFILE_DIRNAME" value=".tests.cache" force="true"/>
+        <env name="REL_ROOT" value="./" force="true"/>
+        <env name="DATABASE_NAME" value="test.sqlite" force="true"/>
+        <env name="CACHEFILE_DIR" value=".test.cache" force="true"/>
     </php>
 </phpunit>

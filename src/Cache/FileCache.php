@@ -12,7 +12,7 @@ class FileCache extends AbstractCache{
      * @param string $fileName The name of the file that will store the array
      */
     function __construct(string $fileName){
-        $dirPath = $_ENV['APP_ROOT'].$_ENV['CACHEFILE_DIRNAME'];
+        $dirPath = $_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR'];
         $this->filePath = $dirPath.$fileName.'.json';
         if (!is_dir($dirPath)) {
             mkdir($dirPath);       

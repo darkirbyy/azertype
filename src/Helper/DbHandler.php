@@ -9,16 +9,15 @@ use PDO;
 
 class DbHandler{
 
-    private PDO $pdo;
+    public PDO $pdo;
 
     /**
      * Open a PDO connection with sqlite
      * 
      * @param string $path The full path do the database file
      */
-    function __construct(?string $path = null){
-        $path ??= $_ENV['APP_ROOT'].'database/'.$_ENV['DATABASE_FILENAME'];
-        $this->pdo = new PDO("sqlite:".$path);
+    function __construct(){
+        $this->pdo = new PDO("sqlite:".$_ENV['REL_ROOT'].'database/'.$_ENV['DATABASE_NAME']);
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
@@ -52,16 +51,5 @@ class DbHandler{
         $valid = $stmt->execute($param);
         return ($valid) ? $stmt->rowCount() : null;
     }
-
-    /**
-     * Read and execute a whole sql file 
-     * 
-     * @param string $filePath The full path to the .sql file
-     * 
-     * @return int|false
-     */
-    function exec(string $filePath) : int|false {
-        return $this->pdo->exec(file_get_contents($filePath));
-    }
-   
+  
 }

@@ -15,8 +15,7 @@ class FakeGenerator extends AbstractGenerator{
      * 
      * @return string
      */
-    function generate(?int $size = null) : string {
-        $size ??= $_ENV['WORDS_PER_DRAW'];
+    function generate(int $size) : string {
         if($size < 1)
             return "";
 

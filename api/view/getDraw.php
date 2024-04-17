@@ -16,20 +16,19 @@ try{
     $nextDraw = $game->getLastDraw();
     if(!isset($nextDraw) || time() >= $nextDraw['validity'])
     {
-        $generator = $_ENV['APP_ENV'] === "prod" ? new HeroGenerator() :  new FakeGenerator();
-        $timer = new Timer();
+        $generator = ($_ENV['APP_ENV'] === "prod") ? new HeroGenerator() :  new FakeGenerator();
+        $timer = new Timer( $_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
         $game->generateDraw($generator, $timer);
         $nextDraw = $game->getLastDraw();
     }
 
     http_response_code(200);
-    echo $game->formatDraw($nextDraw, $timer);
+    echo $game->formatDraw($nextDraw);
 } 
 catch(Throwable $e){
     http_response_code(500);
     if($_ENV['APP_ENV'] === "dev")
         echo json_encode(array('error' => $e->getMessage()));
-    //error_log($e->getMessage(), 3, $_ENV['APP_ROOT'].'php_errors.log');
     return;
 }
 

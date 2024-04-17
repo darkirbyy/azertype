@@ -47,7 +47,7 @@ class Game{
     */
     function generateDraw(AbstractGenerator $generator, Timer $timer) : void {
         $this->cache->clear();
-        $words = $generator->generate();
+        $words = $generator->generate($_ENV['WORDS_PER_DRAW']);
         $validity = $timer->ceilTimestamp(time());
         $this->createTable();
         $this->db->writeQuery("INSERT INTO games (validity, words)

@@ -3,4 +3,4 @@
 vendor/
 storage/
 database/*.sqlite
-!database/tests.sqlite
+!database/test.sqlite

@@ -18,10 +18,7 @@ final class TimerTest extends TestCase
     }
 
     public function setUp() : void {
-        $_ENV['TIME_ZONE'] = self::$faker->timezone();
-        $_ENV['TIME_RESET'] = '00:00:00';
-        $_ENV['TIME_INTERVAL'] = '00:01:00';
-        date_default_timezone_set($_ENV['TIME_ZONE']);
+        date_default_timezone_set(self::$faker->timezone());
         $this->date = self::$faker->date();
     }
 
@@ -104,9 +101,7 @@ final class TimerTest extends TestCase
     }
 
     public function testAreInSameInterval(): void{
-        $_ENV['TIME_RESET'] = '08:15:00';
-        $_ENV['TIME_INTERVAL'] = '00:30:00';
-        $timer = new Timer();
+        $timer = new Timer('08:15:00', '00:30:00');
 
         $this->assertFalse($timer->inSameInterval(
             strtotime($this->date.' 08:38:40'),strtotime($this->date.' 08:46:17')));

@@ -15,20 +15,17 @@ final class DbHandlerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        exec('sqlite3 database/tests.sqlite ".dump" > DbFixture.sql'); 
         self::$faker = Factory::create();
-    }
-
-    public static function tearDownAfterClass(): void
-    {   
-        if(file_exists("DbFixture.sql"))
-            unlink("DbFixture.sql");
     }
         
     public function setUp():void
     {
-        $this->dbHandler = new DbHandler(":memory:");
-        $this->dbHandler->exec("DbFixture.sql");
+        $this->dbHandler = new DbHandler();
+        $this->dbHandler->pdo->beginTransaction();
+    }
+
+    public function tearDown():void{
+        $this->dbHandler->pdo->rollBack();
     }
 
     public function testGoodWriteOperation():void{
@@ -69,10 +66,5 @@ final class DbHandlerTest extends TestCase
         $data = $this->dbHandler->readQuery(
             "SELECT * FROM notatabl");
     }
-
-
-
-
-   
 
 }

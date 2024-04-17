@@ -20,9 +20,9 @@ class Timer{
      * @param ?string $interval The interval time in 'HH:ii:ss' format 
      */
 
-    function __construct(?string $reset = null, ?string $interval = null) {
-        $this->reset = $this->timeValid($reset, false) ? $reset : $_ENV['TIME_RESET']; 
-        $this->interval = $this->timeValid($interval, true) ? $interval : $_ENV['TIME_INTERVAL']; 
+    function __construct($reset, $interval) {
+        $this->reset = $this->timeValid($reset, false) ? $reset : '00:00:00'; 
+        $this->interval = $this->timeValid($interval, true) ? $interval : '01:00:00'; 
     }
 
     /**

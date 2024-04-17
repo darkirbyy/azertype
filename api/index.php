@@ -1,6 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
-date_default_timezone_set($_ENV['TIME_ZONE']);
+date_default_timezone_set($_ENV['TIME_ZONE'] ?? 'UTC');
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
@@ -13,7 +13,7 @@ switch ($request) {
         break;*/
 
     case '/getDraw':
-        require 'getDraw.php';
+        require 'view/getDraw.php';
         break;
 
     default:
