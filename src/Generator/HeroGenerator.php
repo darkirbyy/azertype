@@ -2,10 +2,24 @@
 
 namespace Azertype\Generator;
 
+/**
+ * Generate words from extern api named hero
+ */ 
+
 class HeroGenerator extends AbstractGenerator{
 
+    const HERO_URL = "https://random-word-api.herokuapp.com/word?lang=fr&number=";
+
+    /**
+     * Reformat the words given by an http request into "word,word,etc" 
+     * 
+     * @param int $size How many words to generate
+     * 
+     * @throws Exception If the body of the http request is not correctly formatted 
+     * @return string
+     */
     function generate(?int $size = null) : string {
-        $size ??= $_ENV['GENERATOR_DEFAULTNBWORDS'];
+        $size ??= $_ENV['WORDS_PER_DRAW'];
         if($size < 1)
             return "";
         $data = $this->httpRequest($size);
@@ -15,13 +29,21 @@ class HeroGenerator extends AbstractGenerator{
         return $words;
     }
 
+    /**
+     * Make an http request to hero api to get words
+     * 
+     * @param int $size How many words to ask to the api
+     * 
+     * @throws Exception If the request fail
+     * @return string
+     */
     function httpRequest(int $size) : string{
         $curlHandle = curl_init();
         curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($curlHandle,CURLOPT_HEADER,0);
-        curl_setopt($curlHandle,CURLOPT_URL,$_ENV['GENERATOR_HERO_URL'].(string)$size);
-        curl_setopt($curlHandle,CURLOPT_TIMEOUT_MS,$_ENV['GENERATOR_HERO_TIMEOUT']*2);
-        curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT_MS,$_ENV['GENERATOR_HERO_TIMEOUT']);
+        curl_setopt($curlHandle,CURLOPT_URL,self::HERO_URL.(string)$size);
+        curl_setopt($curlHandle,CURLOPT_TIMEOUT_MS,$_ENV['HERO_CURL_TIMEOUT']*2);
+        curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT_MS,$_ENV['HERO_CURL_TIMEOUT']);
         $data = curl_exec($curlHandle);
         $httpcode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
         curl_close($curlHandle);

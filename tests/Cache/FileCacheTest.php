@@ -18,12 +18,12 @@ final class FileCacheTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$fileName = CacheFixture::FILENAME;
-        self::$filePath = $_ENV['APP_ROOT'].$_ENV['CACHE_FILE_DIRNAME'].self::$fileName.'.json';
+        self::$filePath = $_ENV['APP_ROOT'].$_ENV['CACHEFILE_DIRNAME'].self::$fileName.'.json';
     }
 
     public static function tearDownAfterClass(): void
     {
-        rmdir($_ENV['APP_ROOT'].$_ENV['CACHE_FILE_DIRNAME']);
+        rmdir($_ENV['APP_ROOT'].$_ENV['CACHEFILE_DIRNAME']);
     }
 
     public function setUp():void

@@ -28,6 +28,7 @@
         </include>
         <exclude>
             <file>src/loadDotenv.php</file>
+            <directory>src/Fixture</directory>
         </exclude>
     </source>
 
@@ -39,10 +40,11 @@
 
     <logging>
         <testdoxHtml outputFile="storage/testdox.html"/>
+        <!--<junit outputFile="storage/junit.xml"/>-->
     </logging>
 
     <php>
-        <env name="HELPER_DATABASE_FILENAME" value="tests.sqlite" force="true"/>
-        <env name="CACHE_FILE_DIRNAME" value=".tests.cache" force="true"/>
+        <env name="DATABASE_FILENAME" value="tests.sqlite" force="true"/>
+        <env name="CACHEFILE_DIRNAME" value=".tests.cache" force="true"/>
     </php>
 </phpunit>

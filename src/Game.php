@@ -10,12 +10,10 @@ use Azertype\Helper\Timer;
 class Game{
     private DbHandler $db; 
     private AbstractCache $cache;
-    private AbstractGenerator $generator;
 
-    function __construct(DbHandler $db, AbstractCache $cache, AbstractGenerator $generator){
+    function __construct(DbHandler $db, AbstractCache $cache){
         $this->db = $db;
         $this->cache = $cache;
-        $this->generator = $generator;
     }
 
     /*
@@ -46,20 +44,20 @@ class Game{
     Delete the cache, generate a new set of words and
     add a new entry into the database 
     */
-    function generateDraw() : void {
+    function generateDraw(AbstractGenerator $generator) : void {
         $this->cache->clear();
-        $words = $this->generator->generate();
+        $words = $generator->generate();
         $this->createTable();
         $this->db->writeQuery("INSERT INTO games (timestamp, words)
                                VALUES (:timestamp, :words)",
-                               array(Timer::currentTimestamp(), $words));
+                               array(time(), $words));
     }
 
     /*
     Format a draw into a complete json for front-end
     */
-    function formatDraw($draw) : string {
-        $draw['wait_time'] = Timer::ceilInterval($draw['timestamp']) - Timer::currentTimestamp();
+    function formatDraw(array $draw, Timer $timer) : string {
+        $draw['wait_time'] = $timer->ceilTimestamp($draw['timestamp']) - time();
         return json_encode($draw);
     }
 }
