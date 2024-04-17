@@ -4,8 +4,6 @@ namespace Azertype\Cache;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Azertype\Fixture;
 use Azertype\Fixture\CacheFixture;
 
 #[CoversClass(FileCache::class)]

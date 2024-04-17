@@ -2,33 +2,32 @@
 
 use Azertype\Helper\DbHandler;
 use Azertype\Cache\FileCache as Cache;
-use Azertype\Generator\FakeGenerator;
-use Azertype\Generator\HeroGenerator;
 use Azertype\Helper\Timer;
-use Azertype\Game;
-
+use Azertype\Controller\DrawController;
 
 try{
     $db = new DbHandler();
     $cache = new Cache('lastDraw');
-    $game = new Game($db, $cache);
+    $drawController = new DrawController($db, $cache);
 
-    $nextDraw = $game->getLastDraw();
-    if(!isset($nextDraw) || time() >= $nextDraw['validity'])
+    $draw = $drawController->readLastDraw();
+    if(!isset($draw) || time() >= $draw['validity'])
     {
-        $generator = ($_ENV['APP_ENV'] === "prod") ? new HeroGenerator() :  new FakeGenerator();
+        $generator = new ('Azertype\Generator\\'.$_ENV['GENERATOR_NAME'].'Generator')();
         $timer = new Timer( $_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
-        $game->generateDraw($generator, $timer);
-        $nextDraw = $game->getLastDraw();
+        $words = $generator->generate($_ENV['WORDS_PER_DRAW']);
+        $validity = $timer->ceilTimestamp(time());
+        $drawController->writeOneDraw(array($validity, $words));
+        $draw = $drawController->readLastDraw();
     }
 
+    $json = $drawController->formatDraw($draw);
     http_response_code(200);
-    echo $game->formatDraw($nextDraw);
+    echo $json;
 } 
 catch(Throwable $e){
     http_response_code(500);
-    if($_ENV['APP_ENV'] === "dev")
-        echo json_encode(array('error' => $e->getMessage()));
+    echo ($_ENV['APP_ENV'] === "dev") ? json_encode(array('error' => $e->getMessage())) : '';
     return;
 }
 

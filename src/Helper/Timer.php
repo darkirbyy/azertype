@@ -21,8 +21,8 @@ class Timer{
      */
 
     function __construct($reset, $interval) {
-        $this->reset = $this->timeValid($reset, false) ? $reset : '00:00:00'; 
-        $this->interval = $this->timeValid($interval, true) ? $interval : '01:00:00'; 
+        $this->reset = $this->timeValid($reset, true, false) ? $reset : '00:00:00'; 
+        $this->interval = $this->timeValid($interval, false, true) ? $interval : '01:00:00'; 
     }
 
     /**
@@ -33,10 +33,12 @@ class Timer{
      * 
      * @return bool
      */
-    function timeValid(?string $time, bool $allow24 = false) : bool {
-        if($time === null)
+    private function timeValid(string $time, bool $allow0, bool $allow24) : bool {
+        if(!preg_match('/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/', $time))
             return false;
         [$h, $m, $s] = explode(':', $time);
+        if($allow0 && $h == 0 && $m == 0 && $s == 0)
+            return true;
         if($allow24 && $h == 24 && $m == 0 && $s == 0)
             return true;
         elseif($h % 24 == $h && $m % 60 == $m && $s % 60 == $s)
@@ -50,7 +52,7 @@ class Timer{
      * 
      * @return int
      */
-    function intervalTimestamp() : int {
+    private function intervalTimestamp() : int {
         [$h, $m, $s] = explode(':', $this->interval);
         $intervalTimestamp = (int)$s + (int)$m * 60 + (int)$h * 3600;
         return $intervalTimestamp;
@@ -64,7 +66,7 @@ class Timer{
      * 
      * @return int
      */
-    function resetTimestamp(int $currentTimestamp) : int {
+    private function resetTimestamp(int $currentTimestamp) : int {
         $resetTimestamp = strtotime(date('Y-m-d ', $currentTimestamp).$this->reset);
         if($resetTimestamp > $currentTimestamp)
              $resetTimestamp -= 86400;

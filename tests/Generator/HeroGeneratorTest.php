@@ -63,7 +63,7 @@ final class HeroGeneratorTest extends TestCase
         $this->assertEquals("", $words);
     }
 
-    public function testGenerateBadUrl(): void{
+    public function testGenerateWrongUrl(): void{
         PHPMockery::mock(__NAMESPACE__, "curl_exec")
                     ->andReturn(false);
         PHPMockery::mock(__NAMESPACE__, "curl_getinfo")

@@ -30,12 +30,12 @@ final class DbHandlerTest extends TestCase
 
     public function testGoodWriteOperation():void{
         $rowCount = $this->dbHandler->writeQuery(
-            "INSERT INTO games (timestamp,words)
+            "INSERT INTO draws (timestamp,words)
              VALUES(".self::$faker->unixTime().", '".self::$faker->words(5, true)."')");
         $this->assertEquals(1, $rowCount);
     }
 
-    public function testBadBadOperation():void{
+    public function testWrongWriteOperation():void{
         $this->expectException(PDOException::class);
         $rowCount = $this->dbHandler->writeQuery(
             "INSERT INTO notatable (timestamp)
@@ -44,20 +44,20 @@ final class DbHandlerTest extends TestCase
 
     public function testBasicReadOperation():void{
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM games");
+            "SELECT * FROM draws");
         $this->assertEquals(25, sizeof($data));
     }
 
     public function testComplexReadOperation():void{
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM games ORDER BY game_id DESC LIMIT 1");
+            "SELECT * FROM draws ORDER BY game_id DESC LIMIT 1");
         $this->assertEquals(sizeof($data), 1);
         $this->assertEquals(34, $data[0]['game_id']);
     }
 
     public function testEmptyReadOperation():void{
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM games WHERE game_id = -1");
+            "SELECT * FROM draws WHERE game_id = -1");
         $this->assertEquals($data, array());
     }
 
