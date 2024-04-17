@@ -11,14 +11,14 @@ use Azertype\Game;
 try{
     $db = new DbHandler();
     $cache = new Cache('lastDraw');
-    $generator = $_ENV['APP_ENV'] === "prod" ? new HeroGenerator() :  new FakeGenerator();
-    $timer = new Timer();
     $game = new Game($db, $cache);
 
     $nextDraw = $game->getLastDraw();
-    if(!isset($nextDraw) || !$timer->inSameInterval($nextDraw['timestamp'],time()))
+    if(!isset($nextDraw) || time() >= $nextDraw['validity'])
     {
-        $game->generateDraw($generator);
+        $generator = $_ENV['APP_ENV'] === "prod" ? new HeroGenerator() :  new FakeGenerator();
+        $timer = new Timer();
+        $game->generateDraw($generator, $timer);
         $nextDraw = $game->getLastDraw();
     }
 

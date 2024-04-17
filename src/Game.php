@@ -22,7 +22,7 @@ class Game{
     function createTable(): void{
         $this->db->writeQuery(" CREATE TABLE IF NOT EXISTS games (
                             game_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                            timestamp INTEGER NOT NULL,
+                            validity INTEGER NOT NULL,
                             words TEXT) ");
     }
 
@@ -34,7 +34,8 @@ class Game{
         $lastDraw = $this->cache->read();
         if (!isset($lastDraw)){
             $this->createTable();
-            [$lastDraw,] = $this->db->readQuery("SELECT * FROM games ORDER BY game_id DESC LIMIT 1");
+            [$lastDraw,] = $this->db->readQuery(
+                "SELECT * FROM games ORDER BY game_id DESC LIMIT 1");
         }
         $this->cache->store($lastDraw);
         return $lastDraw;
@@ -44,20 +45,20 @@ class Game{
     Delete the cache, generate a new set of words and
     add a new entry into the database 
     */
-    function generateDraw(AbstractGenerator $generator) : void {
+    function generateDraw(AbstractGenerator $generator, Timer $timer) : void {
         $this->cache->clear();
         $words = $generator->generate();
+        $validity = $timer->ceilTimestamp(time());
         $this->createTable();
-        $this->db->writeQuery("INSERT INTO games (timestamp, words)
-                               VALUES (:timestamp, :words)",
-                               array(time(), $words));
+        $this->db->writeQuery("INSERT INTO games (validity, words)
+            VALUES (:validity, :words)", array($validity, $words));
     }
 
     /*
     Format a draw into a complete json for front-end
     */
-    function formatDraw(array $draw, Timer $timer) : string {
-        $draw['wait_time'] = $timer->ceilTimestamp($draw['timestamp']) - time();
+    function formatDraw(array $draw) : string {
+        $draw['wait_time'] = $draw['validity'] - time();
         return json_encode($draw);
     }
 }
