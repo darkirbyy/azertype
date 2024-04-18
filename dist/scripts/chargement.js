@@ -17,7 +17,7 @@
 
 // returns the cookie with the given name,
 // or undefined if not found
-function getCookie(name) {
+function GetCookie(name) {
     let matches = document.cookie.match(new RegExp(
       "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
@@ -26,13 +26,15 @@ function getCookie(name) {
 
 
 function ChoisirStatus(response){
-    let storeGameId = getCookie("game_id")
+    globalTimer.start(response.wait_time);
+    let storeGameId = GetCookie("game_id")
     if(storeGameId != undefined  && storeGameId == response.game_id){
-        AttendrePartie();
+        Deroulement.AttendrePartie();
     }
     else{
+        //set cookie?
         partie.liste_mot = response.words.split(',');
-        ProposerPartie();
+        Deroulement.ProposerPartie();
     }
 }
 

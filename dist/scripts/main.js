@@ -1,4 +1,4 @@
 ﻿GererFormulaire()
 GererPopup()
 
-ChargerPartie()
+Deroulement.ChargerPartie()

@@ -5,7 +5,7 @@ date_default_timezone_set($_ENV['TIME_ZONE'] ?? 'UTC');
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
-sleep(3);
+sleep(2);
 $request = $_SERVER['REQUEST_URI'];
 switch ($request) {
     case '/getDraw':

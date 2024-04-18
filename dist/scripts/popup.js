@@ -56,7 +56,7 @@ function HidePopup() {
         element.removeAttribute("disabled")
     });
     document.onkeydown = null
-    AttendrePartie()
+    Deroulement.AttendrePartie()
 }
 
 

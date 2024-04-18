@@ -14,7 +14,7 @@
             partie.seconds_total = ParseSeconds(partie.interval_total)
             temps_valeur.innerText = partie.seconds_total
         }
-    }, interval_size)
+    }, partieTimerSize)
 
     temps_valeur.innerText = ParseSeconds(0)
 
@@ -42,7 +42,7 @@
                 // sinon on arrête le timer, et on met fin au jeu
                 else {
                     partie.seconds_total = ParseSeconds(partie.interval_total)
-                    FinirPartie()
+                    Deroulement.FinirPartie()
                 }
             }
 
@@ -59,7 +59,7 @@
 
         // si la partie suivante est prête à être chargéee, on charge une nouvelle partie
         else if (partie.status == "asking") {
-            PretePartie()
+            Deroulement.PretePartie()
             temps_valeur.innerText = ParseSeconds(0)
         }
 
@@ -72,12 +72,12 @@
     // on libère le timer quand on appui sur la première lettre
     reponse_texte.addEventListener("input", () => {
         if(partie.status == "readying"){
-            LancerPartie()
+            Deroulement.LancerPartie()
         }
     })
 }
 
 
 function ParseSeconds(interval_number) {
-    return Number.parseFloat(interval_number * interval_size / 1000).toFixed(number_of_digit).toString() + "s"
+    return Number.parseFloat(interval_number * partieTimerSize / 1000).toFixed(PartieTimerDigit).toString() + "s"
 }
