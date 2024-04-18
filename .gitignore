@@ -1,6 +1,7 @@
-.*/
+.cache/
+.phpunit/
+.test-results/
 .env
 vendor/
-storage/
 database/*.sqlite
 !database/test.sqlite

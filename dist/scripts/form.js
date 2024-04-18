@@ -6,19 +6,14 @@
     const reponse_texte = document.getElementById("game_reponse_texte")
     const temps_valeur = document.getElementById("game_temps_valeur")
 
-    // création  du timer qui enregistre les paramètres d'une partie
-    let timer = setInterval(() => {
-        if (partie.timer_running) {
-            partie.interval_total++
-            partie.interval_par_mot++
-            partie.seconds_total = ParseSeconds(partie.interval_total)
-            temps_valeur.innerText = partie.seconds_total
-        }
-    }, partieTimerSize)
+    function timerCallback(interval){
+        temps_valeur.innerText = partie.seconds_total
+    }
 
     // quand on valide le formulaire...
     form.addEventListener("submit", (event) => {
         event.preventDefault();
+        gameTimer.callbackUpdate = timerCallback;
 
         // sinon on vient de valider un mot
         if(partie.status == "playing") {
@@ -37,7 +32,7 @@
                 if (partie.liste_index < partie.liste_mot.length) {
                     mot_actuel.innerText = partie.mot_courant()
                 }
-                // sinon on arrête le timer, et on met fin au jeu
+                // sinon et on met fin au jeu
                 else {
                     partie.seconds_total = ParseSeconds(partie.interval_total)
                     Deroulement.FinirPartie()

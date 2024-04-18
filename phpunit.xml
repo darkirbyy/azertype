@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.1/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         cacheDirectory=".phpunit.cache"
+         cacheDirectory=".phpunit"
          executionOrder="depends,defects"
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
@@ -34,18 +34,18 @@
 
     <coverage>
         <report>
-            <html outputDirectory="storage/coverage" lowUpperBound="50" highLowerBound="90"/>
+            <html outputDirectory=".test-results/coverage" lowUpperBound="50" highLowerBound="90"/>
         </report>
     </coverage>
 
     <logging>
-        <testdoxHtml outputFile="storage/testdox.html"/>
+        <testdoxHtml outputFile=".test-results/testdox.html"/>
         <!--<junit outputFile="storage/junit.xml"/>-->
     </logging>
 
     <php>
         <env name="REL_ROOT" value="./" force="true"/>
         <env name="DATABASE_NAME" value="test.sqlite" force="true"/>
-        <env name="CACHEFILE_DIR" value=".test.cache" force="true"/>
+        <env name="CACHEFILE_DIR" value=".test-cache" force="true"/>
     </php>
 </phpunit>
