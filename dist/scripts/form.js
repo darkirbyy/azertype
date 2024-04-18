@@ -1,10 +1,4 @@
-﻿function Start() {
-
-    GererFormulaire()
-    GererPopup()
-}
-
-function GererFormulaire() {
+﻿function GererFormulaire() {
     // on récupère les éléments du formulaire
     const form = document.querySelector("#game form")
     const mot_actuel = document.getElementById("game_mot_actuel")
@@ -25,18 +19,23 @@ function GererFormulaire() {
     }, interval_size)
 
     temps_valeur.innerText = ParseSeconds(0)
-    PropoposerNouvellePartie()
+    PropoposerNouvellePartie(partie)
 
     // quand on valide le formulaire...
     form.addEventListener("submit", (event) => {
         event.preventDefault();
 
+        if (["loading", "ready", "finish", "waiting"].includes(partie.status)){
+            
+        }
         // si la partie précédente est finie, on lance une nouvelle partie
         // en réinitalisant l'objet, le premier mot, le compteur de mot et le temps
-        if (!partie.timer_running) {
+        else if (partie.status == "asking") {
+            partie.status == "loading"
             ChargerNouvellePartie(partie)
             temps_valeur.innerText = ParseSeconds(0)
         }
+
 
         // sinon on vient de valider un mot
         else {
@@ -58,6 +57,7 @@ function GererFormulaire() {
                 // sinon on arrête le timer, et on met fin au jeu
                 else {
                     partie.timer_running = false
+                    partie.status = "finish"
                     partie.seconds_total = ParseSeconds(partie.interval_total)
                     DisplayPopup(partie);
                 }
@@ -77,12 +77,24 @@ function GererFormulaire() {
 
     // on libère le timer quand on appui sur la première lettre
     reponse_texte.addEventListener("input", () => {
-        partie.timer_running = true
+        if(partie.status == "ready"){
+            partie.timer_running = true
+            partie.status = "playing"
+        }
     })
 }
 
+
+function PropoposerNouvellePartie(partie) {
+    document.getElementById("game_reponse").classList.remove("active")
+    document.getElementById("game_nouvelle").classList.add("active")
+    //document.getElementById("game_nouvelle_bouton").focus()
+
+    partie.status = "asking"
+}
+
+
 function ChargerNouvellePartie(partie) {
-    partie.reinit()
     document.getElementById("game_nouvelle").classList.remove("active")
     document.getElementById("game_reponse").classList.add("active")
 
@@ -93,7 +105,10 @@ function ChargerNouvellePartie(partie) {
     document.getElementById("game_mot_actuel").innerText = "???"
     document.getElementById("game_mot_compteur_valeur").innerText = "?"
     document.getElementById("game_mot_compteur_total").innerText = "?"
-    TirerMotAlea(partie)
+
+    partie.reinit()
+    partie.status = "loading"
+    GetDrawFromApi(partie)
 }
 
 function NouvellePartiePrete(partie) {
@@ -105,12 +120,7 @@ function NouvellePartiePrete(partie) {
     reponse_texte.removeAttribute("disabled")
     reponse_texte.setAttribute("placeholder", "...")
     reponse_texte.focus()
-}
-
-function PropoposerNouvellePartie() {
-    document.getElementById("game_reponse").classList.remove("active")
-    document.getElementById("game_nouvelle").classList.add("active")
-    document.getElementById("game_nouvelle_bouton").focus()
+    partie.status = "ready"
 }
 
 

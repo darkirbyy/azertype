@@ -46,24 +46,24 @@ function DisplayPopup(partie) {
         element.setAttribute("disabled", "disabled")
     });
 
-    document.onkeydown = GererEscapeKey
+    //document.onkeydown = GererEscapeKey
 }
 
-function HidePopup() {
+function HidePopup(partie) {
     const popup = document.getElementById("popup");
     popup.classList.remove("active")
     document.querySelectorAll("#game input").forEach((element) => {
         element.removeAttribute("disabled")
     });
     document.onkeydown = null
-    PropoposerNouvellePartie()
+    PropoposerNouvellePartie(partie)
 }
 
 
-function GererEscapeKey(event) {
+/*function GererEscapeKey(event) {
     if (event.key === "Escape" || event.key === "Esc") {
         HidePopup()
     }
-}
+}*/
 
 
