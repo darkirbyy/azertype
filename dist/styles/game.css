@@ -83,6 +83,11 @@
         line-height: 30px;
     }
 
+    #game #game_nouvelle_bouton:disabled {
+        background-color: var(--light-grey);
+        cursor: default;
+    }
+
     #game #game_temps{
         font-weight: bold;
     }
