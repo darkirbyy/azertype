@@ -5,10 +5,11 @@ class Deroulement{
     static reponse = document.getElementById("game_reponse");
     static nouvelle_bouton = document.getElementById("game_nouvelle_bouton");
     static reponse_texte = document.getElementById("game_reponse_texte");
-
     static mot_actuel = document.getElementById("game_mot_actuel");
     static mot_compteur_valeur = document.getElementById("game_mot_compteur_valeur");
     static mot_compteur_total = document.getElementById("game_mot_compteur_total");
+    static temps_valeur = document.getElementById("game_temps_valeur")
+
 
     static ChargerPartie() {
         Deroulement.nouvelle.classList.add("active")
@@ -16,17 +17,18 @@ class Deroulement{
 
         Deroulement.nouvelle_bouton.setAttribute("value", "Chargement...")
         Deroulement.nouvelle_bouton.setAttribute("disabled", "disabled")
+        Deroulement.temps_valeur.innerText = ParseSeconds(0)
 
         partie.reinit()
         partie.status = "loading"
-        GetDrawFromApi()
+        ApiRequest()
     }
 
     static ProposerPartie() {
         Deroulement.nouvelle_bouton.setAttribute("value", "Lancer la partie")
         Deroulement.nouvelle_bouton.removeAttribute("disabled")
-
-        //document.getElementById("nouvelle_bouton").focus()
+        Deroulement.nouvelle_bouton.focus()
+        
         partie.status = "asking"
     }
 
@@ -44,6 +46,7 @@ class Deroulement{
         Deroulement.reponse_texte.focus()
 
         partie.status = "readying"
+        Deroulement.LancerPartie()
     }
 
     static LancerPartie(){
@@ -64,9 +67,10 @@ class Deroulement{
         Deroulement.mot_actuel.innerText = "???"
         Deroulement.mot_compteur_valeur.innerText = "?"
         Deroulement.mot_compteur_total.innerText = "?"
+        Deroulement.temps_valeur.innerText = ParseSeconds(0)
 
         Deroulement.nouvelle_bouton.setAttribute("disabled", "disabled")
-        Deroulement.nouvelle_bouton.setAttribute("value", "Prochaine partie dans ...")
+        Deroulement.nouvelle_bouton.setAttribute("value", "Chargement...")
 
         partie.status = "waiting"
 
@@ -80,11 +84,7 @@ class Deroulement{
     }
 
     static AttendrePartieUpdate(seconds){
-        let h = Math.floor(seconds / 3600).toString().padStart(2,"0")
-        let i = Math.floor((seconds % 3600) / 60).toString().padStart(2,"0")
-        let s = Math.floor(seconds % 60).toString().padStart(2,"0")
-        let timeParse = h + ':' + i + ':' + s
-        Deroulement.nouvelle_bouton.setAttribute("value", "Prochaine partie dans " + timeParse)
+        Deroulement.nouvelle_bouton.setAttribute("value", "Prochaine partie dans " + ParseTime(seconds))
     }
 
 }

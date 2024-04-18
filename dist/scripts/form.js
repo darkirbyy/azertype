@@ -16,8 +16,6 @@
         }
     }, partieTimerSize)
 
-    temps_valeur.innerText = ParseSeconds(0)
-
     // quand on valide le formulaire...
     form.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -69,15 +67,11 @@
 
     });
 
-    // on libère le timer quand on appui sur la première lettre
+   /* // on libère le timer quand on appui sur la première lettre
     reponse_texte.addEventListener("input", () => {
         if(partie.status == "readying"){
             Deroulement.LancerPartie()
         }
-    })
+    })*/
 }
 
-
-function ParseSeconds(interval_number) {
-    return Number.parseFloat(interval_number * partieTimerSize / 1000).toFixed(PartieTimerDigit).toString() + "s"
-}

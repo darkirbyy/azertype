@@ -7,4 +7,4 @@ const PartieTimerDigit = Math.log10(1000 / partieTimerSize)
 
 // url de connexion à l'api
 const api_url = "http://localhost:8000/"
-const max_retry = 3
+const api_timeout_ms = 2500
