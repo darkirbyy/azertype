@@ -1,5 +1,5 @@
 <?php
-namespace Azertype\Fixture;
+namespace Tests\Fixture;
 
 class CacheFixture{
     const FILENAME = 'foo';

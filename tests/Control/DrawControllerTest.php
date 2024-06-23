@@ -6,9 +6,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use phpmock\mockery\PHPMockery;
 use Azertype\Cache\AbstractCache;
-use Azertype\Fixture\CacheFixture;
-use Azertype\Fixture\ControllerFixture;
-use Azertype\Fixture\GeneratorFixture;
+use Tests\Fixture\CacheFixture;
+use Tests\Fixture\ControllerFixture;
+use Tests\Fixture\GeneratorFixture;
 use Azertype\Helper\DbHandler;
 use Exception;
 use Faker\Factory;
@@ -23,7 +23,7 @@ final class DrawControllerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$faker = Factory::create();
+        self::$faker = Factory::create('fr_FR');
     }
 
     public static function tearDownAfterClass(): void

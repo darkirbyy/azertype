@@ -1,5 +1,5 @@
 <?php
-namespace Azertype\Fixture;
+namespace Tests\Fixture;
 
 class GeneratorFixture{
     const HERO_ONEWORD = '["éléphantiasiques"]';

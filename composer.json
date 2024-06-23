@@ -16,7 +16,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Azertype\\": "src/"
+            "Azertype\\": "src/",
+            "Tests\\": "tests/"
         },
         "files":["src/loadDotenv.php"]
     },
@@ -27,9 +28,10 @@
         }
     ],
     "config":{
+        "vendor-dir": ".vendor",
         "optimize-autoloader": true
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": ".vendor/bin/phpunit"
     }
 }

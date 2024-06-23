@@ -14,7 +14,7 @@ final class TimerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$faker = Factory::create();
+        self::$faker = Factory::create('fr_FR');
     }
 
     public function setUp() : void {

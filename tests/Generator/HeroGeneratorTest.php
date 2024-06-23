@@ -5,7 +5,7 @@ namespace Azertype\Generator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use phpmock\mockery\PHPMockery;
-use Azertype\Fixture\GeneratorFixture;
+use Tests\Fixture\GeneratorFixture;
 use Faker\Factory;
 use Exception;
 
@@ -16,7 +16,7 @@ final class HeroGeneratorTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$faker = Factory::create();
+        self::$faker = Factory::create('fr_FR');
     }
 
     public function tearDown():void
