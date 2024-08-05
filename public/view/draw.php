@@ -2,33 +2,22 @@
 
 use Azertype\Helper\DbHandler;
 use Azertype\Cache\FileCache as Cache;
-use Azertype\Helper\Timer;
 use Azertype\Handler\DrawHandler;
+use Azertype\Controller\DrawController;
+use Azertype\Helper\Timer;
 
-try{
-    $db = new DbHandler();
-    $cache = new Cache('lastDraw');
-    $drawHandler = new DrawHandler($db, $cache);
+$db = new DbHandler();
+$cache = new Cache('lastDraw');
+$drawHandler = new DrawHandler($db, $cache);
 
-    $draw = $drawHandler->readLastDraw();
-    if(!isset($draw) || time() >= $draw['validity'])
-    {
-        $generator = new ('Azertype\Generator\\'.$_ENV['GENERATOR_NAME'].'Generator')();
-        $timer = new Timer( $_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
-        $words = $generator->generate($_ENV['WORDS_PER_DRAW']);
-        $validity = $timer->ceilTimestamp(time());
-        $drawHandler->writeOneDraw(array($validity, $words));
-        $draw = $drawHandler->readLastDraw();
-    }
+$timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
+$generator = new ('Azertype\Generator\\' . $_ENV['GENERATOR_NAME'] . 'Generator')();
+$drawController = new DrawController($drawHandler, $timer, $generator);
 
-    $json = $drawHandler->formatDraw($draw);
-    http_response_code(200);
-    echo $json;
-} 
-catch(Throwable $e){
-    http_response_code(500);
-    echo ($_ENV['APP_ENV'] === "dev") ? json_encode(array('error' => $e->getMessage())) : '';
-    return;
+
+switch($verb){
+    case "GET":
+        echo $drawController->getDraw();
+        http_response_code(200);
+        break;
 }
-
-

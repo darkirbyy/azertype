@@ -103,7 +103,7 @@ final class DrawHandlerTest extends TestCase
 
     public function testFormatDrawGoodArray() : void{
         PHPMockery::mock(__NAMESPACE__, "time")
-                    ->andReturn(HandlerFixture::GOOD_TIME);
+                    ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
         $this->assertEquals(HandlerFixture::GOOD_JSON,
           $this->drawHandler->formatDraw(HandlerFixture::GOOD_ARRAY));
     }
@@ -111,7 +111,7 @@ final class DrawHandlerTest extends TestCase
     public function testFormatDrawWrongArray() : void{
         $this->expectException(Exception::class);
         PHPMockery::mock(__NAMESPACE__, "time")
-                    ->andReturn(HandlerFixture::GOOD_TIME);
+                    ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
         $this->drawHandler->formatDraw(HandlerFixture::WRONG_ARRAY);
     }
 
