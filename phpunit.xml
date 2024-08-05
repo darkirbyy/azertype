@@ -27,7 +27,7 @@
             <directory>src</directory>
         </include>
         <exclude>
-            <file>src/loadDotenv.php</file>
+            <file>src/commonLoader.php</file>
         </exclude>
     </source>
 

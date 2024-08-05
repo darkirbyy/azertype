@@ -9,8 +9,8 @@ $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 $verb = $_SERVER['REQUEST_METHOD'];
 
 switch ($path) {
-    case '/getDraw':
-        require 'view/getDraw.php';
+    case '/draw':
+        require 'view/draw.php';
         break;
 
     default:

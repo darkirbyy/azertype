@@ -1,6 +1,6 @@
 ﻿function ApiRequest() {
     let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", api_url+'getDraw', true);
+    xmlHttp.open("GET", api_url+'draw', true);
     xmlHttp.timeout = api_timeout_ms;
     xmlHttp.ontimeout = function(e) {
         // timeout

@@ -1,6 +1,6 @@
 <?php
 
-namespace Azertype\Controller;
+namespace Azertype\Handler;
 
 use Azertype\Helper\DbHandler;
 use Azertype\Cache\AbstractCache;
@@ -8,7 +8,7 @@ use Azertype\Generator\AbstractGenerator;
 use Azertype\Helper\Timer;
 use Exception;
 
-class DrawController{
+class DrawHandler{
     private DbHandler $db; 
     private AbstractCache $cache;
 
@@ -46,10 +46,6 @@ class DrawController{
         return $lastDraw;
     }
 
-    /*
-
-    */
-
     /**
      * Delete the cache, generate a new set of words and
      * add a new entry into the database 
@@ -72,7 +68,7 @@ class DrawController{
      */
     function formatDraw(array $draw) : string {
         if(!isset($draw['validity']))
-            throw new Exception("DrawController unable to format the draw into json");
+            throw new Exception("DrawHandler unable to format the draw into json");
         $draw['wait_time'] = $draw['validity'] - time();
         unset($draw['validity']);
         return json_encode($draw);

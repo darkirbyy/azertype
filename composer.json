@@ -19,7 +19,7 @@
             "Azertype\\": "src/",
             "Tests\\": "tests/"
         },
-        "files":["src/loadDotenv.php"]
+        "files":["src/commonLoader.php"]
     },
     "authors": [
         {

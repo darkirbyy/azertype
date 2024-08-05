@@ -1,24 +1,24 @@
 <?php declare(strict_types=1);
 
-namespace Azertype\Controller;
+namespace Azertype\Handler;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use phpmock\mockery\PHPMockery;
 use Azertype\Cache\AbstractCache;
 use Tests\Fixture\CacheFixture;
-use Tests\Fixture\ControllerFixture;
+use Tests\Fixture\HandlerFixture;
 use Tests\Fixture\GeneratorFixture;
 use Azertype\Helper\DbHandler;
 use Exception;
 use Faker\Factory;
 
-#[CoversClass(DrawController::class)]
-final class DrawControllerTest extends TestCase
+#[CoversClass(DrawHandler::class)]
+final class DrawHandlerTest extends TestCase
 {
     private $cacheMock;
     private $dbMock;
-    private $drawController;
+    private $drawHandler;
     private static $faker;
 
     public static function setUpBeforeClass(): void
@@ -35,7 +35,7 @@ final class DrawControllerTest extends TestCase
     {
         $this->cacheMock = $this->createMock(AbstractCache::class);
         $this->dbMock = $this->createMock(DbHandler::class);
-        $this->drawController = new DrawController($this->dbMock, $this->cacheMock);
+        $this->drawHandler = new DrawHandler($this->dbMock, $this->cacheMock);
     }
 
     public function tearDown():void
@@ -48,7 +48,7 @@ final class DrawControllerTest extends TestCase
                   ->method('read')
                   ->willReturn(CacheFixture::GOOD_ARRAY);
 
-        $this->assertEquals(CacheFixture::GOOD_ARRAY, $this->drawController->readLastDraw());
+        $this->assertEquals(CacheFixture::GOOD_ARRAY, $this->drawHandler->readLastDraw());
     }
 
     public function testReadLastDrawNoCacheGoodDb() : void{
@@ -63,7 +63,7 @@ final class DrawControllerTest extends TestCase
         $this->cacheMock->expects($this->once())
                      ->method('store')
                      ->with(CacheFixture::GOOD_ARRAY);
-        $this->assertEquals(CacheFixture::GOOD_ARRAY, $this->drawController->readLastDraw());
+        $this->assertEquals(CacheFixture::GOOD_ARRAY, $this->drawHandler->readLastDraw());
     }
 
     public function testReadLastDrawNoCacheNoDb() : void{
@@ -78,7 +78,7 @@ final class DrawControllerTest extends TestCase
         $this->cacheMock->expects($this->once())
                         ->method('store')
                         ->with(null);
-        $this->assertNull($this->drawController->readLastDraw());
+        $this->assertNull($this->drawHandler->readLastDraw());
     }
 
     public function testWriteOneDrawGoodDb() : void{
@@ -87,7 +87,7 @@ final class DrawControllerTest extends TestCase
         $this->dbMock->expects($this->any())
                      ->method('writeQuery')
                      ->willReturn(1);
-        $this->assertTrue($this->drawController->writeOneDraw(
+        $this->assertTrue($this->drawHandler->writeOneDraw(
             array(GeneratorFixture::FAKE_FIVEWORD, self::$faker->unixTime())));
     }
 
@@ -97,22 +97,22 @@ final class DrawControllerTest extends TestCase
         $this->dbMock->expects($this->any())
                      ->method('writeQuery')
                      ->willReturn(0);
-        $this->assertFalse($this->drawController->writeOneDraw(
+        $this->assertFalse($this->drawHandler->writeOneDraw(
             array(GeneratorFixture::FAKE_FIVEWORD)));
     }
 
     public function testFormatDrawGoodArray() : void{
         PHPMockery::mock(__NAMESPACE__, "time")
-                    ->andReturn(ControllerFixture::GOOD_TIME);
-        $this->assertEquals(ControllerFixture::GOOD_JSON,
-          $this->drawController->formatDraw(ControllerFixture::GOOD_ARRAY));
+                    ->andReturn(HandlerFixture::GOOD_TIME);
+        $this->assertEquals(HandlerFixture::GOOD_JSON,
+          $this->drawHandler->formatDraw(HandlerFixture::GOOD_ARRAY));
     }
 
     public function testFormatDrawWrongArray() : void{
         $this->expectException(Exception::class);
         PHPMockery::mock(__NAMESPACE__, "time")
-                    ->andReturn(ControllerFixture::GOOD_TIME);
-        $this->drawController->formatDraw(ControllerFixture::WRONG_ARRAY);
+                    ->andReturn(HandlerFixture::GOOD_TIME);
+        $this->drawHandler->formatDraw(HandlerFixture::WRONG_ARRAY);
     }
 
 }
