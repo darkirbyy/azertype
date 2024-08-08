@@ -17,8 +17,12 @@
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true">
     <testsuites>
-        <testsuite name="default">
-            <directory>tests</directory>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
+        </testsuite>
+
+        <testsuite name="inte">
+            <directory>tests/inte</directory>
         </testsuite>
     </testsuites>
 

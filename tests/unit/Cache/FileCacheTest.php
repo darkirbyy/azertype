@@ -4,7 +4,7 @@ namespace Azertype\Cache;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\Fixture\CacheFixture;
+use Tests\fixture\CacheFixture;
 
 #[CoversClass(FileCache::class)]
 final class FileCacheTest extends TestCase

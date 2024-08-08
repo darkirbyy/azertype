@@ -5,7 +5,7 @@ namespace Azertype\Generator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use phpmock\mockery\PHPMockery;
-use Tests\Fixture\GeneratorFixture;
+use Tests\fixture\GeneratorFixture;
 use Faker\Factory;
 use Exception;
 
