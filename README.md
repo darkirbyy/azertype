@@ -11,10 +11,23 @@ To install back on prod :
 
 ## Dev
 
+### dev
+
 In the root directory :
 
 - run `php -S localhost:8000 -t public`
 - open `dist/index.html`
+
+### tests-unit
+
+### tests-inte
+
+### tests-func
+
+in the root directory :
+
+- run `sudo ./tests/func/start-docker.sh`
+- run `sudo ./tests/func/stop-docker.sh`
 
 ## Todo
 

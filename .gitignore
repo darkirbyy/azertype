@@ -6,4 +6,3 @@
 .env
 database/*.sqlite
 !database/test.sqlite
-env.js

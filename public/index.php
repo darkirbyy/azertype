@@ -6,12 +6,12 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
 try {
-
-    $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
     $verb = $_SERVER['REQUEST_METHOD'];
+    $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    $view = str_replace($_ENV['API_URI'], '', $path);
 
-    switch ($path) {
-        case '/draw':
+    switch ($view) {
+        case 'draw':
             require 'view/draw.php';
             break;
 
