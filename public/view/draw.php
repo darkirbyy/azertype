@@ -17,7 +17,7 @@ $drawController = new DrawController($drawHandler, $timer, $generator);
 
 switch($verb){
     case "GET":
-        echo $drawController->getDraw();
         http_response_code(200);
+        echo $drawController->getDraw();
         break;
 }

@@ -1,6 +1,7 @@
 .cache/
 .phpunit/
 .test-results/
+.docker/
 .vendor/
 .env
 database/*.sqlite
