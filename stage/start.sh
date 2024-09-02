@@ -1,7 +1,13 @@
 #! /bin/sh
 
+if [ -d ".docker" ] ||
+   [ "$( sudo docker container inspect -f '{{.State.Status}}' nginx-test )" = "running" ] || 
+   [ "$( sudo docker container inspect -f '{{.State.Status}}' php-fpm-test )" = "running" ];  then
+    echo "Previous stage is still running, use stage-stop.sh"
+    exit 1
+fi
+
 # remove old .docker temp folder and prepare the new one
-rm -rf .docker
 mkdir .docker && mkdir .docker/api && mkdir .docker/log
 
 # copy all front/back end folder their respective destination
@@ -22,4 +28,4 @@ sed -n 's/^API/const &/p' '.docker/api/.env' >> .docker/html/scripts/env.js
 sed -i 's#(DEV)#(STAGE)#' '.docker/html/index.html'
 
 # build and launch the containers using docker
-docker compose -f tests/func/compose.yml up -d
+docker compose -f stage/compose.yml up -d
