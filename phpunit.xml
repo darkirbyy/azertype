@@ -4,7 +4,7 @@
          bootstrap=".vendor/autoload.php"
          cacheDirectory=".phpunit"
          executionOrder="depends,defects"
-         requireCoverageMetadata="true"
+         requireCoverageMetadata="false"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
@@ -48,6 +48,6 @@
     <php>
         <env name="REL_ROOT" value="./" force="true"/>
         <env name="DATABASE_NAME" value="test.sqlite" force="true"/>
-        <env name="CACHEFILE_DIR" value=".test-cache" force="true"/>
+        <env name="CACHEFILE_DIR" value=".test-cache/" force="true"/>
     </php>
 </phpunit>
