@@ -14,7 +14,7 @@ class DrawController
     private Timer $timer;
     private AbstractGenerator $generator;
 
-    function __construct(DrawHandler $drawHandler, Timer $timer, $generator)
+    function __construct(DrawHandler $drawHandler, Timer $timer, AbstractGenerator $generator)
     {
         $this->drawHandler = $drawHandler;
         $this->timer = $timer;

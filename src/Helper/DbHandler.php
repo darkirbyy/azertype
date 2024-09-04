@@ -13,11 +13,14 @@ class DbHandler{
 
     /**
      * Open a PDO connection with sqlite
-     * 
-     * @param string $path The full path do the database file
      */
     function __construct(){
-        $this->pdo = new PDO("sqlite:".$_ENV['REL_ROOT'].'database/'.$_ENV['DATABASE_NAME']);
+        $dirPath = $_ENV['REL_ROOT'].$_ENV['DATABASE_DIR'];
+        $filePath = $dirPath.$_ENV['DATABASE_NAME'].'.sqlite';
+        if (!is_dir($dirPath)) {
+            mkdir($dirPath);       
+        } 
+        $this->pdo = new PDO("sqlite:".$filePath);
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
@@ -27,7 +30,7 @@ class DbHandler{
      * return an array response is succeed, null otherwise
      * 
      * @param string $query The query to make
-     * @param string $param Array containing the value of each parameter 
+     * @param array $param Array containing the value of each parameter 
      * 
      * @return ?array
      */
@@ -42,7 +45,7 @@ class DbHandler{
      * return the number of affected rows if succeed, null otherwise
      * 
      * @param string $query The query to make
-     * @param string $param Array containing the value of each parameter 
+     * @param array $param Array containing the value of each parameter 
      * 
      * @return ?int
      */

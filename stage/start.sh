@@ -15,10 +15,10 @@ cp -r dist .docker/html
 cp -r public .docker/api/public
 cp -r src .docker/api/src
 cp -r .vendor .docker/api/.vendor
-cp -r database .docker/api/database
 
 # copy the .env file for php script in back-end
 cp .env.example .docker/api/.env
+sed -i -E 's#^APP_ENV=.+#APP_ENV="stage"#' '.docker/api/.env'
 sed -i -E 's#^API_URL=.+#API_URL="http://localhost:8001"#' '.docker/api/.env'
 sed -i -E 's#^API_URI=.+#API_URI="/api/public/"#' '.docker/api/.env'
 

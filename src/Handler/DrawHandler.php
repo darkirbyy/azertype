@@ -36,7 +36,7 @@ class DrawHandler
      * Retrieve the last draw from cache if exists and 
      * have correct keys, or from last database entry otherwise
      *   
-     * @return array
+     * @return array 
      */
     function readLastDraw(): ?array
     {
@@ -56,6 +56,8 @@ class DrawHandler
      * add a new entry into the database 
      * 
      * @param array $data array containing in order (validity, words)
+     * 
+     * @return bool true if the insertion succeed
      */
     function writeOneDraw(array $data): bool
     {

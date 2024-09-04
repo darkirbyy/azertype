@@ -39,7 +39,7 @@ class FileCache extends AbstractCache{
      *  If the array is not null and the write operation succeed, 
      *  return true, false otherwise
      * 
-     * @param array $data The array to store in cachee
+     * @param array $data The array to store in cache
      * 
      * @return bool
      */

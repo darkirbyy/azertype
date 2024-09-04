@@ -21,6 +21,6 @@ try {
     
 } catch (Throwable $e) {
     http_response_code(500);
-    echo ($_ENV['APP_ENV'] === "dev") ? json_encode(array('error' => $e->getMessage())) : '';
+    echo ($_ENV['APP_ENV'] !== "prod") ? json_encode(array('error' => $e->getMessage())) : '';
     return;
 }
