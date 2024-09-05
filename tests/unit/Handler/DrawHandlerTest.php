@@ -74,10 +74,7 @@ final class DrawHandlerTest extends TestCase
                      ->method('writeQuery');
         $this->dbMock->expects($this->once())
                      ->method('readQuery')
-                     ->willReturn(null);
-        $this->cacheMock->expects($this->once())
-                        ->method('store')
-                        ->with(null);
+                     ->willReturn(Array());
         $this->assertNull($this->drawHandler->readLastDraw());
     }
 

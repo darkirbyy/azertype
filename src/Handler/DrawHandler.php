@@ -33,8 +33,9 @@ class DrawHandler
 
 
     /**
-     * Retrieve the last draw from cache if exists and 
-     * have correct keys, or from last database entry otherwise
+     * Retrieve the last draw from cache if exists and have correct keys, 
+     * or from last database entry otherwise if exists, 
+     * or null otherwise
      *   
      * @return array 
      */
@@ -43,10 +44,13 @@ class DrawHandler
         $lastDraw = $this->cache->read();
         if (!isset($lastDraw)) {
             $this->createTable();
-            [$lastDraw,] = $this->db->readQuery(
+            $queryResult = $this->db->readQuery(
                 "SELECT * FROM draws ORDER BY game_id DESC LIMIT 1"
             );
-            $this->cache->store($lastDraw);
+            if($queryResult !== null && isset($queryResult[0])){
+                $lastDraw = $queryResult[0];
+                $this->cache->store($lastDraw);
+            }
         }
         return $lastDraw;
     }

@@ -23,7 +23,7 @@ class HeroGenerator extends AbstractGenerator{
             return "";
         $data = $this->httpRequest($size);
         if(!preg_match('/^\[("[a-zéèçàù-]{0,}",){0,}"[a-zéèçàù-]{0,}"]$/iu', $data))
-            throw new \Exception("HeroGenerator failed to parse words.");
+            throw new \Exception("HeroGenerator failed to parse words : ".$data);
         $words = implode(',', json_decode($data));
         return $words;
     }
