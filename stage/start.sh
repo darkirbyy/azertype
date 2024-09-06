@@ -17,7 +17,7 @@ cp -r src .docker/api/src
 cp -r .vendor .docker/api/.vendor
 
 # copy the .env file for php script in back-end, and change some constants
-cp .env.example .docker/api/.env
+cp .env-example .docker/api/.env
 sed -i -E 's#^APP_ENV=.+#APP_ENV="stage"#' '.docker/api/.env'
 sed -i -E 's#^GENERATOR_NAME=.+#GENERATOR_NAME="Hero"#' '.docker/api/.env'
 sed -i -E 's#^WORDS_PER_DRAW=.+#WORDS_PER_DRAW=4#' '.docker/api/.env'

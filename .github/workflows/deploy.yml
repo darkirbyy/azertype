@@ -27,8 +27,11 @@ jobs:
       - name: Install prod and dev dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Generate .env file from .env-example
+        run: cp .env-example .env
+
       - name: Run all test suites
-        run: composer run-script tests-all
+        run: .vendor/bin/phpunit --no-coverage --no-logging
 
 
   deploy:
@@ -48,12 +51,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
-      - name: Cache Composer packages
-        uses: actions/cache@v4
-        with:
-          path: .vendor
-          key: php-${{ hashFiles('composer.lock') }}
-
+        
       - name: Install only prod dependencies
         run: composer install --no-dev --prefer-dist --no-progress
 
@@ -74,5 +72,6 @@ jobs:
             ls
           SCRIPT_AFTER: |
             ls
+            ln -snfr ${{ vars.BAAL_PATH }}/${{ github.ref_name }} ${{ vars.BAAL_PATH }}/current
 
 

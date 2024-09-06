@@ -6,7 +6,7 @@ mkdir -p dist
 cp -r html public src .vendor dist
 
 # copy the .env file for php script in back-end, and change some constants
-cp .env.example dist/.env
+cp .env-example dist/.env
 sed -i -E 's#^APP_ENV=.+#APP_ENV="prod"#' 'dist/.env'
 sed -i -E 's#^GENERATOR_NAME=.+#GENERATOR_NAME="Hero"#' 'dist/.env'
 sed -i -E 's#^WORDS_PER_DRAW=.+#WORDS_PER_DRAW=10#' 'dist/.env'
