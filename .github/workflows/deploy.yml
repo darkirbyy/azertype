@@ -1,0 +1,79 @@
+name: Test and Deploy
+on:
+  # push:
+  #   branches:    
+  #     - main
+  workflow_dispatch:
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout files in the runner
+        uses: actions/checkout@v4
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v4
+        with:
+          path: .vendor
+          key: php-${{ hashFiles('composer.lock') }}
+
+      - name: Install prod and dev dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run all test suites
+        run: composer run-script tests-all
+
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Setup WARP to enable IPv6 
+        uses: fscarmen/warp-on-actions@v1.0
+
+      - name: Checkout files in the runner
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 for WARP
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Prepare shipping dir
+        run: mkdir -p dist
+
+      - name: Install only prod dependencies
+        run: composer install --no-dev --prefer-dist --no-progress
+
+      - name: Convert MD to HTML
+        run: | 
+          npm install crossnote ts-node 
+          npx ts-node .github/convert-to-html.ts 
+          ./.github/clear-html.sh
+          mv assets dist
+
+      - name: Deploy to prod on rpi4
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.BAAL_KEYS }}
+          ARGS: "-rlgoDzvc -i"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ vars.BAAL_ADDR }}
+          REMOTE_USER: ${{ secrets.BAAL_USER }}
+          REMOTE_PORT: ${{ secrets.BAAL_PORT }}
+          TARGET: ${{ vars.BAAL_PATH }}/v1.0
+          SCRIPT_BEFORE: |
+            ls
+          SCRIPT_AFTER: |
+            ls
+
+
