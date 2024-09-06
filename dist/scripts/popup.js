@@ -12,7 +12,7 @@
     })
 }
 
-function DisplayPopup(partie) {
+function DisplayPopup() {
     // on insère le temps total et le nombre d'erreur
     const resultat_temps = document.getElementById("popup_resultat_temps");
     const resultat_erreur = document.getElementById("popup_resultat_erreur");
@@ -46,7 +46,7 @@ function DisplayPopup(partie) {
         element.setAttribute("disabled", "disabled")
     });
 
-    document.onkeydown = GererEscapeKey
+    //document.onkeydown = GererEscapeKey
 }
 
 function HidePopup() {
@@ -56,14 +56,14 @@ function HidePopup() {
         element.removeAttribute("disabled")
     });
     document.onkeydown = null
-    PropoposerNouvellePartie()
+    Deroulement.AttendrePartie()
 }
 
 
-function GererEscapeKey(event) {
+/*function GererEscapeKey(event) {
     if (event.key === "Escape" || event.key === "Esc") {
         HidePopup()
     }
-}
+}*/
 
 

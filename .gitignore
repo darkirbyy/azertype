@@ -1,3 +1,7 @@
-vendor/
-storage/
-database/
+.cache/
+.phpunit/
+.test-results/
+.docker/
+.vendor/
+.database/
+.env

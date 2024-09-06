@@ -4,37 +4,29 @@ namespace Azertype\Cache;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Azertype\Config;
+use Tests\fixture\CacheFixture;
 
 #[CoversClass(FileCache::class)]
-#[UsesClass(Config::class)]
 final class FileCacheTest extends TestCase
 {
-    private static string $testsRoot;
     private static string $fileName;
     private static string $filePath;
-    private array $testArray;
-    private string $testJson;
     private FileCache $cache;
 
     public static function setUpBeforeClass(): void
     {
-        self::$testsRoot = Config::FIXTURE;
-        self::$fileName = 'foo.json';
-        self::$filePath = self::$testsRoot.Config::FILECACHE_DIRNAME.self::$fileName;
+        self::$fileName = CacheFixture::FILENAME;
+        self::$filePath = $_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR'].self::$fileName.'.json';
     }
 
     public static function tearDownAfterClass(): void
     {
-        rmdir(self::$testsRoot.Config::FILECACHE_DIRNAME);
+        rmdir($_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR']);
     }
 
     public function setUp():void
     {
-        $this->testArray = array('game_id' => 2, 'words' => 'aaa,bbb');
-        $this->testJson = '{"game_id":2,"words":"aaa,bbb"}';
-        $this->cache = new FileCache(self::$testsRoot.Config::FILECACHE_DIRNAME, self::$fileName);
+        $this->cache = new FileCache(self::$fileName);
     }
 
     public function tearDown():void
@@ -50,17 +42,17 @@ final class FileCacheTest extends TestCase
     }
 
     public function testReadFail(): void{
-        file_put_contents(self::$filePath, "not_some_json");
+        file_put_contents(self::$filePath, CacheFixture::WRONG_JSON);
         $outputArray = $this->cache->read();
 
         $this->assertNull($outputArray);
     }
 
     public function testReadArray(): void{
-        file_put_contents(self::$filePath, $this->testJson);
+        file_put_contents(self::$filePath, CacheFixture::GOOD_JSON);
         $outputArray = $this->cache->read();
 
-        $this->assertSame($this->testArray,$outputArray);
+        $this->assertSame(CacheFixture::GOOD_ARRAY,$outputArray);
     }
 
     public function testStoreNull():void{
@@ -70,17 +62,17 @@ final class FileCacheTest extends TestCase
     }
 
     public function testStoreArrayOnNewFile():void{
-        $this->cache->store($this->testArray);
+        $this->cache->store(CacheFixture::GOOD_ARRAY);
         
         $this->assertFileExists(self::$filePath);
-        $this->assertJsonStringEqualsJsonFile(self::$filePath, $this->testJson);
+        $this->assertJsonStringEqualsJsonFile(self::$filePath, CacheFixture::GOOD_JSON);
     }
 
     public function testStoreArrayOnExistingFile():void{
-        file_put_contents(self::$filePath, "previous_string");
-        $this->cache->store($this->testArray);
+        file_put_contents(self::$filePath, CacheFixture::OTHER_JSON);
+        $this->cache->store(CacheFixture::GOOD_ARRAY);
  
-        $this->assertJsonStringEqualsJsonFile(self::$filePath, $this->testJson);
+        $this->assertJsonStringEqualsJsonFile(self::$filePath, CacheFixture::GOOD_JSON);
     }
 
     public function testClearNonExistingFile():void{
@@ -90,7 +82,7 @@ final class FileCacheTest extends TestCase
     }
 
     public function testClearExistingFile():void{
-        file_put_contents(self::$filePath, $this->testJson);
+        file_put_contents(self::$filePath, CacheFixture::GOOD_JSON);
         $this->cache->clear();
  
         $this->assertFileDoesNotExist(self::$filePath);

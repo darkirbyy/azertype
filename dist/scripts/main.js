@@ -1,2 +1,4 @@
-﻿Start()
+﻿GererFormulaire()
+GererPopup()
 
+Deroulement.ChargerPartie()

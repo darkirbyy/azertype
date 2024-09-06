@@ -3,14 +3,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AzerType</title>
+    <title>AzerType (DEV)</title>
     <link href="styles/global.css" rel="stylesheet" />
     <link href="styles/game.css" rel="stylesheet" />
     <link href="styles/popup.css" rel="stylesheet" />
     <link href="styles/media.css" rel="stylesheet" />
-    <script src="scripts/config.js" defer></script>
-    <script src="scripts/motalea.js" defer></script>
-    <script src="scripts/game.js" defer></script>
+    <script src="scripts/env.js" defer></script>
+    <script src="scripts/api.js" defer></script>
+    <script src="scripts/deroulement.js" defer></script>
+    <script src="scripts/timers.js" defer></script>
+    <script src="scripts/partie.js" defer></script>
+    <script src="scripts/form.js" defer></script>
     <script src="scripts/popup.js" defer></script>
     <script src="scripts/main.js" defer></script>
 </head>
@@ -30,8 +33,8 @@
                         Le but est d'écrire le plus rapidement possible une série de mots choisis aléatoirement.
                     </p>
                     <p>
-                        La partie démarre quand vous écrivez la première lettre.<br />
-                        Validez avec Entrer ou en cliquant sur le bouton.
+                        La partie démarre quand vous cliquez sur Lancer la partie.<br />
+                        Utilisez Entrer pour aller plus vite
                     </p>
 
                     <p>Ecrivez en minuscules, avec les éventuels accents et tirets.</p>
@@ -49,7 +52,7 @@
                 </div>
 
                 <div id="game_nouvelle">
-                    <input type="submit" id="game_nouvelle_bouton" value="Nouvelle Partie" />
+                    <input type="submit" id="game_nouvelle_bouton" value="Chargement..." />
                 </div>
                 <div id="game_temps">
                     Temps : <span id="game_temps_valeur">0.0s</span>
@@ -86,7 +89,7 @@
     </main>
 
     <footer>
-        @Copyright : OpenClassrooms.
+        @Copyright : Darkirby.
     </footer>
 
 

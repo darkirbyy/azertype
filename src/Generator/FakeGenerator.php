@@ -1,13 +1,24 @@
 <?php
 
 namespace Azertype\Generator;
-use Azertype\Config;
+
+/**
+ * Generate fake random words for dev and testing purpose
+ */ 
 
 class FakeGenerator extends AbstractGenerator{
 
-    function generate(int $size = Config::WORDS_PER_GAME) : string {
+    /**
+     * Generate a list of fake words in format "aaa,ddd,etc"
+     * 
+     * @param int $size How many words to generate
+     * 
+     * @return string
+     */
+    function generate(int $size) : string {
         if($size < 1)
             return "";
+
         $words = "";
         for($i = 0; $i < $size ; $i++){
             $char = chr(ord('a') + rand(0,25));
