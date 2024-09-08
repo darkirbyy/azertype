@@ -33,13 +33,16 @@ Require docker and admin privileges. In the root directory :
 
 ## Deploy
 
-To install back on prod :
+To install back on production server :
 
-- install php , sqlite3
-- set warning to false ? use php.ini-developpment / php.ini-production
+- **Back** : require php (>=8.2, with sqlite3 and curl extensions) and sqlite3. For any request to the API, redirect to **public/index.php** keeping the inital URI, with php-fpm for example. Use the **.env-example** file to generate a valid **.env** file at the root directory of the project.
+- **Front** : serve the page *index.html* in the **html** folder with nginx or apache for example. Use the **.env** previously generated to replace the **html/scripts/env.js** file with the correct API constants.
 
-## Todo
+## To do
 
-- use acpu to cache
+- how to handle errors that are catch in the prod environment ? re-throw them so that fpm log them ?
+- use acpu to cache and the type of cache depends on the app environment ? on a new.env variable ?
 - write my own word generator
 - add "best time" for each draw
+- write better integration tests (without using phpunit ? with postman ?)
+- write functional tests (using playwright ?)
