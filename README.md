@@ -4,7 +4,7 @@ Little fun project, starting from openclassroom tutorial while learning js, then
 
 ## Develop
 
-Install php (at least version 8.1, with sqlite and curl extension) and sqlite3.  
+Install php (at least version 8.2, with sqlite and curl extension) and sqlite3.  
 Clone the repository <https://github.com/darkirbyy/azertype.git> from GitHub.  
 Go in the root directory of the project.  
 
@@ -13,7 +13,8 @@ To build the app, run `composer install`.
 To start the app:
 
 - run `php -S localhost:8000 -t public` on a terminal.
-- open `dist/index.html` with any browser.
+- open `html/index.html` with any browser.
+- PHP logs are written through the console running the CLI server.
 
 ## Test
 
@@ -27,9 +28,10 @@ The tests use their own database and cache directory, and the relevant environme
 
 Require docker and admin privileges. In the root directory :
 
-- run `sudo ./stage/start.sh` on a terminal.
-- open `localhost:8001` with any browser.
-- run `sudo ./stage/stop.sh` on a terminal.
+- to build and start the stage environment, run `sudo ./stage/start.sh` on a terminal (a temporary **.docker** directory is created).
+- open `localhost:8001` with any browser and test manually
+- PHP and Nginx logs are stored in **.docker/log**.
+- to stop the stage environment, run `sudo ./stage/stop.sh`.
 
 ## Deploy
 
