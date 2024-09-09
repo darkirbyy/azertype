@@ -14,7 +14,7 @@ use Azertype\Controller\DrawController;
 
 final class DrawIntegrationTest extends TestCase
 {
-    private $db;
+    private $mainDb;
     private $cache;
     private $drawHandler;
     private $timer;
@@ -35,11 +35,11 @@ final class DrawIntegrationTest extends TestCase
 
     public function setUp(): void
     {
-        $this->db = new DbHandler();
-        $this->db->pdo->beginTransaction();
+        $this->mainDb = new DbHandler('test');
+        $this->mainDb->pdo->beginTransaction();
 
         $this->cache = new ApcuCache('lastDraw');
-        $this->drawHandler = new DrawHandler($this->db, $this->cache);
+        $this->drawHandler = new DrawHandler($this->mainDb, $this->cache);
 
         $this->timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
         $this->generator = new ('Azertype\Generator\\' . $_ENV['GENERATOR_NAME'] . 'Generator')();
@@ -47,7 +47,7 @@ final class DrawIntegrationTest extends TestCase
     }
 
     public function tearDown(): void {
-        $this->db->pdo->rollBack();
+        $this->mainDb->pdo->rollBack();
     }
 
     public function testGetSameTwoDraws(): void

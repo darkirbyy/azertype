@@ -10,12 +10,12 @@ use Exception;
 
 class DrawHandler
 {
-    private DbHandler $db;
+    private DbHandler $mainDb;
     private AbstractCache $cache;
 
-    function __construct(DbHandler $db, AbstractCache $cache)
+    function __construct(DbHandler $mainDb, AbstractCache $cache)
     {
-        $this->db = $db;
+        $this->mainDb = $mainDb;
         $this->cache = $cache;
     }
 
@@ -25,7 +25,7 @@ class DrawHandler
      */
     function createTable(): void
     {
-        $this->db->writeQuery(" CREATE TABLE IF NOT EXISTS draws (
+        $this->mainDb->writeQuery(" CREATE TABLE IF NOT EXISTS draws (
                             game_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                             validity INTEGER NOT NULL,
                             words TEXT) ");
@@ -44,7 +44,7 @@ class DrawHandler
         $lastDraw = $this->cache->read();
         if (!isset($lastDraw)) {
             $this->createTable();
-            $queryResult = $this->db->readQuery(
+            $queryResult = $this->mainDb->readQuery(
                 "SELECT * FROM draws ORDER BY game_id DESC LIMIT 1"
             );
             if($queryResult !== null && isset($queryResult[0])){
@@ -67,7 +67,7 @@ class DrawHandler
     {
         $this->cache->clear();
         $this->createTable();
-        return (bool) $this->db->writeQuery("INSERT INTO draws (validity, words)
+        return (bool) $this->mainDb->writeQuery("INSERT INTO draws (validity, words)
             VALUES (:validity, :words)", $data);
     }
 

@@ -14,9 +14,9 @@ class DbHandler{
     /**
      * Open a PDO connection with sqlite
      */
-    function __construct(){
+    function __construct($DbName){
         $dirPath = $_ENV['REL_ROOT'].$_ENV['DATABASE_DIR'];
-        $filePath = $dirPath.$_ENV['DATABASE_NAME'].'.sqlite';
+        $filePath = $dirPath.$DbName.'.db';
         if (!is_dir($dirPath)) {
             mkdir($dirPath);       
         } 

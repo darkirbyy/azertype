@@ -29,7 +29,6 @@ sed -i -E 's#^APP_ENV=.+#APP_ENV="stage"#' '.docker/api/.env'
 sed -i -E 's#^GENERATOR_NAME=.+#GENERATOR_NAME="Hero"#' '.docker/api/.env'
 sed -i -E 's#^WORDS_PER_DRAW=.+#WORDS_PER_DRAW=4#' '.docker/api/.env'
 sed -i -E 's#^TIME_INTERVAL=.+#TIME_INTERVAL="00:02:00"#' '.docker/api/.env'
-sed -i -E 's#^DATABASE_NAME=.+#DATABASE_NAME="stage"#' '.docker/api/.env'
 sed -i -E 's#^API_URL=.+#API_URL="http://localhost:8001"#' '.docker/api/.env'
 sed -i -E 's#^API_URI=.+#API_URI="/api/public/"#' '.docker/api/.env'
 

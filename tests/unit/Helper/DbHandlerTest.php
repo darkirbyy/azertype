@@ -20,7 +20,7 @@ final class DbHandlerTest extends TestCase
         
     public function setUp():void
     {
-        $this->dbHandler = new DbHandler();
+        $this->dbHandler = new DbHandler('test');
         $this->dbHandler->pdo->beginTransaction();
     }
 

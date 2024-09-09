@@ -17,7 +17,7 @@ use Faker\Factory;
 final class DrawHandlerTest extends TestCase
 {
     private $cacheMock;
-    private $dbMock;
+    private $mainDbMock;
     private $drawHandler;
     private static $faker;
 
@@ -34,8 +34,8 @@ final class DrawHandlerTest extends TestCase
     public function setUp():void
     {
         $this->cacheMock = $this->createMock(AbstractCache::class);
-        $this->dbMock = $this->createMock(DbHandler::class);
-        $this->drawHandler = new DrawHandler($this->dbMock, $this->cacheMock);
+        $this->mainDbMock = $this->createMock(DbHandler::class);
+        $this->drawHandler = new DrawHandler($this->mainDbMock, $this->cacheMock);
     }
 
     public function tearDown():void
@@ -55,9 +55,9 @@ final class DrawHandlerTest extends TestCase
         $this->cacheMock->expects($this->once())
                         ->method('read')
                         ->willReturn(null);
-        $this->dbMock->expects($this->once())
+        $this->mainDbMock->expects($this->once())
                      ->method('writeQuery');
-        $this->dbMock->expects($this->once())
+        $this->mainDbMock->expects($this->once())
                      ->method('readQuery')
                      ->willReturn(array(CacheFixture::GOOD_ARRAY));
         $this->cacheMock->expects($this->once())
@@ -70,9 +70,9 @@ final class DrawHandlerTest extends TestCase
         $this->cacheMock->expects($this->once())
                         ->method('read')
                         ->willReturn(null);
-        $this->dbMock->expects($this->once())
+        $this->mainDbMock->expects($this->once())
                      ->method('writeQuery');
-        $this->dbMock->expects($this->once())
+        $this->mainDbMock->expects($this->once())
                      ->method('readQuery')
                      ->willReturn(Array());
         $this->assertNull($this->drawHandler->readLastDraw());
@@ -81,7 +81,7 @@ final class DrawHandlerTest extends TestCase
     public function testWriteOneDrawGoodDb() : void{
         $this->cacheMock->expects($this->once())
                         ->method('clear');
-        $this->dbMock->expects($this->any())
+        $this->mainDbMock->expects($this->any())
                      ->method('writeQuery')
                      ->willReturn(1);
         $this->assertTrue($this->drawHandler->writeOneDraw(
@@ -91,7 +91,7 @@ final class DrawHandlerTest extends TestCase
     public function testWriteOneDrawNoDb() : void{
         $this->cacheMock->expects($this->once())
                         ->method('clear');
-        $this->dbMock->expects($this->any())
+        $this->mainDbMock->expects($this->any())
                      ->method('writeQuery')
                      ->willReturn(0);
         $this->assertFalse($this->drawHandler->writeOneDraw(
