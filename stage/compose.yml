@@ -11,7 +11,10 @@ services:
       - TZ=Europe/Paris      
 
   fpm:
-    image: php:8.2-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php-fpm:8.2
     container_name: php-fpm-test
     command: php-fpm -R
     ports:

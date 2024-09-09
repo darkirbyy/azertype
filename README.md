@@ -2,9 +2,15 @@
 
 Little fun project, starting from openclassroom tutorial while learning js, then going deeper with a php back-end.
 
+## Requirements
+
+- PHP, at least version 8.2, with sqlite3/curl/apcu extensions.  
+Don't forget to enable APCU in CLI by adding `apc.enable_cli=1` to the **php.ini** file.
+- Sqlite3.
+- Composer.
+
 ## Develop
 
-Install php (at least version 8.2, with sqlite and curl extension) and sqlite3.  
 Clone the repository <https://github.com/darkirbyy/azertype.git> from GitHub.  
 Go in the root directory of the project.  
 
@@ -35,15 +41,19 @@ Require docker and admin privileges. In the root directory :
 
 ## Deploy
 
-To install back on production server :
+To prepare the production server :
 
-- **Back** : require php (>=8.2, with sqlite3 and curl extensions) and sqlite3. For any request to the API, redirect to **public/index.php** keeping the inital URI, with php-fpm for example. Use the **.env-example** file to generate a valid **.env** file at the root directory of the project.
-- **Front** : serve the page *index.html* in the **html** folder with nginx or apache for example. Use the **.env** previously generated to replace the **html/scripts/env.js** file with the correct API constants.
+- **Back-end** : require php (>=8.2, with sqlite3 and curl extensions) and sqlite3. For any request to the API, redirect to **public/index.php** keeping the inital URI, with php-fpm for example. Use the **.env-example** file to generate a valid **.env** file at the root directory of the project.
+- **Front-end** : serve the page *index.html* in the **html** folder with nginx or apache for example. Use the **.env** previously generated to replace the **html/scripts/env.js** file with the correct API constants.
+
+Work-flows configured with GitHub actions :
+
+- When pushing to main : build and perform all tests
+- When pushing a tag starting with **v** : build perform all tests, then remove dev packages and send to production server.
 
 ## To do
 
-- how to handle errors that are catch in the prod environment ? re-throw them so that fpm log them ?
-- use acpu to cache and the type of cache depends on the app environment ? on a new.env variable ?
+- use FileCache if ApcuCache not available ? or add a new .env variable ?
 - write my own word generator
 - add "best time" for each draw
 - write better integration tests (without using phpunit ? with postman ?)

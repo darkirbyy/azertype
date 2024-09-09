@@ -2,8 +2,6 @@
 
 namespace Azertype\Controller;
 
-use Azertype\Helper\DbHandler;
-use Azertype\Cache\FileCache as Cache;
 use Azertype\Generator\AbstractGenerator;
 use Azertype\Helper\Timer;
 use Azertype\Handler\DrawHandler;

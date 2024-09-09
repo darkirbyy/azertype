@@ -6,7 +6,7 @@ namespace Azertype\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Azertype\Helper\DbHandler;
-use Azertype\Cache\FileCache as Cache;
+use Azertype\Cache\ApcuCache;
 use Azertype\Handler\DrawHandler;
 use Azertype\Helper\Timer;
 use Azertype\Controller\DrawController;
@@ -38,7 +38,7 @@ final class DrawIntegrationTest extends TestCase
         $this->db = new DbHandler();
         $this->db->pdo->beginTransaction();
 
-        $this->cache = new Cache('lastDraw');
+        $this->cache = new ApcuCache('lastDraw');
         $this->drawHandler = new DrawHandler($this->db, $this->cache);
 
         $this->timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);

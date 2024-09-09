@@ -1,13 +1,13 @@
 <?php
 
 use Azertype\Helper\DbHandler;
-use Azertype\Cache\FileCache as Cache;
+use Azertype\Cache\ApcuCache;
 use Azertype\Handler\DrawHandler;
 use Azertype\Controller\DrawController;
 use Azertype\Helper\Timer;
 
 $db = new DbHandler();
-$cache = new Cache('lastDraw');
+$cache = new ApcuCache('lastDraw');
 $drawHandler = new DrawHandler($db, $cache);
 
 $timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
