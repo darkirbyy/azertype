@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Azertype\Helper;
 
@@ -17,54 +19,86 @@ final class DbHandlerTest extends TestCase
     {
         self::$faker = Factory::create('fr_FR');
     }
-        
-    public function setUp():void
+
+    public function setUp(): void
     {
         $this->dbHandler = new DbHandler('test');
         $this->dbHandler->pdo->beginTransaction();
     }
 
-    public function tearDown():void{
+    public function tearDown(): void
+    {
         $this->dbHandler->pdo->rollBack();
     }
 
-    public function testGoodWriteOperation():void{
+    public function testCreateDatabaseFolder(): void
+    {
+        $this->dbHandler->pdo->rollBack();
+        $old_env_value = $_ENV['DATABASE_DIR'];
+        $_ENV['DATABASE_DIR'] = 'tests/other_database/';
+        $filePath = $_ENV['REL_ROOT'] . $_ENV['DATABASE_DIR'] . 'test.db';
+
+        $this->dbHandler = new DbHandler('test');
+        $this->dbHandler->pdo->beginTransaction();
+        $this->assertFileExists($filePath);
+
+        if (file_exists($filePath))
+            unlink($filePath);
+        rmdir($_ENV['REL_ROOT'] . $_ENV['DATABASE_DIR']);
+        $_ENV['DATABASE_DIR'] = $old_env_value;
+    }
+
+    public function testGoodWriteOperation(): void
+    {
         $rowCount = $this->dbHandler->writeQuery(
-            "INSERT INTO draws (validity,words) VALUES (:validity, :words)", 
-            [self::$faker->unixTime(), "'".self::$faker->words(5, true)."'"]);
+            "INSERT INTO draws (validity,words) VALUES (:validity, :words)",
+            [self::$faker->unixTime(), "'" . self::$faker->words(5, true) . "'"]
+        );
         $this->assertEquals(1, $rowCount);
     }
 
-    public function testWrongWriteOperation():void{
+    public function testWrongWriteOperation(): void
+    {
         $this->expectException(PDOException::class);
         $rowCount = $this->dbHandler->writeQuery(
             "INSERT INTO notatable (timestamp)
-             VALUES (:validity)", [self::$faker->unixTime()]);
+             VALUES (:validity)",
+            [self::$faker->unixTime()]
+        );
     }
 
-    public function testBasicReadOperation():void{
+    public function testBasicReadOperation(): void
+    {
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM draws");
+            "SELECT * FROM draws"
+        );
         $this->assertEquals(194, sizeof($data));
     }
 
-    public function testComplexReadOperation():void{
+    public function testComplexReadOperation(): void
+    {
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM draws ORDER BY game_id DESC LIMIT :limit", [1]);
+            "SELECT * FROM draws ORDER BY game_id DESC LIMIT :limit",
+            [1]
+        );
         $this->assertEquals(sizeof($data), 1);
         $this->assertEquals(194, $data[0]['game_id']);
     }
 
-    public function testEmptyReadOperation():void{
+    public function testEmptyReadOperation(): void
+    {
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM draws WHERE game_id = :id", [-1]);
+            "SELECT * FROM draws WHERE game_id = :id",
+            [-1]
+        );
         $this->assertEquals($data, array());
     }
 
-    public function testWrongReadOperation():void{
+    public function testWrongReadOperation(): void
+    {
         $this->expectException(PDOException::class);
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM notatabl");
+            "SELECT * FROM notatable"
+        );
     }
-
 }

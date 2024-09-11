@@ -43,24 +43,19 @@ class SelfGenerator extends AbstractGenerator
         $wordsArray = [];
         $wordsString = "";
 
+        $query = "SELECT word FROM french ORDER BY RANDOM() LIMIT :count";
+        $queryResult = $this->wordsDb->readQuery($query, [$size]);
+        if ($queryResult !== null)
+            $wordsArray = $queryResult;
+
         if ($this->orderBySize) {
-            $query = "SELECT word FROM french WHERE length BETWEEN :min AND :max ORDER BY RANDOM() LIMIT :count";
-            for ($i = 0; $i < $size; $i++) {
-                $queryResult = $this->wordsDb->readQuery($query, [$i * 2 + 1, $i * 2 + 2, 1]);
-                if ($queryResult !== null)
-                    $wordsArray = [...$wordsArray, $queryResult[0]];
-            }
-        } else {
-            $query = "SELECT word FROM french ORDER BY RANDOM() LIMIT :count";
-            $queryResult = $this->wordsDb->readQuery($query, [$size]);
-            if ($queryResult !== null)
-                $wordsArray = $queryResult;
+            usort($wordsArray, fn($a, $b) => mb_strlen($a['word']) <=> mb_strlen($b['word']));
         }
 
         foreach ($wordsArray as $wordArray) {
             $wordsString .= $wordArray['word'] . ",";
         }
 
-        return substr($wordsString, 0, strlen($wordsString) - 1);
+        return substr($wordsString, 0, mb_strlen($wordsString) - 1);
     }
 }
