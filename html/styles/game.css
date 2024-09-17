@@ -1,5 +1,6 @@
 ﻿#game {
     max-width: 550px;
+    width: 550px;
     background-color: var(--light-orange);
     padding: 20px 20px;
     border-radius: var(--radius-normal);
@@ -54,7 +55,6 @@
         cursor: default;
         height: 30px;
         width: 100%;
-        display: none;
     }
 
     #game #game_reponse_texte {
@@ -73,26 +73,35 @@
         line-height: 30px;
     }
 
-    #game #game_nouvelle {
-        display: none;
-    }
-
-    #game #game_nouvelle_bouton {
-        width: 100%;
+    #game #game_action_bouton {
         padding: 0px 10px;
         line-height: 30px;
+        width: 33%;
     }
 
-    #game #game_nouvelle_bouton:disabled {
+    #game #game_action_bouton:disabled {
         background-color: var(--light-grey);
         cursor: default;
     }
 
     #game #game_temps{
         font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 10px;
+    }
+    
+    #game #game_temps_texte {
+        flex :1;
+        font-size: var(--text-size-normal);
+        text-align: right;
+        margin-bottom: 3px;
     }
 
     #game #game_temps_valeur {
+        flex :1;
         font-size: var(--text-size-big);
+        text-align: left;
     }
-

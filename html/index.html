@@ -9,6 +9,7 @@
     <link href="styles/popup.css" rel="stylesheet" />
     <link href="styles/media.css" rel="stylesheet" />
     <script src="scripts/env.js" defer></script>
+    <script src="scripts/cookie.js" defer></script>
     <script src="scripts/api.js" defer></script>
     <script src="scripts/deroulement.js" defer></script>
     <script src="scripts/timers.js" defer></script>
@@ -30,14 +31,12 @@
                 <div>
                     <h2>Tout de suite... le JEU !</h2>
                     <p>
-                        Le but est d'écrire le plus rapidement possible une série de mots choisis aléatoirement.
+                        Ecrivez le plus rapidement possible !
                     </p>
                     <p>
-                        La partie démarre quand vous cliquez sur Lancer la partie.<br />
-                        Utilisez Entrer pour aller plus vite
+                        La partie démarre quand vous tapez la première lettre.<br />
+                        Utilisez Entrer pour valider plus vite.
                     </p>
-
-                    <p>Ecrivez en minuscules, avec les éventuels accents et tirets.</p>
                 </div>
 
                 <div id="game_mot">
@@ -50,13 +49,16 @@
                     <input type="text" id="game_reponse_texte" placeholder="..." />
                     <input type="submit" id="game_reponse_bouton" value="Valider" />
                 </div>
+                
+                <div id="game_action">
+                    <input type="button" id="game_action_bouton" />
+                </div>
 
-                <div id="game_nouvelle">
-                    <input type="submit" id="game_nouvelle_bouton" value="Chargement..." />
-                </div>
                 <div id="game_temps">
-                    Temps : <span id="game_temps_valeur">0.0s</span>
+                    <div id="game_temps_texte">Temps</div>
+                    <div id="game_temps_valeur">0.0s</div>
                 </div>
+
             </form>
         </section>
 
@@ -69,12 +71,16 @@
                 </form>
                 <h2>Partie terminée</h2>
                 <div id="popup_resultat">
-                    <div class="popup_resultat_gauche">Temps total</div>
-                    <div class="popup_resultat_droite" id="popup_resultat_temps">0.0s</div>
+                    <div class="popup_resultat_gauche">Mon temps</div>
+                    <div class="popup_resultat_droite" id="popup_resultat_mon_temps">0.0s</div>
                 </div>
                 <div id="popup_resultat">
-                    <div class="popup_resultat_gauche">Erreur(s) </div>
-                    <div class="popup_resultat_droite" id="popup_resultat_erreur">0</div>
+                    <div class="popup_resultat_gauche">Meilleur temps</div>
+                    <div class="popup_resultat_droite" id="popup_resultat_meilleur_temps">0.0s</div>
+                </div>
+                <div id="popup_resultat">
+                    <div class="popup_resultat_gauche">Nombre de joueurs</div>
+                    <div class="popup_resultat_droite" id="popup_resultat_nombre_joueur">0</div>
                 </div>
                 <table id="popup_detail">
                     <caption>Détails</caption>

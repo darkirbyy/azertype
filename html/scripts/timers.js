@@ -6,47 +6,57 @@ const gameTimerInterval = 10
 const gameTimerDigit = Math.log10(1000 / gameTimerInterval)
 
 
+// blocs textes à modifier selon la valeur des timers
+const temps_valeur = document.getElementById("game_temps_valeur")
+
+
 class GlobalTimer{
     constructor(interval){
-        this.interval = interval
+        this.interval = interval;
     }
 
     start(intervals){
         clearInterval(this.timer);
-        this.callbackUpdate = function(intervals){};
-        this.callbackFinish = function(){};
-        this.intervals = intervals
-        this.running = true
+        this.intervals = intervals;
+        this.running = true;
+        this.display = false;
         this.timer = setInterval(this.update.bind(this), this.interval)
     }
 
     update(){
         if(this.intervals > 0){
-            this.callbackUpdate(this.intervals);
-            this.intervals -= 1;
+            this.intervals--;
+            if(this.display == true){
+               this.display_now();
+            }
         }
         else{
-            clearInterval(this.timer);
-            this.callbackFinish();
             this.running = false;
+            clearInterval(this.timer);
+            Deroulement.ChargerPartie();
         }
+    }
+
+    display_now(){
+        temps_valeur.innerText = ParseTime(this.intervals);
     }
 }
 
 class GameTimer{
     constructor(interval){
+        clearInterval(this.timer);
         this.interval = interval
-        this.callbackUpdate = function(){}
+        this.timer = setInterval(this.update.bind(this), this.interval)
     }
 
-    timer = setInterval(() => {
+    update(){
         if (partie.timer_running) {
             partie.interval_total++
             partie.interval_par_mot++
             partie.seconds_total = ParseSeconds(partie.interval_total)
-            this.callbackUpdate()
+            temps_valeur.innerText = partie.seconds_total
         }
-    }, this.interval)
+    }
 }
 
 function ParseTime(seconds){

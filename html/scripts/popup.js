@@ -13,12 +13,15 @@
 }
 
 function DisplayPopup() {
-    // on insère le temps total et le nombre d'erreur
-    const resultat_temps = document.getElementById("popup_resultat_temps");
-    const resultat_erreur = document.getElementById("popup_resultat_erreur");
-    resultat_temps.innerText = partie.seconds_total
-    resultat_erreur.innerText = partie.nombre_erreur.toString()
+    ApiRequest((response)=>{
+        globalTimer.start(response.wait_time);
+    })
 
+    // on insère le temps total et le nombre d'erreur
+    const resultat_mon_temps = document.getElementById("popup_resultat_mon_temps");
+    const resultat_meilleur_temps = document.getElementById("popup_resultat_meilleur_temps");
+    const resultat_nombre_joueurs = document.getElementById("popup_resultat_nombre_joueur");
+    resultat_mon_temps.innerText = partie.seconds_total
 
     // on vide le tableau des détails sauf le titre
     const detail = document.getElementById("popup_detail")
@@ -46,7 +49,7 @@ function DisplayPopup() {
         element.setAttribute("disabled", "disabled")
     });
 
-    //document.onkeydown = GererEscapeKey
+    document.onkeydown = GererEscapeKey
 }
 
 function HidePopup() {
@@ -56,14 +59,14 @@ function HidePopup() {
         element.removeAttribute("disabled")
     });
     document.onkeydown = null
-    Deroulement.AttendrePartie()
+    //Deroulement.AttendrePartie()
 }
 
 
-/*function GererEscapeKey(event) {
+function GererEscapeKey(event) {
     if (event.key === "Escape" || event.key === "Esc") {
         HidePopup()
     }
-}*/
+}
 
 
