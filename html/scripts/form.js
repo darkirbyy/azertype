@@ -65,15 +65,12 @@
 
         else if(partie.status == "readying" || partie.status == "playing"){
             reponse_texte.value = ""
-            partie.seconds_total = "-"
-            for (let i = partie.seconds_par_mot.length; i < partie.liste_mot.length; i++) {
-                partie.seconds_par_mot.push("-")
-            }
+            partie.seconds_total = undefined
             Deroulement.FinirPartie();
         }
 
-        if(partie.status == "waiting"){
-            Deroulement.FinirPartie();
+        else if(partie.status == "waiting"){
+            DisplayPopup();
         }
     });
 }

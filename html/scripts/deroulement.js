@@ -23,14 +23,14 @@ class Deroulement {
 
         partie.reinit()
         partie.status = "loading"
-        ApiRequest((response)=>{
+        ApiRequest("GET", "draw", (response)=>{
             cookie.read();
-            console.log(cookie.game_id)
             if (cookie.game_id == response.game_id && cookie.played == true) {
                 globalTimer.start(response.wait_time);
                 Deroulement.AttendrePartie();
             }
             else {
+                cookie.reinit();
                 cookie.game_id = response.game_id;
                 cookie.write();
                 partie.liste_mot = response.words.split(',');
@@ -56,13 +56,17 @@ class Deroulement {
         Deroulement.reponse_texte.focus()
         Deroulement.action_bouton.setAttribute("value", "Abandonner")
         Deroulement.temps_texte.innerText = "Mon temps"
+
         cookie.played = true;
+        cookie.liste_mot = partie.liste_mot;
         cookie.write();
+
         partie.status = "readying"
     }
 
     static LancerPartie() {
         Deroulement.reponse_bouton.removeAttribute("disabled")
+
         partie.timer_running = true
         partie.status = "playing"
     }
@@ -71,6 +75,10 @@ class Deroulement {
         Deroulement.reponse_texte.setAttribute("disabled", "disabled")
         Deroulement.reponse_bouton.setAttribute("disabled", "disabled")
         Deroulement.action_bouton.setAttribute("disabled", "disabled")
+
+        cookie.seconds_total = partie.seconds_total;
+        cookie.seconds_par_mot = partie.seconds_par_mot;
+        cookie.write();
 
         partie.timer_running = false
         partie.status = "finishing"
