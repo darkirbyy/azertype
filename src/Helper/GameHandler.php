@@ -58,29 +58,6 @@ class GameHandler
     }
 
     /**
-     * Retrieve the last score from cacheScore if exists and have correct keys, 
-     * or from last database entry otherwise if exists, 
-     * or null otherwise
-     *   
-     * @return array 
-     */
-    function readLastScore(): ?array
-    {
-        $lastScore = $this->cacheScore->read();
-        if (!isset($lastScore)) {
-            $this->createTable();
-            $queryResult = $this->mainDb->readQuery(
-                "SELECT game_id, best_time, nb_players FROM games ORDER BY game_id DESC LIMIT 1"
-            );
-            if($queryResult !== null && isset($queryResult[0])){
-                $lastScore = $queryResult[0];
-                $this->cacheScore->store($lastScore);
-            }
-        }
-        return $lastScore;
-    }
-
-    /**
      * Delete the cacheDraw, generate a new set of words and
      * add a new entry into the database 
      * 
@@ -113,6 +90,37 @@ class GameHandler
     }
 
     /**
+     * Retrieve the last score from cacheScore if exists and have correct keys, 
+     * or from last database entry otherwise if exists, 
+     * or null otherwise
+     *   
+     * @return array 
+     */
+    function readLastScore(): ?array
+    {
+        $lastScore = $this->cacheScore->read();
+        if (!isset($lastScore)) {
+            $this->createTable();
+            $queryResult = $this->mainDb->readQuery(
+                "SELECT game_id, validity, best_time, nb_players FROM games ORDER BY game_id DESC LIMIT 1"
+            );
+            if($queryResult !== null && isset($queryResult[0])){
+                $lastScore = $queryResult[0];
+                $this->cacheScore->store($lastScore);
+            }
+        }
+        return $lastScore;
+    }
+
+    /**
+     * Delete the cacheScore
+     */
+    function clearOldScore(): void
+    {
+        $this->cacheScore->clear();
+    }
+
+    /**
      * Format a score into a complete json for front-end
      * 
      * @param array $score a score array containing (game_id, best_time, nb_players)
@@ -121,6 +129,7 @@ class GameHandler
      */
     function formatScore(array $score): string
     {
+        unset($score['validity']);
         if (!isset($score['game_id']) || !isset($score['best_time']) || !isset($score['nb_players']))
             throw new Exception("GameHandler unable to format the score into json");
         return json_encode($score);
