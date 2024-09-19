@@ -63,6 +63,7 @@
 
         #popup #popup_detail caption {
             font-size: var(--text-size-normal);
+            font-weight: bold;
         }
 
         #popup #popup_detail td {

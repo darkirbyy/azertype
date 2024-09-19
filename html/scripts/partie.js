@@ -7,7 +7,6 @@ const Partie = {
     seconds_total: "",
     seconds_par_mot: [],
     status: "",
-    timer_running: false,
 
     reinit: function () {
         this.liste_mot = []

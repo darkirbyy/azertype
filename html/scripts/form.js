@@ -4,7 +4,6 @@
     const mot_actuel = document.getElementById("game_mot_actuel")
     const mot_compteur_valeur = document.getElementById("game_mot_compteur_valeur")
     const reponse_texte = document.getElementById("game_reponse_texte")
-    const temps_valeur = document.getElementById("game_temps_valeur")
     const action_bouton = document.getElementById("game_action_bouton");
 
 
@@ -59,7 +58,6 @@
     // gestion du bouton "action"
     action_bouton.addEventListener("click", () => {
         if(partie.status == "asking"){
-            temps_valeur.innerText = ParseSeconds(0)
             Deroulement.PretePartie();
         }
 

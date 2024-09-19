@@ -17,7 +17,7 @@ try {
 
         case 'score':
             http_response_code(200);
-            echo json_encode(['game_id' => 50, 'best_time' => 2310, 'nb_players' => 15, 'wait_time' => 10]);
+            echo json_encode(['game_id' => 50, 'best_time' => 2310, 'nb_players' => 15]);
             break;
 
         default:

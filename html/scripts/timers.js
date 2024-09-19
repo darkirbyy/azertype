@@ -1,8 +1,8 @@
 // durée entre chaque appel du timer global (1000: seconde)
-const globalTimerInterval = 1000   
+const globalTimerInterval = 1000
 
 // durée entre chaque appel du timer de tirage (100: dixième de secondes, 10:centième)
-const gameTimerInterval = 10   
+const gameTimerInterval = 10
 const gameTimerDigit = Math.log10(1000 / gameTimerInterval)
 
 
@@ -10,59 +10,67 @@ const gameTimerDigit = Math.log10(1000 / gameTimerInterval)
 const temps_valeur = document.getElementById("game_temps_valeur")
 
 
-class GlobalTimer{
-    constructor(interval){
+class GlobalTimer {
+    constructor(interval) {
         this.interval = interval;
     }
 
-    start(intervals){
+    start(intervals) {
         clearInterval(this.timer);
         this.intervals = intervals;
         this.running = true;
-        this.display = false;
         this.timer = setInterval(this.update.bind(this), this.interval)
     }
 
-    update(){
-        if(this.intervals > 0){
+    update() {
+        if (this.intervals > 0) {
             this.intervals--;
-            if(this.display == true){
-               this.display_now();
+            if (partie.status == 'waiting') {
+                this.display_now();
             }
         }
-        else{
+        else {
             this.running = false;
             clearInterval(this.timer);
-            Deroulement.ChargerPartie();
+            if (partie.status == 'waiting') {
+                Deroulement.ChargerPartie();
+            }
         }
     }
 
-    display_now(){
+    display_now() {
         temps_valeur.innerText = ParseTime(this.intervals);
     }
 }
 
-class GameTimer{
-    constructor(interval){
+class GameTimer {
+    constructor(interval) {
+        this.interval = interval;
+    }
+
+    start() {
         clearInterval(this.timer);
-        this.interval = interval
+        this.running = true;
         this.timer = setInterval(this.update.bind(this), this.interval)
     }
 
-    update(){
-        if (partie.timer_running) {
-            partie.interval_total++
-            partie.interval_par_mot++
-            partie.seconds_total = ParseSeconds(partie.interval_total)
-            temps_valeur.innerText = partie.seconds_total
-        }
+    update() {
+        partie.interval_total++
+        partie.interval_par_mot++
+        partie.seconds_total = ParseSeconds(partie.interval_total)
+        temps_valeur.innerText = partie.seconds_total
+    }
+
+    stop() {
+        this.running = false
+        clearInterval(this.timer);
     }
 }
 
-function ParseTime(seconds){
-    let h = Math.floor(seconds / 3600).toString().padStart(2,"0")
-    let i = Math.floor((seconds % 3600) / 60).toString().padStart(2,"0")
-    let s = Math.floor(seconds % 60).toString().padStart(2,"0")
+function ParseTime(seconds) {
+    let h = Math.floor(seconds / 3600).toString().padStart(2, "0")
+    let i = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0")
+    let s = Math.floor(seconds % 60).toString().padStart(2, "0")
     return h + ':' + i + ':' + s
 }
 

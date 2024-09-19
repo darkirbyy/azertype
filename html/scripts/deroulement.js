@@ -14,7 +14,9 @@ class Deroulement {
 
 
     static ChargerPartie() {
-        Deroulement.temps_valeur.innerText = ParseSeconds(0)
+        Deroulement.mot_actuel.innerText = "???";
+        Deroulement.mot_compteur_valeur.innerText = "?";
+        Deroulement.mot_compteur_total.innerText = "?";
         Deroulement.reponse_texte.setAttribute("disabled", "disabled")
         Deroulement.reponse_bouton.setAttribute("disabled", "disabled")
         Deroulement.action_bouton.setAttribute("disabled", "disabled")
@@ -23,17 +25,18 @@ class Deroulement {
 
         partie.reinit()
         partie.status = "loading"
-        ApiRequest("GET", "draw", (response)=>{
+        ApiRequest("GET", "draw", async (response)=>{
+            globalTimer.start(response.wait_time);
             cookie.read();
             if (cookie.game_id == response.game_id && cookie.played == true) {
-                globalTimer.start(response.wait_time);
                 Deroulement.AttendrePartie();
             }
             else {
+                partie.liste_mot = response.words.split(',');
                 cookie.reinit();
                 cookie.game_id = response.game_id;
+                cookie.liste_mot = partie.liste_mot;
                 cookie.write();
-                partie.liste_mot = response.words.split(',');
                 Deroulement.ProposerPartie();
             }
         })
@@ -56,9 +59,9 @@ class Deroulement {
         Deroulement.reponse_texte.focus()
         Deroulement.action_bouton.setAttribute("value", "Abandonner")
         Deroulement.temps_texte.innerText = "Mon temps"
+        Deroulement.temps_valeur.innerText = ParseSeconds(0)
 
         cookie.played = true;
-        cookie.liste_mot = partie.liste_mot;
         cookie.write();
 
         partie.status = "readying"
@@ -67,11 +70,13 @@ class Deroulement {
     static LancerPartie() {
         Deroulement.reponse_bouton.removeAttribute("disabled")
 
-        partie.timer_running = true
+        gameTimer.start();
         partie.status = "playing"
     }
 
     static FinirPartie() {
+        gameTimer.stop();
+
         Deroulement.reponse_texte.setAttribute("disabled", "disabled")
         Deroulement.reponse_bouton.setAttribute("disabled", "disabled")
         Deroulement.action_bouton.setAttribute("disabled", "disabled")
@@ -80,16 +85,17 @@ class Deroulement {
         cookie.seconds_par_mot = partie.seconds_par_mot;
         cookie.write();
 
-        partie.timer_running = false
         partie.status = "finishing"
+
         DisplayPopup();
+        
+        globalTimer.running == true ? Deroulement.AttendrePartie() : Deroulement.ChargerPartie();
     }
 
     static AttendrePartie() {
         Deroulement.mot_actuel.innerText = "???";
         Deroulement.mot_compteur_valeur.innerText = "?";
         Deroulement.mot_compteur_total.innerText = "?";
-        Deroulement.temps_valeur.innerText = ParseSeconds(0);
 
         Deroulement.reponse_texte.setAttribute("disabled", "disabled");
         Deroulement.reponse_bouton.setAttribute("disabled", "disabled");
@@ -98,7 +104,6 @@ class Deroulement {
         Deroulement.action_bouton.setAttribute("value", "Voir la partie précédente");
 
         Deroulement.temps_texte.innerText = "Prochaine partie";
-        globalTimer.display = true;
         globalTimer.display_now();
 
         partie.status = "waiting";
