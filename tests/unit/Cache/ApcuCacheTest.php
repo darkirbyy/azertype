@@ -33,10 +33,10 @@ final class ApcuCacheTest extends TestCase
     }
 
     public function testReadArray(): void{
-        apcu_store(self::$key, CacheFixture::GOOD_ARRAY);
+        apcu_store(self::$key, CacheFixture::DRAW_GOOD_ARRAY);
         $outputArray = $this->cache->read();
 
-        $this->assertSame(CacheFixture::GOOD_ARRAY,$outputArray);
+        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY,$outputArray);
     }
 
     public function testStoreNull():void{
@@ -46,16 +46,16 @@ final class ApcuCacheTest extends TestCase
     }
 
     public function testStoreArrayNewVariable():void{
-        $this->cache->store(CacheFixture::GOOD_ARRAY);
+        $this->cache->store(CacheFixture::DRAW_GOOD_ARRAY);
         
-        $this->assertSame(CacheFixture::GOOD_ARRAY, apcu_fetch(self::$key));
+        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY, apcu_fetch(self::$key));
     }
 
     public function testStoreArrayOnExistingVariable():void{
-        apcu_store(self::$key, CacheFixture::OTHER_ARRAY);
-        $this->cache->store(CacheFixture::GOOD_ARRAY);
+        apcu_store(self::$key, CacheFixture::DRAW_OTHER_ARRAY);
+        $this->cache->store(CacheFixture::DRAW_GOOD_ARRAY);
  
-        $this->assertSame(CacheFixture::GOOD_ARRAY, apcu_fetch(self::$key));
+        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY, apcu_fetch(self::$key));
     }
 
     public function testClearNonExistingVariable():void{
@@ -65,7 +65,7 @@ final class ApcuCacheTest extends TestCase
     }
 
     public function testClearExistingVariable():void{
-        apcu_store(self::$key, CacheFixture::GOOD_ARRAY);
+        apcu_store(self::$key, CacheFixture::DRAW_GOOD_ARRAY);
         $this->cache->clear();
  
         $this->assertFalse(apcu_exists(self::$key));

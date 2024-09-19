@@ -50,28 +50,28 @@ final class DrawControllerTest extends TestCase
     public function testGetDrawValidTime() : void{
         $this->drawHandlerMock->expects($this->once())
                               ->method('readLastDraw')
-                              ->willReturn(HandlerFixture::GOOD_ARRAY);
+                              ->willReturn(HandlerFixture::DRAW_GOOD_ARRAY);
 
         $this->drawHandlerMock->expects($this->once())
                               ->method('formatDraw')
-                              ->with(HandlerFixture::GOOD_ARRAY)
-                              ->willReturn(HandlerFixture::GOOD_JSON);
+                              ->with(HandlerFixture::DRAW_GOOD_ARRAY)
+                              ->willReturn(HandlerFixture::DRAW_GOOD_JSON);
 
         PHPMockery::mock(__NAMESPACE__, "time")
                               ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
 
-        $this->assertEquals(HandlerFixture::GOOD_JSON, $this->drawController->getDraw());
+        $this->assertEquals(HandlerFixture::DRAW_GOOD_JSON, $this->drawController->getDraw());
     }
 
     public function testGetDrawInvalidTime() : void{
         $this->drawHandlerMock->expects($this->exactly(2))
                               ->method('readLastDraw')
-                              ->willReturn(HandlerFixture::GOOD_ARRAY);
+                              ->willReturn(HandlerFixture::DRAW_GOOD_ARRAY);
 
         $this->drawHandlerMock->expects($this->once())
                               ->method('formatDraw')
-                              ->with(HandlerFixture::GOOD_ARRAY)
-                              ->willReturn(HandlerFixture::GOOD_JSON);
+                              ->with(HandlerFixture::DRAW_GOOD_ARRAY)
+                              ->willReturn(HandlerFixture::DRAW_GOOD_JSON);
 
         $this->generatorMock->expects($this->once())
                             ->method('generate')
@@ -90,7 +90,7 @@ final class DrawControllerTest extends TestCase
         PHPMockery::mock(__NAMESPACE__, "time")
                               ->andReturn(HandlerFixture::GOOD_TIME_AFTER);
 
-        $this->assertEquals(HandlerFixture::GOOD_JSON, $this->drawController->getDraw());
+        $this->assertEquals(HandlerFixture::DRAW_GOOD_JSON, $this->drawController->getDraw());
     }
 
    }

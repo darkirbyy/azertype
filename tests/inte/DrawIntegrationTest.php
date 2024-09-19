@@ -7,6 +7,7 @@ namespace Azertype\Controller;
 use PHPUnit\Framework\TestCase;
 use Azertype\Helper\DbHandler;
 use Azertype\Cache\ApcuCache;
+use Azertype\Cache\FileCache;
 use Azertype\Handler\DrawHandler;
 use Azertype\Helper\Timer;
 use Azertype\Controller\DrawController;
@@ -14,8 +15,9 @@ use Azertype\Controller\DrawController;
 
 final class DrawIntegrationTest extends TestCase
 {
-    private $mainDb;
-    private $cache;
+    static private $mainDb;
+    private $cacheDraw;
+    private $cacheScore;
     private $drawHandler;
     private $timer;
     private $generator;
@@ -23,23 +25,26 @@ final class DrawIntegrationTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-
+        self::$mainDb = new DbHandler('test-inte');
     }
 
     public static function tearDownAfterClass(): void
     {
-        unlink($_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR']. 'lastDraw.json');
+        unset(self::$mainDb->pdo);
+        if(file_exists($_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR']. 'lastDraw.json'))
+            unlink($_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR']. 'lastDraw.json');
+        if(file_exists($_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR']. 'lastScore.json'))
+            unlink($_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR']. 'lastScore.json');
         rmdir($_ENV['REL_ROOT'].$_ENV['CACHEFILE_DIR']);
+        unlink($_ENV['REL_ROOT'].$_ENV['DATABASE_DIR']. 'test-inte.db');
     }
 
 
     public function setUp(): void
     {
-        $this->mainDb = new DbHandler('test');
-        $this->mainDb->pdo->beginTransaction();
-
-        $this->cache = new ApcuCache('lastDraw');
-        $this->drawHandler = new DrawHandler($this->mainDb, $this->cache);
+        $this->cacheDraw = new ApcuCache('lastDraw');
+        $this->cacheScore = new FileCache('lastScore');
+        $this->drawHandler = new DrawHandler(self::$mainDb, $this->cacheDraw, $this->cacheScore);
 
         $this->timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
         $this->generator = new ('Azertype\Generator\\' . $_ENV['GENERATOR_NAME'] . 'Generator')();
@@ -47,7 +52,6 @@ final class DrawIntegrationTest extends TestCase
     }
 
     public function tearDown(): void {
-        $this->mainDb->pdo->rollBack();
     }
 
     public function testGetSameTwoDraws(): void
@@ -55,8 +59,9 @@ final class DrawIntegrationTest extends TestCase
         $result = json_decode($this->drawController->getDraw(), true);
         $result2 = json_decode($this->drawController->getDraw(), true);
         $this->assertEquals($result, $result2);
-        $this->assertEquals(195, $result['game_id']);
+        $this->assertIsInt($result['game_id']);
         $this->assertIsString($result['words']);
         $this->assertIsInt($result['wait_time']);
+        unset(self::$mainDb->pdo);
     }
 }

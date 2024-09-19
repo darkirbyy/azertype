@@ -10,8 +10,9 @@ use Azertype\Generator\SelfGenerator;
 use Azertype\Helper\Timer;
 
 $mainDb = new DbHandler('main');
-$cache = new ApcuCache('lastDraw');
-$drawHandler = new DrawHandler($mainDb, $cache);
+$cacheDraw = new ApcuCache('lastDraw');
+$cacheScore = new ApcuCache('lastScore');
+$drawHandler = new DrawHandler($mainDb, $cacheDraw, $cacheScore);
 
 $timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
 $generator = new ('Azertype\Generator\\' . $_ENV['GENERATOR_NAME'] . 'Generator')();

@@ -16,8 +16,9 @@ use Faker\Factory;
 #[CoversClass(DrawHandler::class)]
 final class DrawHandlerTest extends TestCase
 {
-    private $cacheMock;
     private $mainDbMock;
+    private $cacheDrawMock;
+    private $cacheScoreMock;
     private $drawHandler;
     private static $faker;
 
@@ -33,9 +34,10 @@ final class DrawHandlerTest extends TestCase
 
     public function setUp():void
     {
-        $this->cacheMock = $this->createMock(AbstractCache::class);
         $this->mainDbMock = $this->createMock(DbHandler::class);
-        $this->drawHandler = new DrawHandler($this->mainDbMock, $this->cacheMock);
+        $this->cacheDrawMock = $this->createMock(AbstractCache::class);
+        $this->cacheScoreMock = $this->createMock(AbstractCache::class);
+        $this->drawHandler = new DrawHandler($this->mainDbMock, $this->cacheDrawMock, $this->cacheScoreMock);
     }
 
     public function tearDown():void
@@ -44,30 +46,30 @@ final class DrawHandlerTest extends TestCase
     }
 
     public function testReadLastDrawGoodCache() : void{
-        $this->cacheMock->expects($this->once())
+        $this->cacheDrawMock->expects($this->once())
                   ->method('read')
-                  ->willReturn(CacheFixture::GOOD_ARRAY);
+                  ->willReturn(CacheFixture::DRAW_GOOD_ARRAY);
 
-        $this->assertEquals(CacheFixture::GOOD_ARRAY, $this->drawHandler->readLastDraw());
+        $this->assertEquals(CacheFixture::DRAW_GOOD_ARRAY, $this->drawHandler->readLastDraw());
     }
 
     public function testReadLastDrawNoCacheGoodDb() : void{
-        $this->cacheMock->expects($this->once())
+        $this->cacheDrawMock->expects($this->once())
                         ->method('read')
                         ->willReturn(null);
         $this->mainDbMock->expects($this->once())
                      ->method('writeQuery');
         $this->mainDbMock->expects($this->once())
                      ->method('readQuery')
-                     ->willReturn(array(CacheFixture::GOOD_ARRAY));
-        $this->cacheMock->expects($this->once())
+                     ->willReturn(array(CacheFixture::DRAW_GOOD_ARRAY));
+        $this->cacheDrawMock->expects($this->once())
                      ->method('store')
-                     ->with(CacheFixture::GOOD_ARRAY);
-        $this->assertEquals(CacheFixture::GOOD_ARRAY, $this->drawHandler->readLastDraw());
+                     ->with(CacheFixture::DRAW_GOOD_ARRAY);
+        $this->assertEquals(CacheFixture::DRAW_GOOD_ARRAY, $this->drawHandler->readLastDraw());
     }
 
     public function testReadLastDrawNoCacheNoDb() : void{
-        $this->cacheMock->expects($this->once())
+        $this->cacheDrawMock->expects($this->once())
                         ->method('read')
                         ->willReturn(null);
         $this->mainDbMock->expects($this->once())
@@ -78,8 +80,43 @@ final class DrawHandlerTest extends TestCase
         $this->assertNull($this->drawHandler->readLastDraw());
     }
 
+    public function testReadLastScoreGoodCache() : void{
+        $this->cacheScoreMock->expects($this->once())
+                  ->method('read')
+                  ->willReturn(CacheFixture::SCORE_GOOD_ARRAY);
+
+        $this->assertEquals(CacheFixture::SCORE_GOOD_ARRAY, $this->drawHandler->readLastScore());
+    }
+
+    public function testReadLastScoreNoCacheGoodDb() : void{
+        $this->cacheScoreMock->expects($this->once())
+                        ->method('read')
+                        ->willReturn(null);
+        $this->mainDbMock->expects($this->once())
+                     ->method('writeQuery');
+        $this->mainDbMock->expects($this->once())
+                     ->method('readQuery')
+                     ->willReturn(array(CacheFixture::SCORE_GOOD_ARRAY));
+        $this->cacheScoreMock->expects($this->once())
+                     ->method('store')
+                     ->with(CacheFixture::SCORE_GOOD_ARRAY);
+        $this->assertEquals(CacheFixture::SCORE_GOOD_ARRAY, $this->drawHandler->readLastScore());
+    }
+
+    public function testReadLastScoreNoCacheNoDb() : void{
+        $this->cacheScoreMock->expects($this->once())
+                        ->method('read')
+                        ->willReturn(null);
+        $this->mainDbMock->expects($this->once())
+                     ->method('writeQuery');
+        $this->mainDbMock->expects($this->once())
+                     ->method('readQuery')
+                     ->willReturn(Array());
+        $this->assertNull($this->drawHandler->readLastScore());
+    }
+
     public function testWriteOneDrawGoodDb() : void{
-        $this->cacheMock->expects($this->once())
+        $this->cacheDrawMock->expects($this->once())
                         ->method('clear');
         $this->mainDbMock->expects($this->any())
                      ->method('writeQuery')
@@ -89,7 +126,7 @@ final class DrawHandlerTest extends TestCase
     }
 
     public function testWriteOneDrawNoDb() : void{
-        $this->cacheMock->expects($this->once())
+        $this->cacheDrawMock->expects($this->once())
                         ->method('clear');
         $this->mainDbMock->expects($this->any())
                      ->method('writeQuery')
@@ -101,15 +138,25 @@ final class DrawHandlerTest extends TestCase
     public function testFormatDrawGoodArray() : void{
         PHPMockery::mock(__NAMESPACE__, "time")
                     ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
-        $this->assertEquals(HandlerFixture::GOOD_JSON,
-          $this->drawHandler->formatDraw(HandlerFixture::GOOD_ARRAY));
+        $this->assertEquals(HandlerFixture::DRAW_GOOD_JSON,
+          $this->drawHandler->formatDraw(HandlerFixture::DRAW_GOOD_ARRAY));
     }
 
     public function testFormatDrawWrongArray() : void{
         $this->expectException(Exception::class);
         PHPMockery::mock(__NAMESPACE__, "time")
                     ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
-        $this->drawHandler->formatDraw(HandlerFixture::WRONG_ARRAY);
+        $this->drawHandler->formatDraw(HandlerFixture::DRAW_WRONG_ARRAY);
+    }
+
+    public function testFormatScoreGoodArray() : void{
+        $this->assertEquals(HandlerFixture::SCORE_GOOD_JSON,
+          $this->drawHandler->formatScore(HandlerFixture::SCORE_GOOD_ARRAY));
+    }
+
+    public function testFormatScoreWrongArray() : void{
+        $this->expectException(Exception::class);
+        $this->drawHandler->formatScore(HandlerFixture::SCORE_WRONG_ARRAY);
     }
 
 }

@@ -42,17 +42,17 @@ final class FileCacheTest extends TestCase
     }
 
     public function testReadFail(): void{
-        file_put_contents(self::$filePath, CacheFixture::WRONG_JSON);
+        file_put_contents(self::$filePath, CacheFixture::DRAW_WRONG_JSON);
         $outputArray = $this->cache->read();
 
         $this->assertNull($outputArray);
     }
 
     public function testReadArray(): void{
-        file_put_contents(self::$filePath, CacheFixture::GOOD_JSON);
+        file_put_contents(self::$filePath, CacheFixture::DRAW_GOOD_JSON);
         $outputArray = $this->cache->read();
 
-        $this->assertSame(CacheFixture::GOOD_ARRAY,$outputArray);
+        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY,$outputArray);
     }
 
     public function testStoreNull():void{
@@ -62,17 +62,17 @@ final class FileCacheTest extends TestCase
     }
 
     public function testStoreArrayOnNewFile():void{
-        $this->cache->store(CacheFixture::GOOD_ARRAY);
+        $this->cache->store(CacheFixture::DRAW_GOOD_ARRAY);
         
         $this->assertFileExists(self::$filePath);
-        $this->assertJsonStringEqualsJsonFile(self::$filePath, CacheFixture::GOOD_JSON);
+        $this->assertJsonStringEqualsJsonFile(self::$filePath, CacheFixture::DRAW_GOOD_JSON);
     }
 
     public function testStoreArrayOnExistingFile():void{
-        file_put_contents(self::$filePath, CacheFixture::OTHER_JSON);
-        $this->cache->store(CacheFixture::GOOD_ARRAY);
+        file_put_contents(self::$filePath, CacheFixture::DRAW_OTHER_JSON);
+        $this->cache->store(CacheFixture::DRAW_GOOD_ARRAY);
  
-        $this->assertJsonStringEqualsJsonFile(self::$filePath, CacheFixture::GOOD_JSON);
+        $this->assertJsonStringEqualsJsonFile(self::$filePath, CacheFixture::DRAW_GOOD_JSON);
     }
 
     public function testClearNonExistingFile():void{
@@ -82,7 +82,7 @@ final class FileCacheTest extends TestCase
     }
 
     public function testClearExistingFile():void{
-        file_put_contents(self::$filePath, CacheFixture::GOOD_JSON);
+        file_put_contents(self::$filePath, CacheFixture::DRAW_GOOD_JSON);
         $this->cache->clear();
  
         $this->assertFileDoesNotExist(self::$filePath);
