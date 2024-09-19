@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Azertype\Handler;
+namespace Azertype\Helper;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,13 +13,13 @@ use Azertype\Helper\DbHandler;
 use Exception;
 use Faker\Factory;
 
-#[CoversClass(DrawHandler::class)]
-final class DrawHandlerTest extends TestCase
+#[CoversClass(GameHandler::class)]
+final class GameHandlerTest extends TestCase
 {
     private $mainDbMock;
     private $cacheDrawMock;
     private $cacheScoreMock;
-    private $drawHandler;
+    private $gameHandler;
     private static $faker;
 
     public static function setUpBeforeClass(): void
@@ -37,7 +37,7 @@ final class DrawHandlerTest extends TestCase
         $this->mainDbMock = $this->createMock(DbHandler::class);
         $this->cacheDrawMock = $this->createMock(AbstractCache::class);
         $this->cacheScoreMock = $this->createMock(AbstractCache::class);
-        $this->drawHandler = new DrawHandler($this->mainDbMock, $this->cacheDrawMock, $this->cacheScoreMock);
+        $this->gameHandler = new GameHandler($this->mainDbMock, $this->cacheDrawMock, $this->cacheScoreMock);
     }
 
     public function tearDown():void
@@ -50,7 +50,7 @@ final class DrawHandlerTest extends TestCase
                   ->method('read')
                   ->willReturn(CacheFixture::DRAW_GOOD_ARRAY);
 
-        $this->assertEquals(CacheFixture::DRAW_GOOD_ARRAY, $this->drawHandler->readLastDraw());
+        $this->assertEquals(CacheFixture::DRAW_GOOD_ARRAY, $this->gameHandler->readLastDraw());
     }
 
     public function testReadLastDrawNoCacheGoodDb() : void{
@@ -65,7 +65,7 @@ final class DrawHandlerTest extends TestCase
         $this->cacheDrawMock->expects($this->once())
                      ->method('store')
                      ->with(CacheFixture::DRAW_GOOD_ARRAY);
-        $this->assertEquals(CacheFixture::DRAW_GOOD_ARRAY, $this->drawHandler->readLastDraw());
+        $this->assertEquals(CacheFixture::DRAW_GOOD_ARRAY, $this->gameHandler->readLastDraw());
     }
 
     public function testReadLastDrawNoCacheNoDb() : void{
@@ -77,7 +77,7 @@ final class DrawHandlerTest extends TestCase
         $this->mainDbMock->expects($this->once())
                      ->method('readQuery')
                      ->willReturn(Array());
-        $this->assertNull($this->drawHandler->readLastDraw());
+        $this->assertNull($this->gameHandler->readLastDraw());
     }
 
     public function testReadLastScoreGoodCache() : void{
@@ -85,7 +85,7 @@ final class DrawHandlerTest extends TestCase
                   ->method('read')
                   ->willReturn(CacheFixture::SCORE_GOOD_ARRAY);
 
-        $this->assertEquals(CacheFixture::SCORE_GOOD_ARRAY, $this->drawHandler->readLastScore());
+        $this->assertEquals(CacheFixture::SCORE_GOOD_ARRAY, $this->gameHandler->readLastScore());
     }
 
     public function testReadLastScoreNoCacheGoodDb() : void{
@@ -100,7 +100,7 @@ final class DrawHandlerTest extends TestCase
         $this->cacheScoreMock->expects($this->once())
                      ->method('store')
                      ->with(CacheFixture::SCORE_GOOD_ARRAY);
-        $this->assertEquals(CacheFixture::SCORE_GOOD_ARRAY, $this->drawHandler->readLastScore());
+        $this->assertEquals(CacheFixture::SCORE_GOOD_ARRAY, $this->gameHandler->readLastScore());
     }
 
     public function testReadLastScoreNoCacheNoDb() : void{
@@ -112,7 +112,7 @@ final class DrawHandlerTest extends TestCase
         $this->mainDbMock->expects($this->once())
                      ->method('readQuery')
                      ->willReturn(Array());
-        $this->assertNull($this->drawHandler->readLastScore());
+        $this->assertNull($this->gameHandler->readLastScore());
     }
 
     public function testWriteOneDrawGoodDb() : void{
@@ -121,7 +121,7 @@ final class DrawHandlerTest extends TestCase
         $this->mainDbMock->expects($this->any())
                      ->method('writeQuery')
                      ->willReturn(1);
-        $this->assertTrue($this->drawHandler->writeOneDraw(
+        $this->assertTrue($this->gameHandler->writeOneDraw(
             array(GeneratorFixture::FAKE_FIVEWORD, self::$faker->unixTime())));
     }
 
@@ -131,7 +131,7 @@ final class DrawHandlerTest extends TestCase
         $this->mainDbMock->expects($this->any())
                      ->method('writeQuery')
                      ->willReturn(0);
-        $this->assertFalse($this->drawHandler->writeOneDraw(
+        $this->assertFalse($this->gameHandler->writeOneDraw(
             array(GeneratorFixture::FAKE_FIVEWORD)));
     }
 
@@ -139,24 +139,24 @@ final class DrawHandlerTest extends TestCase
         PHPMockery::mock(__NAMESPACE__, "time")
                     ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
         $this->assertEquals(HandlerFixture::DRAW_GOOD_JSON,
-          $this->drawHandler->formatDraw(HandlerFixture::DRAW_GOOD_ARRAY));
+          $this->gameHandler->formatDraw(HandlerFixture::DRAW_GOOD_ARRAY));
     }
 
     public function testFormatDrawWrongArray() : void{
         $this->expectException(Exception::class);
         PHPMockery::mock(__NAMESPACE__, "time")
                     ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
-        $this->drawHandler->formatDraw(HandlerFixture::DRAW_WRONG_ARRAY);
+        $this->gameHandler->formatDraw(HandlerFixture::DRAW_WRONG_ARRAY);
     }
 
     public function testFormatScoreGoodArray() : void{
         $this->assertEquals(HandlerFixture::SCORE_GOOD_JSON,
-          $this->drawHandler->formatScore(HandlerFixture::SCORE_GOOD_ARRAY));
+          $this->gameHandler->formatScore(HandlerFixture::SCORE_GOOD_ARRAY));
     }
 
     public function testFormatScoreWrongArray() : void{
         $this->expectException(Exception::class);
-        $this->drawHandler->formatScore(HandlerFixture::SCORE_WRONG_ARRAY);
+        $this->gameHandler->formatScore(HandlerFixture::SCORE_WRONG_ARRAY);
     }
 
 }

@@ -51,7 +51,7 @@ final class DbHandlerTest extends TestCase
     public function testGoodWriteOperation(): void
     {
         $rowCount = $this->dbHandler->writeQuery(
-            "INSERT INTO draws (validity,words,best_time,nb_players) VALUES (:validity, :words,0,0)",
+            "INSERT INTO games (validity,words,best_time,nb_players) VALUES (:validity, :words,0,0)",
             [self::$faker->unixTime(), "'" . self::$faker->words(5, true) . "'"]
         );
         $this->assertEquals(1, $rowCount);
@@ -70,7 +70,7 @@ final class DbHandlerTest extends TestCase
     public function testBasicReadOperation(): void
     {
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM draws"
+            "SELECT * FROM games"
         );
         $this->assertEquals(3, sizeof($data));
     }
@@ -78,7 +78,7 @@ final class DbHandlerTest extends TestCase
     public function testComplexReadOperation(): void
     {
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM draws ORDER BY game_id DESC LIMIT :limit",
+            "SELECT * FROM games ORDER BY game_id DESC LIMIT :limit",
             [1]
         );
         $this->assertEquals(sizeof($data), 1);
@@ -88,7 +88,7 @@ final class DbHandlerTest extends TestCase
     public function testEmptyReadOperation(): void
     {
         $data = $this->dbHandler->readQuery(
-            "SELECT * FROM draws WHERE game_id = :id",
+            "SELECT * FROM games WHERE game_id = :id",
             [-1]
         );
         $this->assertEquals($data, array());

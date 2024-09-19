@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Azertype\Helper\DbHandler;
 use Azertype\Cache\ApcuCache;
 use Azertype\Cache\FileCache;
-use Azertype\Handler\DrawHandler;
+use Azertype\Helper\GameHandler;
 use Azertype\Helper\Timer;
 use Azertype\Controller\DrawController;
 
@@ -18,7 +18,7 @@ final class DrawIntegrationTest extends TestCase
     static private $mainDb;
     private $cacheDraw;
     private $cacheScore;
-    private $drawHandler;
+    private $gameHandler;
     private $timer;
     private $generator;
     private $drawController;
@@ -44,11 +44,11 @@ final class DrawIntegrationTest extends TestCase
     {
         $this->cacheDraw = new ApcuCache('lastDraw');
         $this->cacheScore = new FileCache('lastScore');
-        $this->drawHandler = new DrawHandler(self::$mainDb, $this->cacheDraw, $this->cacheScore);
+        $this->gameHandler = new GameHandler(self::$mainDb, $this->cacheDraw, $this->cacheScore);
 
         $this->timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
         $this->generator = new ('Azertype\Generator\\' . $_ENV['GENERATOR_NAME'] . 'Generator')();
-        $this->drawController = new DrawController($this->drawHandler, $this->timer, $this->generator);
+        $this->drawController = new DrawController($this->gameHandler, $this->timer, $this->generator);
     }
 
     public function tearDown(): void {

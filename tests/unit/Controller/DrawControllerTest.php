@@ -7,7 +7,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use phpmock\mockery\PHPMockery;
 use Azertype\Cache\AbstractCache;
 use Azertype\Generator\AbstractGenerator;
-use Azertype\Handler\DrawHandler;
+use Azertype\Helper\GameHandler;
 use Tests\fixture\CacheFixture;
 use Tests\fixture\HandlerFixture;
 use Tests\fixture\GeneratorFixture;
@@ -18,7 +18,7 @@ use Faker\Factory;
 #[CoversClass(DrawController::class)]
 final class DrawControllerTest extends TestCase
 {
-    private $drawHandlerMock;
+    private $gameHandlerMock;
     private $timerMock;
     private $generatorMock;
     private $drawController;
@@ -36,10 +36,10 @@ final class DrawControllerTest extends TestCase
 
     public function setUp():void
     {
-        $this->drawHandlerMock = $this->createMock(DrawHandler::class);
+        $this->gameHandlerMock = $this->createMock(GameHandler::class);
         $this->timerMock = $this->createMock(Timer::class);
         $this->generatorMock = $this->createMock(AbstractGenerator::class);
-        $this->drawController = new DrawController($this->drawHandlerMock, $this->timerMock, $this->generatorMock);
+        $this->drawController = new DrawController($this->gameHandlerMock, $this->timerMock, $this->generatorMock);
     }
 
     public function tearDown():void
@@ -48,11 +48,11 @@ final class DrawControllerTest extends TestCase
     }
 
     public function testGetDrawValidTime() : void{
-        $this->drawHandlerMock->expects($this->once())
+        $this->gameHandlerMock->expects($this->once())
                               ->method('readLastDraw')
                               ->willReturn(HandlerFixture::DRAW_GOOD_ARRAY);
 
-        $this->drawHandlerMock->expects($this->once())
+        $this->gameHandlerMock->expects($this->once())
                               ->method('formatDraw')
                               ->with(HandlerFixture::DRAW_GOOD_ARRAY)
                               ->willReturn(HandlerFixture::DRAW_GOOD_JSON);
@@ -64,11 +64,11 @@ final class DrawControllerTest extends TestCase
     }
 
     public function testGetDrawInvalidTime() : void{
-        $this->drawHandlerMock->expects($this->exactly(2))
+        $this->gameHandlerMock->expects($this->exactly(2))
                               ->method('readLastDraw')
                               ->willReturn(HandlerFixture::DRAW_GOOD_ARRAY);
 
-        $this->drawHandlerMock->expects($this->once())
+        $this->gameHandlerMock->expects($this->once())
                               ->method('formatDraw')
                               ->with(HandlerFixture::DRAW_GOOD_ARRAY)
                               ->willReturn(HandlerFixture::DRAW_GOOD_JSON);
@@ -83,7 +83,7 @@ final class DrawControllerTest extends TestCase
                         ->with(HandlerFixture::GOOD_TIME_AFTER)
                         ->willReturn(HandlerFixture::GOOD_TIME_AFTER+5);
 
-        $this->drawHandlerMock->expects($this->once())
+        $this->gameHandlerMock->expects($this->once())
                         ->method('writeOneDraw')
                         ->with(array(HandlerFixture::GOOD_TIME_AFTER+5, GeneratorFixture::FAKE_FIVEWORD));
 

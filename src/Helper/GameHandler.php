@@ -1,14 +1,12 @@
 <?php
 
-namespace Azertype\Handler;
+namespace Azertype\Helper;
 
 use Azertype\Helper\DbHandler;
 use Azertype\Cache\AbstractCache;
-use Azertype\Generator\AbstractGenerator;
-use Azertype\Helper\Timer;
 use Exception;
 
-class DrawHandler
+class GameHandler
 {
     private DbHandler $mainDb;
     private AbstractCache $cacheDraw;
@@ -27,7 +25,7 @@ class DrawHandler
      */
     function createTable(): void
     {
-        $this->mainDb->writeQuery(" CREATE TABLE IF NOT EXISTS draws (
+        $this->mainDb->writeQuery(" CREATE TABLE IF NOT EXISTS games (
                             game_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                             validity INTEGER NOT NULL,
                             words TEXT,
@@ -49,7 +47,7 @@ class DrawHandler
         if (!isset($lastDraw)) {
             $this->createTable();
             $queryResult = $this->mainDb->readQuery(
-                "SELECT game_id, validity, words FROM draws ORDER BY game_id DESC LIMIT 1"
+                "SELECT game_id, validity, words FROM games ORDER BY game_id DESC LIMIT 1"
             );
             if($queryResult !== null && isset($queryResult[0])){
                 $lastDraw = $queryResult[0];
@@ -72,7 +70,7 @@ class DrawHandler
         if (!isset($lastScore)) {
             $this->createTable();
             $queryResult = $this->mainDb->readQuery(
-                "SELECT game_id, best_time, nb_players FROM draws ORDER BY game_id DESC LIMIT 1"
+                "SELECT game_id, best_time, nb_players FROM games ORDER BY game_id DESC LIMIT 1"
             );
             if($queryResult !== null && isset($queryResult[0])){
                 $lastScore = $queryResult[0];
@@ -94,7 +92,7 @@ class DrawHandler
     {
         $this->cacheDraw->clear();
         $this->createTable();
-        return (bool) $this->mainDb->writeQuery("INSERT INTO draws (validity, words, best_time, nb_players)
+        return (bool) $this->mainDb->writeQuery("INSERT INTO games (validity, words, best_time, nb_players)
             VALUES (:validity, :words, 0, 0)", $data);
     }
 
@@ -108,7 +106,7 @@ class DrawHandler
     function formatDraw(array $draw): string
     {
         if (!isset($draw['game_id']) || !isset($draw['validity']) || !isset($draw['words']))
-            throw new Exception("DrawHandler unable to format the draw into json");
+            throw new Exception("GameHandler unable to format the draw into json");
         $draw['wait_time'] = $draw['validity'] - time();
         unset($draw['validity']);
         return json_encode($draw);
@@ -124,7 +122,7 @@ class DrawHandler
     function formatScore(array $score): string
     {
         if (!isset($score['game_id']) || !isset($score['best_time']) || !isset($score['nb_players']))
-            throw new Exception("DrawHandler unable to format the score into json");
+            throw new Exception("GameHandler unable to format the score into json");
         return json_encode($score);
     }
 }
