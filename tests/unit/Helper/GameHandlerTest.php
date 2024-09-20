@@ -96,6 +96,8 @@ final class GameHandlerTest extends TestCase
     {
         $this->cacheDrawMock->expects($this->once())
             ->method('clear');
+        $this->cacheScoreMock->expects($this->once())
+            ->method('clear');
         $this->mainDbMock->expects($this->any())
             ->method('writeQuery')
             ->willReturn(1);
@@ -107,6 +109,8 @@ final class GameHandlerTest extends TestCase
     public function testWriteOneDrawNoDb(): void
     {
         $this->cacheDrawMock->expects($this->once())
+            ->method('clear');
+        $this->cacheScoreMock->expects($this->once())
             ->method('clear');
         $this->mainDbMock->expects($this->any())
             ->method('writeQuery')
@@ -161,13 +165,6 @@ final class GameHandlerTest extends TestCase
             ->method('readQuery')
             ->willReturn(array());
         $this->assertNull($this->gameHandler->readLastScore());
-    }
-
-    public function testClearOldScore(): void
-    {
-        $this->cacheScoreMock->expects($this->once())
-            ->method('clear');
-        $this->gameHandler->clearOldScore();
     }
 
     public function testFormatScoreGoodArray(): void

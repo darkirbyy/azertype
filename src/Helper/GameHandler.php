@@ -68,6 +68,7 @@ class GameHandler
     function writeOneDraw(array $data): bool
     {
         $this->cacheDraw->clear();
+        $this->cacheScore->clear();
         $this->createTable();
         return (bool) $this->mainDb->writeQuery("INSERT INTO games (validity, words, best_time, nb_players)
             VALUES (:validity, :words, 0, 0)", $data);
@@ -110,14 +111,6 @@ class GameHandler
             }
         }
         return $lastScore;
-    }
-
-    /**
-     * Delete the cacheScore
-     */
-    function clearOldScore(): void
-    {
-        $this->cacheScore->clear();
     }
 
     /**

@@ -55,22 +55,20 @@ final class ScoreControllerTest extends TestCase
     }
 
     public function testGetDrawInvalidTime() : void{
-        $this->gameHandlerMock->expects($this->exactly(2))
+        $this->gameHandlerMock->expects($this->once())
                               ->method('readLastScore')
                               ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
 
-        $this->gameHandlerMock->expects($this->once())
-                              ->method('formatScore')
-                              ->with(HandlerFixture::SCORE_GOOD_ARRAY)
-                              ->willReturn(HandlerFixture::SCORE_GOOD_JSON);
 
         $this->gameHandlerMock->expects($this->once())
-                        ->method('clearOldScore');
+                              ->method('formatScore')
+                              ->with(HandlerFixture::SCORE_EXPIRE_ARRAY)
+                              ->willReturn(HandlerFixture::SCORE_EXPIRE_JSON);
 
         PHPMockery::mock(__NAMESPACE__, "time")
                               ->andReturn(HandlerFixture::GOOD_TIME_AFTER);
 
-        $this->assertEquals(HandlerFixture::SCORE_GOOD_JSON, $this->scoreController->getScore());
+        $this->assertStringStartsWith(HandlerFixture::SCORE_EXPIRE_JSON, $this->scoreController->getScore());
     }
 
    }
