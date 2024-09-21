@@ -11,8 +11,8 @@ use Azertype\Generator\SelfGenerator;
 use Azertype\Helper\Timer;
 
 $mainDb = new DbHandler('main');
-$cacheDraw = new FileCache('lastDraw');
-$cacheScore = new FileCache('lastScore');
+$cacheDraw = new ('Azertype\Cache\\' . $_ENV['CACHE_TYPE'] . 'Cache')('lastDraw');
+$cacheScore = new ('Azertype\Cache\\' . $_ENV['CACHE_TYPE'] . 'Cache')('lastScore');
 $gameHandler = new GameHandler($mainDb, $cacheDraw, $cacheScore);
 
 $timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);

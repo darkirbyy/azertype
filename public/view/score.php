@@ -8,8 +8,8 @@ use Azertype\Controller\DrawController;
 use Azertype\Controller\ScoreController;
 
 $mainDb = new DbHandler('main');
-$cacheDraw = new FileCache('lastDraw');
-$cacheScore = new FileCache('lastScore');
+$cacheDraw = new ('Azertype\Cache\\' . $_ENV['CACHE_TYPE'] . 'Cache')('lastDraw');
+$cacheScore = new ('Azertype\Cache\\' . $_ENV['CACHE_TYPE'] . 'Cache')('lastScore');
 $gameHandler = new GameHandler($mainDb, $cacheDraw, $cacheScore);
 
 $scoreController = new ScoreController($gameHandler);

@@ -25,6 +25,7 @@ final class DrawIntegrationTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
+        $_ENV['GENERATOR_NAME'] = "Fake";
         self::$mainDb = new DbHandler('test-inte');
     }
 
@@ -42,8 +43,8 @@ final class DrawIntegrationTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cacheDraw = new ApcuCache('lastDraw');
-        $this->cacheScore = new FileCache('lastScore');
+        $this->cacheDraw = new ('Azertype\Cache\\' . $_ENV['CACHE_TYPE'] . 'Cache')('lastDraw');
+        $this->cacheScore = new ('Azertype\Cache\\' . $_ENV['CACHE_TYPE'] . 'Cache')('lastScore');
         $this->gameHandler = new GameHandler(self::$mainDb, $this->cacheDraw, $this->cacheScore);
 
         $this->timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);

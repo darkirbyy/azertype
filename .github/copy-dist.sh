@@ -8,7 +8,7 @@ cp database/words.db dist/database/
 
 # copy the .env file for php script in back-end, and change some constants
 cp .env-example dist/.env
-sed -i -E 's#^APP_ENV=.+#APP_ENV="prod"#' 'dist/.env'
+sed -i -E 's#^APP_ENV=.+#APP_ENV="PROD"#' 'dist/.env'
 sed -i -E 's#^GENERATOR_NAME=.+#GENERATOR_NAME="Self"#' 'dist/.env'
 sed -i -E 's#^WORDS_PER_DRAW=.+#WORDS_PER_DRAW=10#' 'dist/.env'
 sed -i -E 's#^TIME_INTERVAL=.+#TIME_INTERVAL="00:05:00"#' 'dist/.env'

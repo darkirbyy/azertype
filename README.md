@@ -54,7 +54,6 @@ Work-flows configured with GitHub actions :
 
 ## To do
 
-- use FileCache if ApcuCache not available ? or add a new .env variable ?
 - add "best time" for each draw
 - write better integration tests (without using phpunit ? with postman ?)
 - write functional tests (using playwright ?)
