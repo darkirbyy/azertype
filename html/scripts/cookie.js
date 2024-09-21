@@ -17,14 +17,14 @@ function SetCookie(name,value,days) {
 }
 
 const Cookie = {
-    game_id: -1,
+    game_id: 0,
     played: false,
     liste_mot: [],
     seconds_total: undefined,
     seconds_par_mot: [],
 
     reinit: function(){
-        this.game_id = -1,
+        this.game_id = 0,
         this.played = false,
         this.liste_mot = [],
         this.seconds_total = undefined,
@@ -33,7 +33,7 @@ const Cookie = {
 
     read: function () {
         const cookieValue = GetCookie('azertype');
-        const myArray = cookieValue != undefined ? JSON.parse(cookieValue) : [-1, false, [], undefined, []];
+        const myArray = cookieValue != undefined ? JSON.parse(cookieValue) : [0, false, [], undefined, []];
         this.game_id = myArray[0];
         this.played = myArray[1];
         this.liste_mot = myArray[2];

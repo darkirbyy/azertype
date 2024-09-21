@@ -19,7 +19,7 @@ class ScoreController
     {
         $score = $this->gameHandler->readLastScore();
         if (!isset($score) || time() >= $score['validity']) {
-            $score['game_id'] = -1;
+            $score['game_id'] = 0;
         }
         $json = $this->gameHandler->formatScore($score);
         return $json;

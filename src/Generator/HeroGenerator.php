@@ -41,8 +41,8 @@ class HeroGenerator extends AbstractGenerator{
         curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($curlHandle,CURLOPT_HEADER,0);
         curl_setopt($curlHandle,CURLOPT_URL,self::HERO_URL.(string)$size);
-        curl_setopt($curlHandle,CURLOPT_TIMEOUT_MS,$_ENV['CURL_TIMEOUT_MS']*2);
-        curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT_MS,$_ENV['CURL_TIMEOUT_MS']);
+        curl_setopt($curlHandle,CURLOPT_TIMEOUT_MS,$_ENV['HERO_CURL_TIMEOUT_MS']*2);
+        curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT_MS,$_ENV['HERO_CURL_TIMEOUT_MS']);
         $data = curl_exec($curlHandle);
         $httpcode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
         curl_close($curlHandle);

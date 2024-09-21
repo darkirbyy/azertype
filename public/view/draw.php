@@ -19,7 +19,7 @@ $timer = new Timer($_ENV['TIME_RESET'],  $_ENV['TIME_INTERVAL']);
 $generator = new ('Azertype\Generator\\' . $_ENV['GENERATOR_NAME'] . 'Generator')();
 if($generator instanceof SelfGenerator){
     $wordsDb = new DbHandler('words');
-    $generator->initialize($wordsDb, true);
+    $generator->initialize($wordsDb, filter_var($_ENV['SELF_ORDER_BY_SIZE'], FILTER_VALIDATE_BOOLEAN));
 }
 
 $drawController = new DrawController($gameHandler, $timer, $generator);
