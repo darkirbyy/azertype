@@ -41,10 +41,6 @@
         </report>
     </coverage>
 
-    <logging>
-        <testdoxHtml outputFile=".test-results/test-logs.html"/>
-    </logging>
-
     <php>
         <env name="REL_ROOT" value="./" force="true"/>
         <env name="DATABASE_DIR" value="tests/database/" force="true"/>

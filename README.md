@@ -6,8 +6,8 @@ Little fun project, starting from openclassroom tutorial while learning js, then
 
 - PHP, at least version 8.2, with sqlite3/curl/apcu extensions.  
 Don't forget to enable APCU in CLI by adding `apc.enable_cli=1` to the **php.ini** file.
-- Sqlite3.
 - Composer.
+- Sqlite3.
 - Docker and admin privileges for stage environment.
 
 ## Develop
@@ -15,11 +15,11 @@ Don't forget to enable APCU in CLI by adding `apc.enable_cli=1` to the **php.ini
 Clone the repository <https://github.com/darkirbyy/azertype.git> from GitHub.  
 Go in the root directory of the project.  
 
-To build the app, run `composer install`.  
+To build, run `composer install`.  
+To configure, change the values in the **.env** file.
+To start :
 
-To start the app:
-
-- run `php -S localhost:8000 -t public` on a terminal.
+- run `composer server` on a terminal.
 - open `html/index.html` with any browser.
 - PHP logs are written through the console running the CLI server.
 
@@ -28,7 +28,7 @@ To start the app:
 The tests use their own database and cache directory, and the relevant environment constants are redefined in the **phpunit.xml** file.
 
 - To run unit tests : `composer tests-unit`. Logs and code coverage are stored in *.test-results*.  
-- To run integration tests : `composer tests-inte`. No log/coverage.  
+- To run integration tests : `composer tests-inte`. Logs are stored in *.test-results*.
 - To run both, use the shorthand : `composer tests-all`.
 
 ## Stage
@@ -55,5 +55,5 @@ Work-flows configured with GitHub actions :
 ## To do
 
 - add "best time" for each draw
-- write better integration tests (without using phpunit ? with postman ?)
+- write better integration tests (using gruzzle + phpunit ?)
 - write functional tests (using playwright ?)
