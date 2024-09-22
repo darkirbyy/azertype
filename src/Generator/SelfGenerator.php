@@ -56,6 +56,7 @@ class SelfGenerator extends AbstractGenerator
             $wordsString .= $wordArray['word'] . ",";
         }
 
-        return substr($wordsString, 0, mb_strlen($wordsString) - 1);
+        // return mb_substr($wordsString, 0, mb_strlen($wordsString) - 1);
+        return rtrim($wordsString, ',');
     }
 }

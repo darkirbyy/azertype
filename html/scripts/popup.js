@@ -65,13 +65,9 @@ function DisplayPopup() {
         current_cell.innerText = cookie_save.seconds_par_mot[i] != undefined ? cookie_save.seconds_par_mot[i] : "-"
     }
 
-    // on affiche la popup et on désactive tous les inputs du formulaire game
+    // on affiche la popup 
     const popup = document.getElementById("popup")
     popup.classList.add("active")
-    document.querySelectorAll("#game input").forEach((element) => {
-        element.setAttribute("disabled", "disabled")
-    });
-
     document.onkeydown = (event) => {
         if (event.key === "Escape" || event.key === "Esc") {
             HidePopup()
@@ -80,11 +76,9 @@ function DisplayPopup() {
 }
 
 function HidePopup() {
+    // on cache la popup
     const popup = document.getElementById("popup");
     popup.classList.remove("active")
-    document.querySelectorAll("#game input").forEach((element) => {
-        element.removeAttribute("disabled")
-    });
     document.onkeydown = null
 }
 

@@ -68,6 +68,7 @@
         }
 
         else if(partie.status == "waiting"){
+            document.activeElement.blur()
             DisplayPopup();
         }
     });
