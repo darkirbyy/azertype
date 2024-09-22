@@ -167,6 +167,29 @@ final class GameHandlerTest extends TestCase
         $this->assertNull($this->gameHandler->readLastScore());
     }
 
+    public function testUpdateLastScoreGoodDb(): void
+    {
+        $this->cacheScoreMock->expects($this->once())
+            ->method('clear');
+        $this->mainDbMock->expects($this->any())
+            ->method('writeQuery')
+            ->willReturn(1);
+        $this->assertTrue($this->gameHandler->updateLastScore(
+            array(2500, 15, 50) ));
+    }
+
+    public function testUpdateLastScoreNoDb(): void
+    {
+        $this->cacheScoreMock->expects($this->once())
+            ->method('clear');
+        $this->mainDbMock->expects($this->any())
+            ->method('writeQuery')
+            ->willReturn(0);
+        $this->assertFalse($this->gameHandler->updateLastScore(
+            array(2500, 15, 50)));
+    }
+
+
     public function testFormatScoreGoodArray(): void
     {
         $this->assertEquals(

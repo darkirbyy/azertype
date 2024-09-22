@@ -19,6 +19,11 @@ class DrawController
         $this->generator = $generator;
     }
 
+    /**
+     * Handle the GET verb on the draw endpoint
+     * 
+     * @return string the last draw correctly formatted
+     */
     function getDraw(): ?string
     {
         $draw = $this->gameHandler->readLastDraw();

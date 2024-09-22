@@ -58,7 +58,7 @@ class GameHandler
     }
 
     /**
-     * Delete the cacheDraw, generate a new set of words and
+     * Delete the cacheDraw and cacheScore, generate a new set of words and
      * add a new entry into the database 
      * 
      * @param array $data array containing in order (validity, words)
@@ -84,7 +84,7 @@ class GameHandler
     function formatDraw(array $draw): string
     {
         if (!isset($draw['game_id']) || !isset($draw['validity']) || !isset($draw['words']))
-            throw new Exception("GameHandler unable to format the draw into json");
+            throw new Exception("GameHandler unable to format the draw into JSON");
         $draw['wait_time'] = $draw['validity'] - time();
         unset($draw['validity']);
         return json_encode($draw);
@@ -114,6 +114,22 @@ class GameHandler
     }
 
     /**
+     * Delete the cacheScore, update the last score entry with new values
+     * 
+     * @param array $data array containing in order (best_time, nb_players, game_id)
+     * 
+     * @return bool true if the insertion succeed
+     */
+    function updateLastScore(array $data): bool
+    {
+        $this->cacheScore->clear();
+        $this->createTable();
+        return (bool) $this->mainDb->writeQuery("UPDATE games 
+                      SET best_time=:best_time, nb_players=:nb_players
+                      WHERE game_id=:game_id", $data);
+    }
+
+    /**
      * Format a score into a complete json for front-end
      * 
      * @param array $score a score array containing (game_id, best_time, nb_players)
@@ -124,7 +140,7 @@ class GameHandler
     {
         unset($score['validity']);
         if (!isset($score['game_id']) || !isset($score['best_time']) || !isset($score['nb_players']))
-            throw new Exception("GameHandler unable to format the score into json");
+            throw new Exception("GameHandler unable to format the score into JSON");
         return json_encode($score);
     }
 }

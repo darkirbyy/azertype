@@ -23,7 +23,7 @@ switch($verb){
 
     case "POST":
         http_response_code(200);
-        echo "lol";
+        echo $scoreController->postScore();
         break;
 
     default:

@@ -22,9 +22,14 @@ try {
         default:
             http_response_code(404);
     }
-    
 } catch (Throwable $e) {
-    http_response_code(500);
-    throw $e;
+    $code = $e->getCode();
+    if ($code >= 400 && $code < 500) {
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
+    } else {
+        http_response_code(500);
+        throw $e;
+    }
     return;
 }
