@@ -92,7 +92,7 @@ final class GameHandlerTest extends TestCase
     }
 
 
-    public function testWriteOneDrawGoodDb(): void
+    public function testInsertOneDrawGoodDb(): void
     {
         $this->cacheDrawMock->expects($this->once())
             ->method('clear');
@@ -101,12 +101,12 @@ final class GameHandlerTest extends TestCase
         $this->mainDbMock->expects($this->any())
             ->method('writeQuery')
             ->willReturn(1);
-        $this->assertTrue($this->gameHandler->writeOneDraw(
+        $this->assertTrue($this->gameHandler->insertOneDraw(
             array(GeneratorFixture::FAKE_FIVEWORD, self::$faker->unixTime())
         ));
     }
 
-    public function testWriteOneDrawNoDb(): void
+    public function testInsertOneDrawNoDb(): void
     {
         $this->cacheDrawMock->expects($this->once())
             ->method('clear');
@@ -115,7 +115,7 @@ final class GameHandlerTest extends TestCase
         $this->mainDbMock->expects($this->any())
             ->method('writeQuery')
             ->willReturn(0);
-        $this->assertFalse($this->gameHandler->writeOneDraw(
+        $this->assertFalse($this->gameHandler->insertOneDraw(
             array(GeneratorFixture::FAKE_FIVEWORD)
         ));
     }

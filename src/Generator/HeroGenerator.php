@@ -2,6 +2,7 @@
 
 namespace Azertype\Generator;
 
+use Exception;
 /**
  * Generate words from extern api named hero
  */ 
@@ -23,7 +24,7 @@ class HeroGenerator extends AbstractGenerator{
             return "";
         $data = $this->httpRequest($size);
         if(!preg_match('/^\[("[a-zéèçàù-]{0,}",){0,}"[a-zéèçàù-]{0,}"]$/iu', $data))
-            throw new \Exception("HeroGenerator failed to parse words : ".$data);
+            throw new Exception("HeroGenerator failed to parse words : ".$data);
         $words = implode(',', json_decode($data));
         return $words;
     }
@@ -48,7 +49,7 @@ class HeroGenerator extends AbstractGenerator{
         curl_close($curlHandle);
 
         if($data === false || $httpcode < 200 || $httpcode >= 300)
-            throw new \Exception("HeroGenerator failed to connect to api.");
+            throw new Exception("HeroGenerator failed to connect to api.");
         return $data;
     }
 }

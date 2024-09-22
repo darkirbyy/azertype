@@ -21,7 +21,6 @@ class GameHandler
 
     /**
      * Create the table if necessary
-     * 
      */
     function createTable(): void
     {
@@ -65,7 +64,7 @@ class GameHandler
      * 
      * @return bool true if the insertion succeed
      */
-    function writeOneDraw(array $data): bool
+    function insertOneDraw(array $data): bool
     {
         $this->cacheDraw->clear();
         $this->cacheScore->clear();
@@ -78,6 +77,7 @@ class GameHandler
      * Format a draw into a complete json for front-end
      * 
      * @param array $draw a draw array containing (game_id, validity, words)
+     * @throws Exception If the $darw array does not meet requirements
      * 
      * @return string
      */
@@ -133,6 +133,7 @@ class GameHandler
      * Format a score into a complete json for front-end
      * 
      * @param array $score a score array containing (game_id, best_time, nb_players)
+     * @throws Exception If the $darw array does not meet requirements
      * 
      * @return string
      */

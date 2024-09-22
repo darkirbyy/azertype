@@ -84,7 +84,7 @@ final class DrawControllerTest extends TestCase
                         ->willReturn(HandlerFixture::GOOD_TIME_AFTER+5);
 
         $this->gameHandlerMock->expects($this->once())
-                        ->method('writeOneDraw')
+                        ->method('insertOneDraw')
                         ->with(array(HandlerFixture::GOOD_TIME_AFTER+5, GeneratorFixture::FAKE_FIVEWORD));
 
         PHPMockery::mock(__NAMESPACE__, "time")

@@ -30,7 +30,7 @@ class DrawController
         if (!isset($draw) || time() >= $draw['validity']) {
             $words = $this->generator->generate($_ENV['WORDS_PER_DRAW']);
             $validity = $this->timer->ceilTimestamp(time());
-            $this->gameHandler->writeOneDraw(array($validity, $words));
+            $this->gameHandler->insertOneDraw(array($validity, $words));
             $draw = $this->gameHandler->readLastDraw();
         }
 

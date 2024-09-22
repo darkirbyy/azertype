@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Azertype\Controller;
 
@@ -15,60 +17,115 @@ final class ScoreControllerTest extends TestCase
 {
     private $gameHandlerMock;
     private $scoreController;
-    //private static $faker;
 
-    public static function setUpBeforeClass(): void
-    {
-        //self::$faker = Factory::create('fr_FR');
-    }
+    public static function setUpBeforeClass(): void {}
 
-    public static function tearDownAfterClass(): void
-    {
+    public static function tearDownAfterClass(): void {}
 
-    }
-
-    public function setUp():void
+    public function setUp(): void
     {
         $this->gameHandlerMock = $this->createMock(GameHandler::class);
         $this->scoreController = new ScoreController($this->gameHandlerMock);
     }
 
-    public function tearDown():void
+    public function tearDown(): void
     {
         \Mockery::close();
     }
 
-    public function testGetScoreValidTime() : void{
+    public function testGetScoreValidTime(): void
+    {
         $this->gameHandlerMock->expects($this->once())
-                              ->method('readLastScore')
-                              ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
+            ->method('readLastScore')
+            ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
 
         $this->gameHandlerMock->expects($this->once())
-                              ->method('formatScore')
-                              ->with(HandlerFixture::SCORE_GOOD_ARRAY)
-                              ->willReturn(HandlerFixture::SCORE_GOOD_JSON);
+            ->method('formatScore')
+            ->with(HandlerFixture::SCORE_GOOD_ARRAY)
+            ->willReturn(HandlerFixture::SCORE_GOOD_JSON);
 
         PHPMockery::mock(__NAMESPACE__, "time")
-                              ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
+            ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
 
         $this->assertEquals(HandlerFixture::SCORE_GOOD_JSON, $this->scoreController->getScore());
     }
 
-    public function testGetDrawInvalidTime() : void{
+    public function testGetScoreInvalidTime(): void
+    {
         $this->gameHandlerMock->expects($this->once())
-                              ->method('readLastScore')
-                              ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
+            ->method('readLastScore')
+            ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
 
 
         $this->gameHandlerMock->expects($this->once())
-                              ->method('formatScore')
-                              ->with(HandlerFixture::SCORE_EXPIRE_ARRAY)
-                              ->willReturn(HandlerFixture::SCORE_EXPIRE_JSON);
+            ->method('formatScore')
+            ->with(HandlerFixture::SCORE_EXPIRE_ARRAY)
+            ->willReturn(HandlerFixture::SCORE_EXPIRE_JSON);
 
         PHPMockery::mock(__NAMESPACE__, "time")
-                              ->andReturn(HandlerFixture::GOOD_TIME_AFTER);
+            ->andReturn(HandlerFixture::GOOD_TIME_AFTER);
 
         $this->assertStringStartsWith(HandlerFixture::SCORE_EXPIRE_JSON, $this->scoreController->getScore());
     }
 
-   }
+    public function testPostScoreInvalidBody(): void
+    {
+        PHPMockery::mock(__NAMESPACE__, "file_get_contents")
+            ->andReturn(HandlerFixture::POST_WRONG_JSON);
+
+        $this->expectException(Exception::class);
+        $this->scoreController->postScore();
+    }
+
+
+    public function testPostScoreGameExpired(): void
+    {
+        PHPMockery::mock(__NAMESPACE__, "file_get_contents")
+            ->andReturn(HandlerFixture::POST_GOOD_JSON_EXPIRED);
+
+        $this->gameHandlerMock->expects($this->once())
+            ->method('readLastScore')
+            ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
+
+        PHPMockery::mock(__NAMESPACE__, "time")
+            ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
+
+        $this->expectException(Exception::class);
+        $this->scoreController->postScore();
+    }
+
+    public function testPostScoreInvalidTime(): void
+    {
+        PHPMockery::mock(__NAMESPACE__, "file_get_contents")
+            ->andReturn(HandlerFixture::POST_GOOD_JSON_INVALID);
+
+        $this->gameHandlerMock->expects($this->once())
+            ->method('readLastScore')
+            ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
+
+        PHPMockery::mock(__NAMESPACE__, "time")
+            ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
+
+        $this->expectException(Exception::class);
+        $this->scoreController->postScore();
+    }
+
+    public function testPostScore(): void
+    {
+        PHPMockery::mock(__NAMESPACE__, "file_get_contents")
+            ->andReturn(HandlerFixture::POST_GOOD_JSON_VALID);
+
+        $this->gameHandlerMock->expects($this->once())
+            ->method('readLastScore')
+            ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
+
+        PHPMockery::mock(__NAMESPACE__, "time")
+            ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
+
+        $this->gameHandlerMock->expects($this->once())
+            ->method('updateLastScore')
+            ->with();
+
+        $this->scoreController->postScore();
+    }
+}

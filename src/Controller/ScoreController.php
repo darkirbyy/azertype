@@ -2,13 +2,8 @@
 
 namespace Azertype\Controller;
 
-use Azertype\Generator\AbstractGenerator;
-use Azertype\Helper\Timer;
 use Azertype\Helper\GameHandler;
 use Exception;
-use Mockery\CountValidator\Exact;
-
-use function PHPUnit\Framework\throwException;
 
 class ScoreController
 {
@@ -38,8 +33,9 @@ class ScoreController
      * Handle the POST verb on the score endpoint
      * 
      * @return string the last draw score formatted, or a game id of zero if not exist
+     * @throws Exception If the body is not correctly formatted, or the game has expired or the time is invalid
      */
-    function postScore(): ?string
+    function postScore(): void
     {
         // Decode the json payload from the body and check that the keys are corrects
         $input = json_decode(file_get_contents("php://input"), true);
@@ -67,6 +63,5 @@ class ScoreController
             $new_nb_players,
             $input['game_id']
         ));
-        return "updated";
     }
 }
