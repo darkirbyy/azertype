@@ -40,7 +40,7 @@ class ScoreController
         // Decode the json payload from the body and check that the keys are corrects
         $input = json_decode(file_get_contents("php://input"), true);
         if (!isset($input['game_id']) || !isset($input['time'])) {
-            throw new Exception("invalid body", 400);
+            throw new Exception("malformed body", 400);
         }
 
         // get the last score in cache or in db if exists,
@@ -49,15 +49,17 @@ class ScoreController
         if (!isset($score) || time() >= $score['validity'] || $input['game_id'] != $score['game_id']) {
             throw new Exception("game expired", 400);
         }
-
-        // check that the time recorded is positive
-        if ($input['time'] <= 0) {
-            throw new Exception("non positive time", 400);
-        }
-
-        // calculate new values and update the database 
-        $new_best_time = ($score['best_time'] == 0 || $input['time'] < $score['best_time']) ? $input['time'] : $score['best_time'];
+        
+        // calculate new values ; negative time are skipped
         $new_nb_players = $score['nb_players'] + 1;
+        if ($input['time'] <= 0) {
+            $new_best_time = $score['best_time'];
+        }
+        else {
+            $new_best_time = ($score['best_time'] == 0 || $input['time'] < $score['best_time']) ? $input['time'] : $score['best_time'];
+        }
+        
+        // update database
         $this->gameHandler->updateLastScore(array(
             $new_best_time,
             $new_nb_players,

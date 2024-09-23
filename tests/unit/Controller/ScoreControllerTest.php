@@ -94,26 +94,10 @@ final class ScoreControllerTest extends TestCase
         $this->scoreController->postScore();
     }
 
-    public function testPostScoreInvalidTime(): void
+    public function testPostScoreNegativeTime(): void
     {
         PHPMockery::mock(__NAMESPACE__, "file_get_contents")
-            ->andReturn(HandlerFixture::POST_GOOD_JSON_INVALID);
-
-        $this->gameHandlerMock->expects($this->once())
-            ->method('readLastScore')
-            ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
-
-        PHPMockery::mock(__NAMESPACE__, "time")
-            ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
-
-        $this->expectException(Exception::class);
-        $this->scoreController->postScore();
-    }
-
-    public function testPostScore(): void
-    {
-        PHPMockery::mock(__NAMESPACE__, "file_get_contents")
-            ->andReturn(HandlerFixture::POST_GOOD_JSON_VALID);
+            ->andReturn(HandlerFixture::POST_GOOD_JSON_NEGATIVE);
 
         $this->gameHandlerMock->expects($this->once())
             ->method('readLastScore')
@@ -124,7 +108,26 @@ final class ScoreControllerTest extends TestCase
 
         $this->gameHandlerMock->expects($this->once())
             ->method('updateLastScore')
-            ->with();
+            ->with(HandlerFixture::POST_GOOD_ARRAY_NEGATIVE);
+
+        $this->scoreController->postScore();
+    }
+
+    public function testPostScorePositiveTime(): void
+    {
+        PHPMockery::mock(__NAMESPACE__, "file_get_contents")
+            ->andReturn(HandlerFixture::POST_GOOD_JSON_POSITIVE);
+
+        $this->gameHandlerMock->expects($this->once())
+            ->method('readLastScore')
+            ->willReturn(HandlerFixture::SCORE_GOOD_ARRAY);
+
+        PHPMockery::mock(__NAMESPACE__, "time")
+            ->andReturn(HandlerFixture::GOOD_TIME_BEFORE);
+
+        $this->gameHandlerMock->expects($this->once())
+            ->method('updateLastScore')
+            ->with(HandlerFixture::POST_GOOD_ARRAY_POSITIVE);
 
         $this->scoreController->postScore();
     }
