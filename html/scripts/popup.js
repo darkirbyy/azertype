@@ -28,8 +28,8 @@ function DisplayPopup() {
 
     // requête sur le back pour obtenir le meilleur temps et le nombre de joueurs
     // et remplir les champs qui dépendent des données distantes
-    ApiRequest("GET", "score", (response)=>{
-        if (response.game_id == cookie_save.game_id ) {
+    ApiRequest("GET", "score", (response) => {
+        if (response.game_id == cookie_save.game_id) {
             resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "-";
             resultat_nombre_joueurs.innerText = response.nb_players;
         }
@@ -42,7 +42,7 @@ function DisplayPopup() {
     // on met des icônes de chargement en attendant la reponsé du serveur
     resultat_meilleur_temps.innerText = "chargement";
     resultat_nombre_joueurs.innerText = "chargement";
-    
+
     // on inscrit le numéro de partie et le temps total s'ils existent
     game_id.innerText = cookie_save.game_id;
     resultat_mon_temps.innerText = cookie_save.seconds_total != undefined ? cookie_save.seconds_total : "-";

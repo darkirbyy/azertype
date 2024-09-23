@@ -25,7 +25,7 @@ class Deroulement {
 
         partie.reinit()
         partie.status = "loading"
-        ApiRequest("GET", "draw", (response)=>{
+        ApiRequest("GET", "draw", (response) => {
             globalTimer.start(response.wait_time);
             cookie.read();
             if (cookie.game_id == response.game_id && cookie.played == true) {
@@ -88,7 +88,7 @@ class Deroulement {
         partie.status = "finishing"
 
         DisplayPopup();
-        
+
         globalTimer.running == true ? Deroulement.AttendrePartie() : Deroulement.ChargerPartie();
     }
 

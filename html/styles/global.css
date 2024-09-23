@@ -2,139 +2,152 @@
 **************************** */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
-    --dark-orange: #F76C5E;
-    --light-orange: #F68E5F;
-    --light-grey: #e0e0e0;
-    --dark-grey: #383838;
-    --white: white;
-    --black: black;
-    --red: #a32d18;
-    --green: #70c63a;
-    --half-black: rgba(0,0,0,0.4);
-    --radius-small: 10px;
-    --radius-normal: 20px;
-    --text-size-huge: 3em;
-    --text-size-big: 1.8em;
-    --text-size-normal: 1.2em;
+  --dark-orange: #f76c5e;
+  --light-orange: #f68e5f;
+  --light-grey: #e0e0e0;
+  --dark-grey: #383838;
+  --white: white;
+  --black: black;
+  --red: #a32d18;
+  --green: #70c63a;
+  --half-black: rgba(0, 0, 0, 0.4);
+  --radius-small: 10px;
+  --radius-normal: 20px;
+  --text-size-huge: 3em;
+  --text-size-big: 1.8em;
+  --text-size-normal: 1.2em;
 }
 
 /* Global Structure
 **************************** */
 
-
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    text-align: center;
-    min-height: 100vh; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items : center;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-section, header, footer {
-    width: 100%;
+section,
+header,
+footer {
+  width: 100%;
 }
 
 header {
-    background: var(--light-orange);
-    padding: 20px 20px;
-    color: var( --white);
+  background: var(--light-orange);
+  padding: 20px 20px;
+  color: var(--white);
 }
 
-    header h1 {
-        font-size: var(--text-size-huge);
-        margin-bottom: 10px;
-    }
+header h1 {
+  font-size: var(--text-size-huge);
+  margin-bottom: 10px;
+}
 
-    header h2 {
-        font-size: var(--text-size-big);
-    }
+header h2 {
+  font-size: var(--text-size-big);
+}
 
 main {
-    margin: 10px 0px;
+  margin: 10px 0px;
 }
 
 main h2 {
-    display: inline-block;
-    margin-bottom: 10px;
-    font-size: var(--text-size-big);
-    background: var(--white);
-    border-radius: var( --radius-small);
-    color: var(--dark-orange);
-    padding: 5px 10px;
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: var(--text-size-big);
+  background: var(--white);
+  border-radius: var(--radius-small);
+  color: var(--dark-orange);
+  padding: 5px 10px;
 }
 
 footer {
-    padding: 20px 20px;
-    background-color: var(--light-orange);
-    color: var(--white);
-    font-weight: bold;
+  padding: 20px 20px;
+  background-color: var(--light-orange);
+  color: var(--white);
+  font-weight: bold;
 }
 
 /* General form style
 **************************** */
 
 form > div:not(:last-child) {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
-form input[type="button"], form input[type="text"], form input[type="email"], form input[type="submit"] {
-    background: var(--white);
-    border-radius: var(--radius-small);
-    color: var(--dark-orange);
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    padding: 5px 10px;
+form input[type="button"],
+form input[type="text"],
+form input[type="email"],
+form input[type="submit"] {
+  background: var(--white);
+  border-radius: var(--radius-small);
+  color: var(--dark-orange);
+  text-decoration: none;
+  font-weight: bold;
+  border: none;
+  padding: 5px 10px;
 }
 
 form input:hover {
-    background: var(--light-grey);
-   
+  outline: solid 2px var(--dark-grey);
 }
 
-    form input[type="button"]:hover, form input[type="submit"]:hover {
-        cursor: pointer;
-    }
+form input[type="button"]:hover,
+form input[type="submit"]:hover {
+  cursor: pointer;
+}
 
-    form input:focus{ 
-        outline: solid 2px var(--dark-grey);
-    }
+form input[type="text"]:hover {
+  cursor: text;
+}
+
+form input:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+form input:focus {
+  /* outline: none; */
+  background: var(--light-grey);
+}
 
 /* Display or not a flexible element with active class 
 **************************** */
 .active {
-    display: flex !important;
+  display: flex !important;
 }
 
 /* Animations true and false
 **************************** */
 
 @keyframes wrong_answer {
-    from {
-        background-color: var(--red)
-    }
+  from {
+    background-color: var(--red);
+  }
 
-    to {
-        background-color: var( --light-grey);
-    }
+  to {
+    background-color: var(--light-grey);
+  }
 }
 
-
-
 @keyframes right_answer {
-    from {
-        background-color: var(--green);
-    }
+  from {
+    background-color: var(--green);
+  }
 
-    to {
-        background-color: var( --light-grey);
-    }
+  to {
+    background-color: var(--light-grey);
+  }
 }

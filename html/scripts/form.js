@@ -57,17 +57,17 @@
 
     // gestion du bouton "action"
     action_bouton.addEventListener("click", () => {
-        if(partie.status == "asking"){
+        if (partie.status == "asking") {
             Deroulement.PretePartie();
         }
 
-        else if(partie.status == "readying" || partie.status == "playing"){
+        else if (partie.status == "readying" || partie.status == "playing") {
             reponse_texte.value = ""
             partie.seconds_total = undefined
             Deroulement.FinirPartie();
         }
 
-        else if(partie.status == "waiting"){
+        else if (partie.status == "waiting") {
             document.activeElement.blur()
             DisplayPopup();
         }

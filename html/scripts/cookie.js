@@ -1,19 +1,19 @@
 
 function GetCookie(name) {
     let matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-function SetCookie(name,value,days) {
+function SetCookie(name, value, days) {
     var expires = "";
     if (days) {
         var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; SameSite=Strict; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; SameSite=Strict; path=/";
 }
 
 const Cookie = {
@@ -23,12 +23,12 @@ const Cookie = {
     seconds_total: undefined,
     seconds_par_mot: [],
 
-    reinit: function(){
+    reinit: function () {
         this.game_id = 0,
-        this.played = false,
-        this.liste_mot = [],
-        this.seconds_total = undefined,
-        this.seconds_par_mot = []
+            this.played = false,
+            this.liste_mot = [],
+            this.seconds_total = undefined,
+            this.seconds_par_mot = []
     },
 
     read: function () {

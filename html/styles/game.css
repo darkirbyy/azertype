@@ -1,107 +1,107 @@
 ﻿#game {
-    max-width: 550px;
-    width: 550px;
-    background-color: var(--light-orange);
-    padding: 20px 20px;
-    border-radius: var(--radius-normal);
-    color: var(--white);
-    display: flex;
-    flex-direction: column;
+  max-width: 550px;
+  width: 550px;
+  background-color: var(--light-orange);
+  padding: 20px 20px;
+  border-radius: var(--radius-normal);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
 }
 
-    #game p {
-        margin-bottom: 10px;
-    }
+#game p {
+  margin-bottom: 10px;
+}
 
-    #game #game_mot {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        height: 60px;
-        cursor: default;
-        height: 60px;
-        margin-bottom: 5px;
-    }
+#game #game_mot {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  height: 60px;
+  cursor: default;
+  height: 60px;
+  margin-bottom: 5px;
+}
 
-    #game #game_mot_actuel {
-        flex-grow: 2;
-        background: var(--white);
-        border-radius: var( --radius-small);
-        font-size: var(--text-size-big);
-        color: var(--dark-orange);
-        padding: 0px 10px;
-        line-height: 60px;
-        font-weight: bold;
-    }
+#game #game_mot_actuel {
+  flex-grow: 2;
+  background: var(--white);
+  border-radius: var(--radius-small);
+  font-size: var(--text-size-big);
+  color: var(--dark-orange);
+  padding: 0px 10px;
+  line-height: 60px;
+  font-weight: bold;
+}
 
-    #game #game_mot_compteur {
-        width: 100px;
-        background: var(--white);
-        border-radius: var( --radius-small);
-        font-size: var(--text-size-normal);
-        color: var(--dark-orange);
-        padding: 0px 10px;
-        line-height: 60px;
-    }
+#game #game_mot_compteur {
+  width: 100px;
+  background: var(--white);
+  border-radius: var(--radius-small);
+  font-size: var(--text-size-normal);
+  color: var(--dark-orange);
+  padding: 0px 10px;
+  line-height: 60px;
+}
 
-    #game #game_mot_compteur_valeur {
-        font-size: var(--text-size-big);
-    }
+#game #game_mot_compteur_valeur {
+  font-size: var(--text-size-big);
+}
 
-    #game #game_reponse {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        cursor: default;
-        height: 30px;
-        width: 100%;
-    }
+#game #game_reponse {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  cursor: default;
+  height: 30px;
+  width: 100%;
+}
 
-    #game #game_reponse_texte {
-        flex-grow: 2;
-        font-size: var(--text-size-normal);
-        color: var(--dark-orange);
-        padding: 0px 10px;
-        line-height: 30px;
-        font-weight: normal;
-        text-align:center;
-    }
+#game #game_reponse_texte {
+  flex-grow: 2;
+  font-size: var(--text-size-normal);
+  color: var(--dark-orange);
+  padding: 0px 10px;
+  line-height: 30px;
+  font-weight: normal;
+  text-align: center;
+}
 
-    #game #game_reponse_bouton {
-        width: 100px;
-        padding: 0px 10px;
-        line-height: 30px;
-    }
+#game #game_reponse_bouton {
+  width: 100px;
+  padding: 0px 10px;
+  line-height: 30px;
+}
 
-    #game #game_action_bouton {
-        padding: 0px 10px;
-        line-height: 30px;
-        width: 33%;
-    }
+#game #game_action_bouton {
+  padding: 0px 10px;
+  line-height: 30px;
+  width: 33%;
+}
 
-    #game #game_action_bouton:disabled {
-        background-color: var(--light-grey);
-        cursor: default;
-    }
+#game #game_action_bouton:disabled {
+  background-color: var(--light-grey);
+  cursor: default;
+}
 
-    #game #game_temps{
-        font-weight: bold;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 10px;
-    }
-    
-    #game #game_temps_texte {
-        flex :1;
-        font-size: var(--text-size-normal);
-        text-align: right;
-        margin-bottom: 3px;
-    }
+#game #game_temps {
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+}
 
-    #game #game_temps_valeur {
-        flex :1;
-        font-size: var(--text-size-big);
-        text-align: left;
-    }
+#game #game_temps_texte {
+  flex: 1;
+  font-size: var(--text-size-normal);
+  text-align: right;
+  margin-bottom: 3px;
+}
+
+#game #game_temps_valeur {
+  flex: 1;
+  font-size: var(--text-size-big);
+  text-align: left;
+}
