@@ -27,13 +27,16 @@ jobs:
           key: php-${{ hashFiles('composer.lock') }}
 
       - name: Install prod and dev dependencies
-        run: composer install --prefer-dist --no-progress
-
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+       
       - name: Generate .env file from .env-example
-        run: cp .env-example .env
-
+        run: |
+          cp .env-example .env
+      
       - name: Run all test suites
-        run: .vendor/bin/phpunit --no-coverage --no-logging
+        run: composer server & sleep 1 && composer tests-all
+        env:
+          XDEBUG_MODE: coverage
 
   deploy:
     needs: test
