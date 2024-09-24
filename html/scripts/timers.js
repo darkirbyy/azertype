@@ -6,10 +6,6 @@ const gameTimerInterval = 10
 const gameTimerDigit = Math.log10(1000 / gameTimerInterval)
 
 
-// blocs textes à modifier selon la valeur des timers
-const temps_valeur = document.getElementById("game_temps_valeur")
-
-
 class GlobalTimer {
     constructor(interval) {
         this.interval = interval;
@@ -39,7 +35,7 @@ class GlobalTimer {
     }
 
     display_now() {
-        temps_valeur.innerText = ParseTime(this.intervals);
+        Deroulement.temps_valeur.innerText = ParseTime(this.intervals);
     }
 }
 
@@ -58,7 +54,7 @@ class GameTimer {
         partie.interval_total++
         partie.interval_par_mot++
         partie.seconds_total = ParseSeconds(partie.interval_total)
-        temps_valeur.innerText = partie.seconds_total
+        Deroulement.temps_valeur.innerText = partie.seconds_total
     }
 
     stop() {

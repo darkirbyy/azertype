@@ -98,10 +98,19 @@ form input[type="submit"] {
   font-weight: bold;
   border: none;
   padding: 5px 10px;
+  transition: background-color 0.2s;
 }
 
-form input:hover {
+form input:focus {
+  outline: dashed 2px var(--dark-grey);
+}
+
+form input:hover:not(:disabled) {
   outline: solid 2px var(--dark-grey);
+}
+
+form input:active:not(:disabled) {
+  background: var(--light-grey);
 }
 
 form input[type="button"]:hover,
@@ -113,14 +122,36 @@ form input[type="text"]:hover {
   cursor: text;
 }
 
-form input:disabled {
-  background: #999;
-  cursor: not-allowed;
+form input[type="text"]::placeholder {
+  opacity: 1;
 }
 
-form input:focus {
-  /* outline: none; */
+form input:disabled {
   background: var(--light-grey);
+  cursor: not-allowed !important;
+}
+
+/* Loading class for rotating icon
+**************************** */
+
+.loading {
+  color: var(--white);
+  display: flex;
+  visibility:hidden
+}
+
+.loading:before {
+  content: " ";
+  display: block;
+  visibility: visible;
+  width: 0.8em;
+  height: 0.8em;
+  margin-top: 0.2em;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 4px solid currentColor;
+  border-color: currentColor transparent currentColor transparent;
+  animation: loading-rotate 1s linear infinite;
 }
 
 /* Display or not a flexible element with active class 
@@ -149,5 +180,29 @@ form input:focus {
 
   to {
     background-color: var(--light-grey);
+  }
+}
+
+@keyframes loading-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  80%{
+    transform: rotate(100deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes appear {
+  0% {
+    transform: translate(-50%, 0%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
   }
 }

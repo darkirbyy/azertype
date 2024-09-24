@@ -17,8 +17,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  opacity: 1;
   border-radius: var(--radius-normal);
   color: var(--white);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  animation: appear 0.2s ease-in normal;
 }
 
 #popup #popup_fermer_bouton {

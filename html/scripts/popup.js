@@ -30,18 +30,18 @@ function DisplayPopup() {
     // et remplir les champs qui dépendent des données distantes
     ApiRequest("GET", "score", (response) => {
         if (response.game_id == cookie_save.game_id) {
-            resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "-";
+            resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "aucun";
             resultat_nombre_joueurs.innerText = response.nb_players;
         }
         else {
-            resultat_meilleur_temps.innerText = "expirée";
-            resultat_nombre_joueurs.innerText = "expirée";
+            resultat_meilleur_temps.innerText = "expiré";
+            resultat_nombre_joueurs.innerText = "expiré";
         }
     })
 
     // on met des icônes de chargement en attendant la reponsé du serveur
-    resultat_meilleur_temps.innerText = "chargement";
-    resultat_nombre_joueurs.innerText = "chargement";
+    resultat_meilleur_temps.innerHTML = Deroulement.texte_chargement;
+    resultat_nombre_joueurs.innerHTML = Deroulement.texte_chargement;
 
     // on inscrit le numéro de partie et le temps total s'ils existent
     game_id.innerText = cookie_save.game_id;

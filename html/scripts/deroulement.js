@@ -12,6 +12,8 @@ class Deroulement {
     static temps_valeur = document.getElementById("game_temps_valeur")
     static temps_texte = document.getElementById("game_temps_texte")
 
+    static texte_chargement='<span class="loading">x</span>'
+
 
     static ChargerPartie() {
         Deroulement.mot_actuel.innerText = "???";
@@ -21,7 +23,7 @@ class Deroulement {
         Deroulement.reponse_bouton.setAttribute("disabled", "disabled")
         Deroulement.action_bouton.setAttribute("disabled", "disabled")
         Deroulement.temps_texte.innerText = "Prochaine partie"
-        Deroulement.temps_valeur.innerText = "Chargement..."
+        Deroulement.temps_valeur.innerHTML = this.texte_chargement;
 
         partie.reinit()
         partie.status = "loading"
@@ -56,6 +58,7 @@ class Deroulement {
         Deroulement.mot_compteur_valeur.innerText = "0"
         Deroulement.mot_compteur_total.innerText = partie.liste_mot.length.toString()
         Deroulement.reponse_texte.removeAttribute("disabled")
+        Deroulement.reponse_bouton.removeAttribute("disabled")
         Deroulement.reponse_texte.focus()
         Deroulement.action_bouton.setAttribute("value", "Abandonner")
         Deroulement.temps_texte.innerText = "Mon temps"
@@ -68,8 +71,6 @@ class Deroulement {
     }
 
     static LancerPartie() {
-        Deroulement.reponse_bouton.removeAttribute("disabled")
-
         gameTimer.start();
         partie.status = "playing"
     }

@@ -64,6 +64,7 @@
         else if (partie.status == "readying" || partie.status == "playing") {
             reponse_texte.value = ""
             partie.seconds_total = undefined
+            document.activeElement.blur()
             Deroulement.FinirPartie();
         }
 
