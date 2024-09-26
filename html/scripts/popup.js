@@ -15,6 +15,7 @@
 
 function DisplayPopup() {
     // on récupère les champs texte à modifier selon les données
+    const popup = document.getElementById("popup")
     const game_id = document.getElementById("popup_game_id");
     const resultat_mon_temps = document.getElementById("popup_resultat_mon_temps");
     const resultat_meilleur_temps = document.getElementById("popup_resultat_meilleur_temps");
@@ -37,11 +38,16 @@ function DisplayPopup() {
             resultat_meilleur_temps.innerText = "expiré";
             resultat_nombre_joueurs.innerText = "expiré";
         }
-    })
-
+    },
+        () => {
+            resultat_meilleur_temps.innerHTML = 'Erreur... <input type="image" onclick="DisplayPopup()" value="↺"/>';
+            resultat_nombre_joueurs.innerHTML = resultat_meilleur_temps.innerHTML;
+        }
+    );
+    
     // on met des icônes de chargement en attendant la reponsé du serveur
-    resultat_meilleur_temps.innerHTML = Deroulement.texte_chargement;
-    resultat_nombre_joueurs.innerHTML = Deroulement.texte_chargement;
+    resultat_meilleur_temps.innerHTML = '<span class="loading">x</span>';
+    resultat_nombre_joueurs.innerHTML =  resultat_meilleur_temps.innerHTML;
 
     // on inscrit le numéro de partie et le temps total s'ils existent
     game_id.innerText = cookie_save.game_id;
@@ -66,7 +72,6 @@ function DisplayPopup() {
     }
 
     // on affiche la popup 
-    const popup = document.getElementById("popup")
     popup.classList.add("active")
     document.onkeydown = (event) => {
         if (event.key === "Escape" || event.key === "Esc") {

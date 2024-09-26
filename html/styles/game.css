@@ -79,10 +79,6 @@
   width: 33%;
 }
 
-#game #game_action_bouton:disabled {
-  background-color: var(--light-grey);
-  cursor: default;
-}
 
 #game #game_temps {
   font-weight: bold;

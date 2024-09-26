@@ -12,7 +12,7 @@ class Deroulement {
     static temps_valeur = document.getElementById("game_temps_valeur")
     static temps_texte = document.getElementById("game_temps_texte")
 
-    static texte_chargement='<span class="loading">x</span>'
+    static html_erreur=''
 
 
     static ChargerPartie() {
@@ -23,7 +23,7 @@ class Deroulement {
         Deroulement.reponse_bouton.setAttribute("disabled", "disabled")
         Deroulement.action_bouton.setAttribute("disabled", "disabled")
         Deroulement.temps_texte.innerText = "Prochaine partie"
-        Deroulement.temps_valeur.innerHTML = this.texte_chargement;
+        Deroulement.temps_valeur.innerHTML = '<span class="loading">x</span>';
 
         partie.reinit()
         partie.status = "loading"
@@ -41,7 +41,14 @@ class Deroulement {
                 cookie.write();
                 Deroulement.ProposerPartie();
             }
+        }, () => {
+            Deroulement.ErreurPartie();
         })
+    }
+
+    static ErreurPartie()
+    {
+        Deroulement.temps_valeur.innerHTML = 'Erreur... <input type="image" onclick="Deroulement.ChargerPartie()" value="↺"/>';
     }
 
     static ProposerPartie() {

@@ -63,20 +63,19 @@
 
         <section id="popup">
             <div id="popup_content">
-                <form>
+                <form autocomplete="off">
                     <div id="popup_fermer">
                         <input type="button" id="popup_fermer_bouton" value="X" />
                     </div>
-                </form>
-                <h2>Partie #<span id="popup_game_id">0</span></h2>
-                <div id="popup_resultat">
-                    <div class="popup_resultat_gauche">Mon temps</div>
-                    <div class="popup_resultat_droite" id="popup_resultat_mon_temps">0.0s</div>
-                </div>
-                <div id="popup_resultat">
-                    <div class="popup_resultat_gauche">Meilleur temps</div>
-                    <div class="popup_resultat_droite" id="popup_resultat_meilleur_temps">0.0s</div>
-                </div>
+                    <h2>Partie #<span id="popup_game_id">0</span></h2>
+                    <div id="popup_resultat">
+                        <div class="popup_resultat_gauche">Mon temps</div>
+                        <div class="popup_resultat_droite" id="popup_resultat_mon_temps">0.0s</div>
+                    </div>
+                    <div id="popup_resultat">
+                        <div class="popup_resultat_gauche">Meilleur temps</div>
+                        <div class="popup_resultat_droite" id="popup_resultat_meilleur_temps">0.0s</div>
+                    </div>
                 <div id="popup_resultat">
                     <div class="popup_resultat_gauche">Nombre de joueurs</div>
                     <div class="popup_resultat_droite" id="popup_resultat_nombre_joueur">0</div>
@@ -88,6 +87,7 @@
                         <td class="popup_detail_droite">1.0s</td>
                     </tr>
                 </table>
+            </form>
             </div>
         </section>
 
