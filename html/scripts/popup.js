@@ -16,38 +16,36 @@
 function DisplayPopup() {
     // on récupère les champs texte à modifier selon les données
     const popup = document.getElementById("popup")
-    const game_id = document.getElementById("popup_game_id");
-    const resultat_mon_temps = document.getElementById("popup_resultat_mon_temps");
-    const resultat_meilleur_temps = document.getElementById("popup_resultat_meilleur_temps");
-    const resultat_nombre_joueurs = document.getElementById("popup_resultat_nombre_joueur");
-    const detail = document.getElementById("popup_detail")
 
     // lecture des données locales depuis le cookie et sauvegarde, car le cookie peut
     // se faire écraser si une nouvelle partie est chargée
     cookie.read();
-    let cookie_save = cookie;
+    cookie_save = structuredClone(cookie);
 
-    // requête sur le back pour obtenir le meilleur temps et le nombre de joueurs
-    // et remplir les champs qui dépendent des données distantes
-    ApiRequest("GET", "score", (response) => {
-        if (response.game_id == cookie_save.game_id) {
-            resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "aucun";
-            resultat_nombre_joueurs.innerText = response.nb_players;
+    FillLocalInfo();
+    FillDistantInfo();
+
+    // on affiche la popup 
+    popup.classList.add("active")
+    document.onkeydown = (event) => {
+        if (event.key === "Escape" || event.key === "Esc") {
+            HidePopup()
         }
-        else {
-            resultat_meilleur_temps.innerText = "expiré";
-            resultat_nombre_joueurs.innerText = "expiré";
-        }
-    },
-        () => {
-            resultat_meilleur_temps.innerHTML = 'Erreur... <input type="image" onclick="DisplayPopup()" value="↺"/>';
-            resultat_nombre_joueurs.innerHTML = resultat_meilleur_temps.innerHTML;
-        }
-    );
-    
-    // on met des icônes de chargement en attendant la reponsé du serveur
-    resultat_meilleur_temps.innerHTML = '<span class="loading">x</span>';
-    resultat_nombre_joueurs.innerHTML =  resultat_meilleur_temps.innerHTML;
+    }
+}
+
+function HidePopup() {
+    // on cache la popup
+    const popup = document.getElementById("popup");
+    popup.classList.remove("active")
+    document.onkeydown = null
+}
+
+function FillLocalInfo() {
+    // on recupère les champs à remplir
+    const game_id = document.getElementById("popup_game_id");
+    const resultat_mon_temps = document.getElementById("popup_resultat_mon_temps");
+    const detail = document.getElementById("popup_detail")
 
     // on inscrit le numéro de partie et le temps total s'ils existent
     game_id.innerText = cookie_save.game_id;
@@ -71,23 +69,34 @@ function DisplayPopup() {
         current_cell.innerText = cookie_save.seconds_par_mot[i] != undefined ? cookie_save.seconds_par_mot[i] : "-"
     }
 
-    // on affiche la popup 
-    popup.classList.add("active")
-    document.onkeydown = (event) => {
-        if (event.key === "Escape" || event.key === "Esc") {
-            HidePopup()
+}
+
+
+function FillDistantInfo() {
+    // on recupère les champs à remplir
+    const resultat_meilleur_temps = document.getElementById("popup_resultat_meilleur_temps");
+    const resultat_nombre_joueurs = document.getElementById("popup_resultat_nombre_joueur");
+    
+    // on met des icônes de chargement en attendant la reponsé du serveur
+    resultat_meilleur_temps.innerHTML = '<span class="loading">x</span>';
+    resultat_nombre_joueurs.innerHTML = resultat_meilleur_temps.innerHTML;
+
+    // requête sur le back pour obtenir le meilleur temps et le nombre de joueurs
+    // et remplir les champs qui dépendent des données distantes
+    ApiGetRequest("score", (response) => {
+        if (response.game_id == cookie_save.game_id) {
+            resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "aucun";
+            resultat_nombre_joueurs.innerText = response.nb_players;
         }
-    }
+        else {
+            resultat_meilleur_temps.innerText = "expiré";
+            resultat_nombre_joueurs.innerText = "expiré";
+        }
+    },
+        (e) => {
+            // console.log("GET score : " + e);
+            resultat_meilleur_temps.innerHTML = 'Erreur <input type="image" onclick="FillDistantInfo()" value="↺"/>';
+            resultat_nombre_joueurs.innerHTML = resultat_meilleur_temps.innerHTML;
+        }
+    );
 }
-
-function HidePopup() {
-    // on cache la popup
-    const popup = document.getElementById("popup");
-    popup.classList.remove("active")
-    document.onkeydown = null
-}
-
-
-
-
-

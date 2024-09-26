@@ -12,9 +12,6 @@ class Deroulement {
     static temps_valeur = document.getElementById("game_temps_valeur")
     static temps_texte = document.getElementById("game_temps_texte")
 
-    static html_erreur=''
-
-
     static ChargerPartie() {
         Deroulement.mot_actuel.innerText = "???";
         Deroulement.mot_compteur_valeur.innerText = "?";
@@ -27,7 +24,7 @@ class Deroulement {
 
         partie.reinit()
         partie.status = "loading"
-        ApiRequest("GET", "draw", (response) => {
+        ApiGetRequest("draw", (response) => {
             globalTimer.start(response.wait_time);
             cookie.read();
             if (cookie.game_id == response.game_id && cookie.played == true) {
@@ -41,14 +38,14 @@ class Deroulement {
                 cookie.write();
                 Deroulement.ProposerPartie();
             }
-        }, () => {
+        }, (e) => {
+            // console.log("GET draw : " + e);
             Deroulement.ErreurPartie();
         })
     }
 
-    static ErreurPartie()
-    {
-        Deroulement.temps_valeur.innerHTML = 'Erreur... <input type="image" onclick="Deroulement.ChargerPartie()" value="↺"/>';
+    static ErreurPartie() {
+        Deroulement.temps_valeur.innerHTML = 'Erreur <input type="image" onclick="Deroulement.ChargerPartie()" value="↺"/>';
     }
 
     static ProposerPartie() {
@@ -82,21 +79,33 @@ class Deroulement {
         partie.status = "playing"
     }
 
-    static FinirPartie() {
+    static EnvoyerPartie() {
         gameTimer.stop();
 
         Deroulement.reponse_texte.setAttribute("disabled", "disabled")
         Deroulement.reponse_bouton.setAttribute("disabled", "disabled")
         Deroulement.action_bouton.setAttribute("disabled", "disabled")
+        Deroulement.temps_valeur.innerHTML = '<span class="loading">x</span>';
 
         cookie.seconds_total = partie.seconds_total;
         cookie.seconds_par_mot = partie.seconds_par_mot;
         cookie.write();
 
+        ApiPostRequest("score",
+            { game_id: cookie.game_id, time: partie.interval_total },
+            () => {
+                Deroulement.FinirPartie();
+            },
+            (e) => {
+                // console.log("POST score : " + e);
+                Deroulement.FinirPartie();
+            });
+
         partie.status = "finishing"
+    }
 
+    static FinirPartie() {
         DisplayPopup();
-
         globalTimer.running == true ? Deroulement.AttendrePartie() : Deroulement.ChargerPartie();
     }
 

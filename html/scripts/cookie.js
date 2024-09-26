@@ -47,5 +47,5 @@ const Cookie = {
     }
 }
 
-let cookie = Object.create(Cookie)
-
+let cookie = Object.create(Cookie);
+let cookie_save = cookie;

@@ -30,7 +30,7 @@
             // sinon et on met fin au jeu
             else {
                 partie.seconds_total = ParseSeconds(partie.interval_total)
-                Deroulement.FinirPartie()
+                Deroulement.EnvoyerPartie()
             }
         }
 
@@ -65,7 +65,7 @@
             reponse_texte.value = ""
             partie.seconds_total = undefined
             document.activeElement.blur()
-            Deroulement.FinirPartie();
+            Deroulement.EnvoyerPartie();
         }
 
         else if (partie.status == "waiting") {
