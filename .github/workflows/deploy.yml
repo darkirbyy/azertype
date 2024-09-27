@@ -1,12 +1,12 @@
 name: Test and Deploy
+run-name: ${{ github.actor }} has triggered Test and Deploy 🚀
 on:
   push:
-    branches:    
+    branches:
       - main
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
-
 
 jobs:
   test:
@@ -27,14 +27,16 @@ jobs:
           key: php-${{ hashFiles('composer.lock') }}
 
       - name: Install prod and dev dependencies
-        run: composer install --prefer-dist --no-progress
-
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+       
       - name: Generate .env file from .env-example
-        run: cp .env-example .env
-
+        run: |
+          cp .env-example .env
+      
       - name: Run all test suites
-        run: .vendor/bin/phpunit --no-coverage --no-logging
-
+        run: composer server & sleep 1 && composer tests-all
+        env:
+          XDEBUG_MODE: coverage
 
   deploy:
     needs: test
@@ -43,17 +45,17 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
-      - name: Setup WARP to enable IPv6 
+      - name: Setup WARP to enable IPv6
         uses: fscarmen/warp-on-actions@v1.0
 
       - name: Checkout files in the runner
         uses: actions/checkout@v4
 
       - name: Set up Python 3.12 for WARP
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-        
+
       - name: Install only prod dependencies
         run: composer install --no-dev --prefer-dist --no-progress
 
@@ -75,5 +77,3 @@ jobs:
           SCRIPT_AFTER: |
             ls
             ln -snfr ${{ vars.BAAL_PATH }}/${{ github.ref_name }} ${{ vars.BAAL_PATH }}/current
-
-

@@ -4,13 +4,12 @@ const Partie = {
     nombre_erreur: 0,
     interval_total: -1,
     interval_par_mot: -1,
-    seconds_total:"",
+    seconds_total: "",
     seconds_par_mot: [],
     status: "",
-    timer_running: false,
-    
+
     reinit: function () {
-        this.liste_mot=[]
+        this.liste_mot = []
         this.liste_index = 0
         this.nombre_erreur = 0
         this.interval_total = 0

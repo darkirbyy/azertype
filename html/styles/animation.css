@@ -1,0 +1,72 @@
+﻿/* Animations
+**************************** */
+
+@keyframes wrong-answer {
+  from {
+    background-color: var(--red);
+  }
+
+  to {
+    background-color: var(--white);
+  }
+}
+
+@keyframes right-answer {
+  from {
+    background-color: var(--green);
+  }
+
+  to {
+    background-color: var(--white);
+  }
+}
+
+@keyframes loading-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  80%{
+    transform: rotate(100deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes popup-appear {
+  0% {
+    transform: translate(-50%, 0%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+@keyframes mainstar-appear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(3);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes firework {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--endX), var(--endY)) scale(1.5) rotate(var(--rotZ));
+    opacity: 0;
+  }
+}
+

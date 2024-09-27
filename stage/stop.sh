@@ -1,8 +1,10 @@
-#! /bin/sh
+#! /bin/bash
 
-rm -rf .docker
+sudo rm -rf .docker
 
-docker stop nginx-test
-docker stop php-fpm-test
+sudo docker stop nginx-test
+sudo docker stop php-fpm-test
+
+echo "Stage environment stopped"
 
 exit 0

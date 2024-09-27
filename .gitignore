@@ -3,5 +3,5 @@
 .test-results/
 .docker/
 .vendor/
-.database/
 .env
+database/main.db

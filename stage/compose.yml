@@ -8,12 +8,20 @@ services:
       - ../.docker:/usr/share/nginx
       - ./nginx.conf:/etc/nginx/nginx.conf
     environment:
-      - TZ=Europe/Paris
+      - TZ=Europe/Paris      
 
   fpm:
-    image: php:fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php-fpm:8.2
     container_name: php-fpm-test
     command: php-fpm -R
+    ports:
+      - 9000:9000
     volumes:
+      - ../.docker:/usr/share/nginx
       - ./php-fpm.conf:/usr/local/etc/php-fpm.d/zzz-docker.conf
-      - ../.docker/api:/usr/share/nginx/api
+    environment:
+      - TZ=Europe/Paris
+

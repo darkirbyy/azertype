@@ -1,15 +1,17 @@
-﻿@media screen and (max-width:550px) {
-    header, footer {
-        padding: 20px 10px;
-    }
+﻿@media screen and (max-width: 550px) {
+  header,
+  footer {
+    padding: 20px 10px;
+  }
 
-    #game {
-        border-radius: 0px;
-        width: 100%;
-        padding: 20px 10px;
-    }
+  #game {
+    border-radius: 0px;
+    width: 100%;
+    padding: 20px 10px;
+  }
 
-        #game #game_reponse_bouton, #game #game_mot_compteur {
-            width: 75px;
-        }
+  #game #game_reponse_bouton,
+  #game #game_mot_compteur {
+    width: 75px;
+  }
 }

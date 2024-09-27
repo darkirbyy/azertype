@@ -1,53 +1,53 @@
-﻿function ApiRequest() {
+﻿function ApiGetRequest(point, success, error) {
     let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", API_URL+API_URI+'draw', true);
+    xmlHttp.open("GET", API_URL + API_URI + point, true);
     xmlHttp.timeout = API_TIMEOUT_MS;
-    xmlHttp.ontimeout = function(e) {
-        // timeout
-    }
+    xmlHttp.ontimeout = function () {
+        error("timeout");
+    };
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+        if (xmlHttp.readyState != 4 || xmlHttp.status < 100)
+            return;
+        if (xmlHttp.status >= 200 && xmlHttp.status < 300) {
             let response = JSON.parse(xmlHttp.responseText);
-            ChoisirStatus(response)
+            success(response);
+        }
+        else if (xmlHttp.status >= 400 && xmlHttp.status < 600){
+            let response = JSON.parse(xmlHttp.responseText);
+            error(response.error);
         }
         else{
-            // echec
+            error('unkown');
         }
+
     }
     xmlHttp.send(null);
 }
 
-
-function GetCookie(name) {
-    let matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
+function ApiPostRequest(point, body, success, error) {
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", API_URL + API_URI + point, true);
+    xmlHttp.timeout = API_TIMEOUT_MS;
+    xmlHttp.ontimeout = function () {
+        error("timeout");
+    };
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState != 4|| xmlHttp.status < 100)
+            return;
+        if (xmlHttp.status >= 200 && xmlHttp.status < 300) {
+            success();
+        }
+        else if (xmlHttp.status >= 400 && xmlHttp.status < 600){
+            let response = JSON.parse(xmlHttp.responseText);
+            error(response.error);
+        }
+        else{
+            error('unkown');
+        }
+    }
+    xmlHttp.send(JSON.stringify(body));
 }
 
-function SetCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; SameSite=Strict; path=/";
-}
-
-
-function ChoisirStatus(response){
-    globalTimer.start(response.wait_time);
-    let storeGameId = GetCookie("gameId")
-    if(storeGameId != undefined  && storeGameId == response.game_id){
-        Deroulement.AttendrePartie();
-    }
-    else{
-        SetCookie("gameId", response.game_id, 1);
-        partie.liste_mot = response.words.split(',');
-        Deroulement.ProposerPartie();
-    }
-}
 
 
 

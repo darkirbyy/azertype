@@ -15,12 +15,22 @@ try {
             require 'view/draw.php';
             break;
 
+        case 'score':
+            require 'view/score.php';
+            break;
+
         default:
             http_response_code(404);
     }
-    
 } catch (Throwable $e) {
-    http_response_code(500);
-    echo ($_ENV['APP_ENV'] !== "prod") ? json_encode(array('error' => $e->getMessage())) : '';
+    $code = $e->getCode();
+    if ($code >= 400 && $code < 500) {
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'internal']);
+        throw $e;
+    }
     return;
 }
