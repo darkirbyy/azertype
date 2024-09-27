@@ -85,7 +85,7 @@ function FillDistantInfo() {
     // et remplir les champs qui dépendent des données distantes
     ApiGetRequest("score", (response) => {
         if (response.game_id == cookie_save.game_id) {
-            resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "aucun";
+            resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "-";
             resultat_nombre_joueurs.innerText = response.nb_players;
         }
         else {

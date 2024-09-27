@@ -9,7 +9,9 @@ final class ApiDrawTest extends TestCase
 
     public function setUp(): void
     {
-        $this->client = new Client(['base_uri' => $_ENV['API_URL'].$_ENV['API_URI']]);
+        $this->client = new Client(['base_uri' => $_ENV['API_URL'].$_ENV['API_URI'],
+                                    'timeout'  => $_ENV['API_TIMEOUT_MS'] / 1000,
+                                    'http_errors' => false]);
     }
 
     public function testDrawGet()
