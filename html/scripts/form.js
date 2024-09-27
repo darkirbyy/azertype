@@ -16,7 +16,7 @@
         // et ...
         if (reponse_texte.value === partie.mot_courant()) {
             mot_actuel.style.animation = ''
-            setTimeout(function () { mot_actuel.style.animation = 'right_answer 0.15s' }, 0.1);
+            setTimeout(function () { mot_actuel.style.animation = 'right-answer 0.15s' }, 0.1);
             partie.seconds_par_mot.push(ParseSeconds(partie.interval_par_mot))
             partie.interval_par_mot = 0
             partie.liste_index++
@@ -37,7 +37,7 @@
         // sinon on augmente le nombre d'erreur de 1
         else {
             mot_actuel.style.animation = ''
-            setTimeout(function () { mot_actuel.style.animation = 'wrong_answer 0.15s' }, 0.1);
+            setTimeout(function () { mot_actuel.style.animation = 'wrong-answer 0.15s' }, 0.1);
             partie.nombre_erreur++
             reponse_texte.focus()
         }
@@ -70,7 +70,7 @@
 
         else if (partie.status == "waiting") {
             document.activeElement.blur()
-            DisplayPopup();
+            DisplayPopup(false);
         }
     });
 }

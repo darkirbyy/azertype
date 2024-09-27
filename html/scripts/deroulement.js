@@ -39,7 +39,6 @@ class Deroulement {
                 Deroulement.ProposerPartie();
             }
         }, (e) => {
-            // console.log("GET draw : " + e);
             Deroulement.ErreurPartie();
         })
     }
@@ -97,7 +96,6 @@ class Deroulement {
                 Deroulement.FinirPartie();
             },
             (e) => {
-                // console.log("POST score : " + e);
                 Deroulement.FinirPartie();
             });
 
@@ -105,7 +103,7 @@ class Deroulement {
     }
 
     static FinirPartie() {
-        DisplayPopup();
+        DisplayPopup(true);
         globalTimer.running == true ? Deroulement.AttendrePartie() : Deroulement.ChargerPartie();
     }
 

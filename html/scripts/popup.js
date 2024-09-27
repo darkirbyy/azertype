@@ -13,7 +13,7 @@
 }
 
 
-function DisplayPopup() {
+function DisplayPopup(animate) {
     // on récupère les champs texte à modifier selon les données
     const popup = document.getElementById("popup")
 
@@ -23,7 +23,7 @@ function DisplayPopup() {
     cookie_save = structuredClone(cookie);
 
     FillLocalInfo();
-    FillDistantInfo();
+    FillDistantInfo(animate);
 
     // on affiche la popup 
     popup.classList.add("active")
@@ -72,7 +72,7 @@ function FillLocalInfo() {
 }
 
 
-function FillDistantInfo() {
+function FillDistantInfo(animate) {
     // on recupère les champs à remplir
     const resultat_mon_temps = document.getElementById("popup_resultat_mon_temps");
     const resultat_meilleur_temps = document.getElementById("popup_resultat_meilleur_temps");
@@ -88,10 +88,13 @@ function FillDistantInfo() {
         if (response.game_id == cookie_save.game_id) {
             resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "-";
             resultat_nombre_joueurs.innerText = response.nb_players;
-            if (resultat_mon_temps.innerText != "-" && resultat_meilleur_temps.innerText == resultat_mon_temps.innerText) {
-                resultat_mon_temps.innerText += ' ★';
-                console.log("lol");
-                triggerFirework();
+            if (resultat_meilleur_temps.innerText == resultat_mon_temps.innerText && resultat_mon_temps.innerText != "-") {
+                if (animate == true) {
+                    setTimeout(() => { triggerFirework() }, 500);
+                }
+                else {
+                    resultat_mon_temps.innerHTML = resultat_mon_temps.innerText + ' <span id="popup_mainstar">★</span><span id="popup_firework"></span>';
+                }
             }
         }
         else {
@@ -100,7 +103,6 @@ function FillDistantInfo() {
         }
     },
         (e) => {
-            // console.log("GET score : " + e);
             resultat_meilleur_temps.innerHTML = 'Erreur <input type="image" onclick="FillDistantInfo()" value="↺"/>';
             resultat_nombre_joueurs.innerHTML = resultat_meilleur_temps.innerHTML;
         }
@@ -108,33 +110,30 @@ function FillDistantInfo() {
 }
 
 
-function triggerFirework() {
-    const container = document.getElementById('popup_firework');
+async function triggerFirework() {
+    const resultat_mon_temps = document.getElementById("popup_resultat_mon_temps");
+    resultat_mon_temps.innerHTML = resultat_mon_temps.innerText + ' <span id="popup_mainstar">★</span><span id="popup_firework"></span>';
 
-    // Remove existing stars
+    const mainstar = document.getElementById('popup_mainstar');
+    mainstar.classList.add('animate');
+
+    const container = document.getElementById('popup_firework');
     container.innerHTML = '';
 
-    const star = document.createElement('div');
-    star.classList.add('popup_star');
-
     // Generate n stars in random directions
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 15; i++) {
         const star = document.createElement('div');
-        star.classList.add('popup_star');
+        star.classList.add('popup_littlestar');
 
         // Random start offset
-        const startX = (Math.random() - 0.5) * 150;
-        const startY = (Math.random() - 0.5) * 60;
-
-        // Random direction for the star)
-        const endX = startX * 2;
-        const endY = startY * 2;
+        const endX = (Math.random() - 0.5) * 150;
+        const endY = (Math.random() - 0.5) * 150;
+        const rotZ = Math.random() * 360;
 
         // Apply start and end positions using CSS variables
-        star.style.setProperty('--startX', `${startX}px`);
-        star.style.setProperty('--startY', `${startY}px`);
         star.style.setProperty('--endX', `${endX}px`);
         star.style.setProperty('--endY', `${endY}px`);
+        star.style.setProperty('--rotZ', `${endY}deg`);
 
         // Append star to the container
         container.appendChild(star);
@@ -142,10 +141,6 @@ function triggerFirework() {
         // Trigger the animation with a delay (if needed)
         setTimeout(() => {
             star.classList.add('animate');
-        }, i * 30); // Stagger the animation slightly for each star
-
-        setTimeout(() => {
-            container.innerHTML = '';
-        }, 2000);
+        }, i * 25); 
     }
 }

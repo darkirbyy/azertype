@@ -1,7 +1,7 @@
 ﻿/* Animations
 **************************** */
 
-@keyframes wrong_answer {
+@keyframes wrong-answer {
   from {
     background-color: var(--red);
   }
@@ -11,7 +11,7 @@
   }
 }
 
-@keyframes right_answer {
+@keyframes right-answer {
   from {
     background-color: var(--green);
   }
@@ -34,7 +34,7 @@
 }
 
 
-@keyframes appear {
+@keyframes popup-appear {
   0% {
     transform: translate(-50%, 0%);
     opacity: 0;
@@ -45,13 +45,27 @@
   }
 }
 
+@keyframes mainstar-appear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(3);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 @keyframes firework {
   0% {
-    transform: translate(var(--startX), var(--startY)) scale(0.5);
+    transform: translate(-50%, -50%) scale(0.5) rotate(0);
     opacity: 1;
   }
   100% {
-    transform: translate(var(--endX), var(--endY)) scale(1.5);
+    transform: translate(var(--endX), var(--endY)) scale(1.5) rotate(var(--rotZ));
     opacity: 0;
   }
 }
