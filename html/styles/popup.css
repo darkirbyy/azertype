@@ -85,3 +85,28 @@
 #popup #popup_detail .popup_detail_droite {
   text-align: left;
 }
+
+
+#popup_firework {
+  position: relative;
+  /* top: -1em; */
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.popup_star {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-color: var(--white);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+/* Animation on the stars when triggered */
+#popup_firework .popup_star.animate {
+  animation: firework 1s ease-out forwards;
+}

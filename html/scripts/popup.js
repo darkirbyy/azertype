@@ -74,9 +74,10 @@ function FillLocalInfo() {
 
 function FillDistantInfo() {
     // on recupère les champs à remplir
+    const resultat_mon_temps = document.getElementById("popup_resultat_mon_temps");
     const resultat_meilleur_temps = document.getElementById("popup_resultat_meilleur_temps");
     const resultat_nombre_joueurs = document.getElementById("popup_resultat_nombre_joueur");
-    
+
     // on met des icônes de chargement en attendant la reponsé du serveur
     resultat_meilleur_temps.innerHTML = '<span class="loading">x</span>';
     resultat_nombre_joueurs.innerHTML = resultat_meilleur_temps.innerHTML;
@@ -87,6 +88,11 @@ function FillDistantInfo() {
         if (response.game_id == cookie_save.game_id) {
             resultat_meilleur_temps.innerText = response.best_time > 0 ? ParseSeconds(response.best_time) : "-";
             resultat_nombre_joueurs.innerText = response.nb_players;
+            if (resultat_mon_temps.innerText != "-" && resultat_meilleur_temps.innerText == resultat_mon_temps.innerText) {
+                resultat_mon_temps.innerText += ' ★';
+                console.log("lol");
+                triggerFirework();
+            }
         }
         else {
             resultat_meilleur_temps.innerText = "expiré";
@@ -99,4 +105,47 @@ function FillDistantInfo() {
             resultat_nombre_joueurs.innerHTML = resultat_meilleur_temps.innerHTML;
         }
     );
+}
+
+
+function triggerFirework() {
+    const container = document.getElementById('popup_firework');
+
+    // Remove existing stars
+    container.innerHTML = '';
+
+    const star = document.createElement('div');
+    star.classList.add('popup_star');
+
+    // Generate n stars in random directions
+    for (let i = 0; i < 20; i++) {
+        const star = document.createElement('div');
+        star.classList.add('popup_star');
+
+        // Random start offset
+        const startX = (Math.random() - 0.5) * 150;
+        const startY = (Math.random() - 0.5) * 60;
+
+        // Random direction for the star)
+        const endX = startX * 2;
+        const endY = startY * 2;
+
+        // Apply start and end positions using CSS variables
+        star.style.setProperty('--startX', `${startX}px`);
+        star.style.setProperty('--startY', `${startY}px`);
+        star.style.setProperty('--endX', `${endX}px`);
+        star.style.setProperty('--endY', `${endY}px`);
+
+        // Append star to the container
+        container.appendChild(star);
+
+        // Trigger the animation with a delay (if needed)
+        setTimeout(() => {
+            star.classList.add('animate');
+        }, i * 30); // Stagger the animation slightly for each star
+
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 2000);
+    }
 }
