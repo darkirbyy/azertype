@@ -1,8 +1,8 @@
 # Azertype
 
-![version 2.0](https://img.shields.io/badge/version-2.0-red)
-![php >= 8.2](https://img.shields.io/badge/php-%3E%3D8.2-cyan)
-![coverage 100%](https://img.shields.io/badge/Coverage-100%-brightgreen)
+![version 2.0](https://img.shields.io/badge/version-2.0-red.svg)
+![php >= 8.2](https://img.shields.io/badge/php-%3E%3D8.2-cyan.svg)
+![coverage 100%](https://img.shields.io/badge/Coverage-100%-brightgreen.svg)
 
 Little fun project, starting from openclassroom tutorial while learning js, then going deeper with a php back-end.
 
@@ -58,5 +58,4 @@ Work-flows configured with GitHub actions :
 
 ## To do
 
-- add animation when the best time is the time of the player
 - write functional tests (using playwright ?)

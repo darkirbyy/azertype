@@ -46,18 +46,15 @@ jobs:
 
     steps:
       - name: Setup WARP to enable IPv6
-        uses: fscarmen/warp-on-actions@v1.0
+        uses: fscarmen/warp-on-actions@v1.2
+        with:
+          stack: dual
 
       - name: Checkout files in the runner
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.12 for WARP
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Install only prod dependencies
-        run: composer install --no-dev --prefer-dist --no-progress
+        run: composer install --no-dev --prefer-dist --no-progress --no-suggest --no-interaction
 
       - name: Prepare shipping dir
         run: ./.github/copy-dist.sh
