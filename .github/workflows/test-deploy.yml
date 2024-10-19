@@ -2,8 +2,6 @@ name: Test and Deploy
 run-name: ${{ github.actor }} has triggered Test and Deploy 🚀
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*"
   workflow_dispatch:
@@ -42,8 +40,6 @@ jobs:
     needs: test
     runs-on: ubuntu-24.04
 
-    if: startsWith(github.ref, 'refs/tags/v')
-
     steps:
       - name: Setup WARP to enable IPv6
         uses: fscarmen/warp-on-actions@v1.2
@@ -57,7 +53,7 @@ jobs:
         run: composer install --no-dev --prefer-dist --no-progress --no-suggest --no-interaction
 
       - name: Prepare shipping dir
-        run: ./.github/copy-dist.sh
+        run: ./.github/prepare-dist.sh ${{ github.ref_name }}
 
       - name: Deploy to prod on BAAL
         uses: easingthemes/ssh-deploy@main
@@ -70,7 +66,6 @@ jobs:
           REMOTE_PORT: ${{ secrets.BAAL_PORT }}
           TARGET: ${{ vars.BAAL_PATH }}/${{ github.ref_name }}
           SCRIPT_BEFORE: |
-            ls
+            mkdir -p  ${{ vars.BAAL_PATH }}
           SCRIPT_AFTER: |
-            ls
             ln -snfr ${{ vars.BAAL_PATH }}/${{ github.ref_name }} ${{ vars.BAAL_PATH }}/current

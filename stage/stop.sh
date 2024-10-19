@@ -2,8 +2,7 @@
 
 sudo rm -rf .docker
 
-sudo docker stop nginx-test
-sudo docker stop php-fpm-test
+sudo docker compose -f stage/compose.yml down
 
 echo "Stage environment stopped"
 

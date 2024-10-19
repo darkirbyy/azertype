@@ -2,9 +2,9 @@
 
 ![version 2.0](https://img.shields.io/badge/version-2.0-red.svg)
 ![php >= 8.2](https://img.shields.io/badge/php-%3E%3D8.2-cyan.svg)
-![coverage 100%](https://img.shields.io/badge/Coverage-100%-brightgreen.svg)
+![coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)
 
-Little fun project, starting from openclassroom tutorial while learning js, then going deeper with a php back-end.
+Little test project from openclassroom while learning php/js.
 
 ## Requirements
 
@@ -53,9 +53,9 @@ To prepare the production server :
 
 Work-flows configured with GitHub actions :
 
-- When pushing to main : build and perform all tests
-- When pushing a tag starting with **v** : build perform all tests, then remove dev packages and send to production server.
+- When pushing a tag starting with **v** : build, perform all tests, then remove dev packages and send to production server.
 
 ## To do
 
 - write functional tests (using playwright ?)
+- add favicon

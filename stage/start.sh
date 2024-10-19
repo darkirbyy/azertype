@@ -2,8 +2,8 @@
 
 # checking that the folder and the runner are not already up
 if [ -d ".docker" ] ||
-   [ "$( sudo docker container inspect -f '{{.State.Status}}' nginx-test )" = "running" ] || 
-   [ "$( sudo docker container inspect -f '{{.State.Status}}' php-fpm-test )" = "running" ];  then
+   [ "$( sudo docker compose -f stage/compose.yml ps -q nginx )" ] || 
+   [ "$( sudo docker compose -f stage/compose.yml ps -q php-fpm )" ];  then
     echo "Previous stage is still running, use stage-stop.sh"
     exit 1
 fi
