@@ -1,17 +1,43 @@
-﻿@media screen and (max-width: 550px) {
+﻿@media screen and (max-width: 599px) {
   header,
   footer {
     padding: 20px 10px;
   }
 
+  main {
+    width: 100%;
+  }
+
   #game {
+    max-width: 600px; 
     border-radius: 0px;
     width: 100%;
     padding: 20px 10px;
   }
 
-  #game #game_reponse_bouton,
-  #game #game_mot_compteur {
-    width: 75px;
+  #game #game_action_bouton {
+    min-width: 33%;
+    width: auto;
+  }
+
+  #game #game_mot_actuel,
+  #game #game_reponse_texte {
+    width: 80%;
+  }
+
+  #popup #popup_content{
+    width: 100%;
+    border-radius: 0px;
+  }
+
+  #popup #popup_fermer_bouton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(10%) translateY(0%);
+    font-size: var(--text-size-big);
+    border-radius: 0px 0px 0px 15px;
+    padding: 5px 15px;
+    color: var(--dark-orange);
   }
 }
