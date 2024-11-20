@@ -59,7 +59,7 @@ jobs:
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.BAAL_KEYS }}
-          ARGS: "-rlgoDzvc -i"
+          ARGS: "--recursive --links --owner --group --perms --compress --checksum --verbose"
           SOURCE: "dist/"
           REMOTE_HOST: ${{ vars.BAAL_ADDR }}
           REMOTE_USER: ${{ secrets.BAAL_USER }}

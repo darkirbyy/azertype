@@ -10,7 +10,11 @@ fi
 
 # prepare the new docker folder and copy all front/back end folder 
 mkdir -p .docker/app && mkdir -p .docker/log
-cp -rp html public src vendor var .docker/app/
+cp -r html public src vendor .docker/app/
+
+mkdir -p .docker/app/var/database
+cp var/database/words.db .docker/app/var/database
+chmod -R a+w .docker/app/var
 
 # copy the .env file for php script in back-end, and change some constants
 cp .env-example .docker/app/.env

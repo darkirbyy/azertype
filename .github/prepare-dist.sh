@@ -3,7 +3,8 @@ shopt -s globstar
 
 # prepare shipping dir and copy all front/back end folder
 mkdir dist
-cp -rp html public src vendor var dist
+cp -r html public src vendor var dist
+chmod -R g+w dist/var
 
 # copy the .env file for php script in back-end, and change some constants
 cp .env-example dist/.env
