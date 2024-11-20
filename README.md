@@ -1,6 +1,6 @@
 # Azertype
 
-![version 2.0](https://img.shields.io/badge/version-2.0-red.svg)
+![version 2.2](https://img.shields.io/badge/version-2.0-red.svg)
 ![php >= 8.2](https://img.shields.io/badge/php-%3E%3D8.2-cyan.svg)
 ![coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)
 
@@ -58,4 +58,3 @@ Work-flows configured with GitHub actions :
 ## To do
 
 - write functional tests (using playwright ?)
-- add favicon

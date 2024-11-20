@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.1/phpunit.xsd"
-         bootstrap=".vendor/autoload.php"
+         bootstrap="vendor/autoload.php"
          cacheDirectory=".phpunit"
          executionOrder="depends,defects"
          requireCoverageMetadata="false"
@@ -43,7 +43,7 @@
 
     <php>
         <env name="REL_ROOT" value="./" force="true"/>
-        <env name="DATABASE_DIR" value="tests/database/" force="true"/>
-        <env name="CACHEFILE_DIR" value="tests/.cache/" force="true"/>
+        <env name="DATABASE_DIR" value="tests/fixture/" force="true"/>
+        <env name="CACHEFILE_DIR" value="var/cache-tests/" force="true"/>
     </php>
 </phpunit>

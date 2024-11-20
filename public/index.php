@@ -1,5 +1,5 @@
 <?php
-require_once '../.vendor/autoload.php';
+require_once '../vendor/autoload.php';
 date_default_timezone_set($_ENV['TIME_ZONE'] ?? 'UTC');
 
 header("Content-Type: application/json");

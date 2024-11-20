@@ -1,7 +1,9 @@
-.cache/
 .phpunit/
 .test-results/
 .docker/
-.vendor/
 .env
-database/main.db
+vendor/
+var/**/*.json
+var/**/*.db
+!var/database/words.db
+!var/database/import-words.php
