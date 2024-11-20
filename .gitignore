@@ -6,4 +6,3 @@ vendor/
 var/**/*.json
 var/**/*.db
 !var/database/words.db
-!var/database/import-words.php

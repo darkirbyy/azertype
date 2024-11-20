@@ -32,6 +32,7 @@
         </include>
         <exclude>
             <file>src/commonLoader.php</file>
+            <file>src/importWords.php</file>
         </exclude>
     </source>
 

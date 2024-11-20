@@ -8,12 +8,9 @@ if [ -d ".docker" ] ||
     exit 1
 fi
 
-# prepare the new docker folder
-mkdir .docker && mkdir .docker/app && mkdir .docker/app/database && mkdir .docker/log
-
-# copy all front/back end folder to their respective destination
-cp -r html public src .vendor .docker/app/
-cp -r database/words.db .docker/app/database/
+# prepare the new docker folder and copy all front/back end folder 
+mkdir -p .docker/app && mkdir -p .docker/log
+cp -rp html public src vendor var .docker/app/
 
 # copy the .env file for php script in back-end, and change some constants
 cp .env-example .docker/app/.env

@@ -1,10 +1,9 @@
 #!/bin/bash
 shopt -s globstar
 
-# prepare shipping dir
-mkdir dist && mkdir dist/database
-cp -r html public src .vendor dist
-cp database/words.db dist/database/
+# prepare shipping dir and copy all front/back end folder
+mkdir dist
+cp -rp html public src vendor var dist
 
 # copy the .env file for php script in back-end, and change some constants
 cp .env-example dist/.env
