@@ -12,15 +12,12 @@ services:
     networks:
       - localhost-test
 
-  fpm:
+  php-fpm:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: php-test:8.2-fpm
+      dockerfile: php-dockerfile
+    image: php-fpm-test:8.2-fpm
     container_name: php-fpm-test
-    command: php-fpm -R
-    expose:
-      - "9001"
     volumes:
       - ../.docker:/usr/share/nginx
       - ./php-fpm.conf:/usr/local/etc/php-fpm.d/zzz-docker.conf

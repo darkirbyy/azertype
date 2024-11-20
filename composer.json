@@ -30,13 +30,13 @@
         }
     ],
     "config":{
-        "vendor-dir": ".vendor",
+        "vendor-dir": "vendor",
         "optimize-autoloader": true
     },
     "scripts": {
         "server": ["Composer\\Config::disableProcessTimeout", "php -S localhost:8000 -t public"],
-        "tests-unit": ".vendor/bin/phpunit --testsuite unit --testdox-html .test-results/logs-unit.html",
-        "tests-inte" : ".vendor/bin/phpunit --testsuite inte --testdox-html .test-results/logs-inte.html --no-coverage", 
+        "tests-unit": "vendor/bin/phpunit --testsuite unit --testdox-html .test-results/logs-unit.html",
+        "tests-inte" : "vendor/bin/phpunit --testsuite inte --testdox-html .test-results/logs-inte.html --no-coverage", 
         "tests-all": ["@tests-unit", "@tests-inte"]
     }
 }
