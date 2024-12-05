@@ -1,7 +1,7 @@
 services:
   nginx:
     image: nginx:latest
-    container_name: nginx-test
+    container_name: azertype-nginx
     ports:
        - 8001:80
     volumes:
@@ -10,24 +10,24 @@ services:
     environment:
       - TZ=Europe/Paris   
     networks:
-      - localhost-test
+      - azertype
 
   php-fpm:
     build:
       context: .
       dockerfile: php-dockerfile
     image: php-fpm-test:8.2-fpm
-    container_name: php-fpm-test
+    container_name: azertype-php-fpm
     volumes:
       - ../.docker:/usr/share/nginx
       - ./php-fpm.conf:/usr/local/etc/php-fpm.d/zzz-docker.conf
     environment:
       - TZ=Europe/Paris
     networks:
-      - localhost-test
+      - azertype
 
 networks:
-  localhost-test:
-    name: localhost-test 
+  azertype:
+    name: azertype_default
     driver: bridge  
 
