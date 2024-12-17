@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # checking that the folder and the runner are not already up
 if [ -d ".docker" ] ||
