@@ -1,14 +1,14 @@
 # Azertype
 
-![version 2.2](https://img.shields.io/badge/version-2.0-red.svg)
-![php >= 8.2](https://img.shields.io/badge/php-%3E%3D8.2-cyan.svg)
+![version 2.6](https://img.shields.io/badge/version-2.6-red.svg)
+![php >= 8.4](https://img.shields.io/badge/php-%3E%3D8.4-cyan.svg)
 ![coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)
 
 Little test project from openclassroom while learning php/js.
 
 ## Requirements
 
-- PHP, at least version 8.2, with sqlite3/curl/apcu extensions.  
+- PHP, at least version 8.4, with sqlite3/curl/apcu extensions.  
 Don't forget to enable APCU in CLI by adding `apc.enable_cli=1` to the **php.ini** file.
 - Composer.
 - Sqlite3.
@@ -48,7 +48,7 @@ In the root directory :
 
 To prepare the production server :
 
-- **Back-end** : require php (>=8.2, with sqlite3, curl, apcu extensions) and sqlite3. For any request to the API, redirect to **public/index.php** keeping the inital URI, with php-fpm for example. Use the **.env-example** file to generate a valid **.env** file at the root directory of the project.
+- **Back-end** : require php (>=8.4, with sqlite3, curl, apcu extensions) and sqlite3. For any request to the API, redirect to **public/index.php** keeping the inital URI, with php-fpm for example. Use the **.env-example** file to generate a valid **.env** file at the root directory of the project.
 - **Front-end** : serve the page *index.html* in the **html** folder with nginx or apache for example. Use the **.env** previously generated to replace the **html/scripts/env.js** file with the correct API constants.
 
 Work-flows configured with GitHub actions :

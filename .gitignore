@@ -1,6 +1,7 @@
 .phpunit/
 .test-results/
 .docker/
+.vscode
 .env
 vendor/
 var/**/*.json
