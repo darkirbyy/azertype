@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: php-dockerfile
-    image: php-fpm-test:8.4-fpm
+    image: php:8.4-fpm-azertype
     container_name: azertype-php-fpm
     volumes:
       - ../.docker:/usr/share/nginx
