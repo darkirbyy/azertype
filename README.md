@@ -52,4 +52,4 @@ To prepare the production server :
 
 Work-flows configured with GitHub actions :
 
-- When pushing a tag starting with **v** : build, perform all tests, then remove dev packages and send to production server.
+- When pushing on main : build, perform all tests, then remove dev packages and send to production server.

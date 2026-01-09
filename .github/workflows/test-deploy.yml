@@ -17,12 +17,14 @@ jobs:
     steps:
       - name: Checkout files in the runner
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
 
       - name: Setup php 8.4
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          coverage: pcov
+          coverage: apcu, pcov
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -44,15 +46,13 @@ jobs:
       - name: Run all test suites
         id: phpunit
         run: |
-          composer server & sleep 1 && composer tests-all
+          composer server & sleep 2 && composer tests-all
           coverage=$(php vendor/bin/coverage-check .test-results/coverage/clover.xml 1 --only-percentage | grep -Eo '[0-9.]+%' | sed 's/%//')
           old_version=$(git tag -l --sort=-v:refname | head -2 | tail -1)
           new_version=$(git tag -l --sort=-v:refname | head -1)
           echo "coverage=$coverage" >> $GITHUB_OUTPUT
           echo "old_version=$old_version" >> $GITHUB_OUTPUT
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
-        env:
-          XDEBUG_MODE: coverage
 
   deploy:
     needs: test
