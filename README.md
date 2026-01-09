@@ -1,8 +1,7 @@
 # Azertype
 
-![version 2.6](https://img.shields.io/badge/version-2.6-red.svg)
-![php >= 8.4](https://img.shields.io/badge/php-%3E%3D8.4-cyan.svg)
-![coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)
+![version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/darkirbyy/07bb4b086f8e7dea73754e73bc5c1bb2/raw/azertype-version.json)
+![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/darkirbyy/07bb4b086f8e7dea73754e73bc5c1bb2/raw/azertype-coverage.json)
 
 Little test project from openclassroom while learning php/js.
 

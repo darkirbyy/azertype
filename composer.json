@@ -13,13 +13,13 @@
         "phpunit/phpunit": "^11.5",
         "php-mock/php-mock-mockery": "^1.4",
         "fakerphp/faker": "^1.23",
-        "guzzlehttp/guzzle": "^7.9"
+        "guzzlehttp/guzzle": "^7.9",
+        "esi/phpunit-coverage-check": "^3.0"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Azertype\\": "src/",
-            "Tests\\": "tests/"
+            "Azertype\\": "src/"
         },
         "files":["src/commonLoader.php"]
     },

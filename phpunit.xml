@@ -39,6 +39,7 @@
     <coverage>
         <report>
             <html outputDirectory=".test-results/coverage" lowUpperBound="50" highLowerBound="90"/>
+            <clover outputFile=".test-results/coverage/clover.xml"/>
         </report>
     </coverage>
 

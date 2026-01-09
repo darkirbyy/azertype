@@ -2,17 +2,27 @@ name: Test and Deploy
 run-name: ${{ github.actor }} has triggered Test and Deploy 🚀
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+  #     - develop
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-24.04
-
+    outputs:
+      coverage: ${{ steps.phpunit.outputs.coverage }}
+      new_version: ${{ steps.phpunit.outputs.new_version }}
+      old_version: ${{ steps.phpunit.outputs.old_version }}
     steps:
       - name: Checkout files in the runner
         uses: actions/checkout@v4
+
+      - name: Setup php 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: pcov
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -32,7 +42,15 @@ jobs:
           cp .env-example .env
       
       - name: Run all test suites
-        run: composer server & sleep 1 && composer tests-all
+        id: phpunit
+        run: |
+          composer server & sleep 1 && composer tests-all
+          coverage=$(php vendor/bin/coverage-check .test-results/coverage/clover.xml 1 --only-percentage | grep -Eo '[0-9.]+%' | sed 's/%//')
+          old_version=$(git tag -l --sort=-v:refname | head -2 | tail -1)
+          new_version=$(git tag -l --sort=-v:refname | head -1)
+          echo "coverage=$coverage" >> $GITHUB_OUTPUT
+          echo "old_version=$old_version" >> $GITHUB_OUTPUT
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
         env:
           XDEBUG_MODE: coverage
 
@@ -49,11 +67,16 @@ jobs:
       - name: Checkout files in the runner
         uses: actions/checkout@v4
 
+      - name: Setup php 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
       - name: Install only prod dependencies
         run: composer install --no-dev --prefer-dist --no-progress --no-suggest --no-interaction
 
       - name: Prepare shipping dir
-        run: ./.github/prepare-dist.sh ${{ github.ref_name }}
+        run: ./.github/prepare-dist.sh ${{ needs.test.outputs.new_version }}
 
       - name: Deploy to prod on BAAL
         uses: easingthemes/ssh-deploy@main
@@ -64,8 +87,31 @@ jobs:
           REMOTE_HOST: ${{ vars.BAAL_ADDR }}
           REMOTE_USER: ${{ secrets.BAAL_USER }}
           REMOTE_PORT: ${{ secrets.BAAL_PORT }}
-          TARGET: ${{ vars.BAAL_PATH }}/${{ github.ref_name }}
+          TARGET: ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }}
           SCRIPT_BEFORE: |
             mkdir -p  ${{ vars.BAAL_PATH }}
           SCRIPT_AFTER: |
-            ln -snfr ${{ vars.BAAL_PATH }}/${{ github.ref_name }} ${{ vars.BAAL_PATH }}/current
+            cp ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.old_version }}/var/database/main.db ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }}/var/database/main.db
+            ln -snfr ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }} ${{ vars.BAAL_PATH }}/current
+
+      - name: Update coverage badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_KEY }}
+          gistID: 07bb4b086f8e7dea73754e73bc5c1bb2
+          filename: azertype-coverage.json
+          label: coverage
+          message: ${{ needs.test.outputs.coverage }}%
+          valColorRange: ${{ needs.test.outputs.coverage }}
+          minColorRange: ${{ vars.MIN_COVERAGE }}
+          maxColorRange: 100
+
+      - name: Update version badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_KEY }}
+          gistID: 07bb4b086f8e7dea73754e73bc5c1bb2
+          filename: azertype-version.json
+          label: version
+          message: ${{ needs.test.outputs.new_version }}
+          color: blue
