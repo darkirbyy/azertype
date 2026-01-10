@@ -46,7 +46,10 @@ jobs:
       - name: Run all test suites
         id: phpunit
         run: |
+          PHP_INI_DIR=$(php -r "echo PHP_CONFIG_FILE_SCAN_DIR;")
+          echo "apc.enable_cli=1" | sudo tee "$PHP_INI_DIR/99-apcu-cli.ini"
           composer server & sleep 2 && composer tests-all
+          php vendor/bin/coverage-check .test-results/coverage/clover.xml ${{ vars.MIN_COVERAGE }}
           coverage=$(php vendor/bin/coverage-check .test-results/coverage/clover.xml 1 --only-percentage | grep -Eo '[0-9.]+%' | sed 's/%//')
           old_version=$(git tag -l --sort=-v:refname | head -2 | tail -1)
           new_version=$(git tag -l --sort=-v:refname | head -1)
@@ -91,7 +94,7 @@ jobs:
           SCRIPT_BEFORE: |
             mkdir -p  ${{ vars.BAAL_PATH }}
           SCRIPT_AFTER: |
-            cp ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.old_version }}/var/database/main.db ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }}/var/database/main.db
+            cp -p ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.old_version }}/var/database/main.db ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }}/var/database
             ln -snfr ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }} ${{ vars.BAAL_PATH }}/current
 
       - name: Update coverage badge
