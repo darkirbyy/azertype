@@ -19,10 +19,14 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Azertype\\": "src/",
-            "Tests\\": "tests/"
+            "Azertype\\": "src/"
         },
         "files":["src/commonLoader.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "authors": [
         {

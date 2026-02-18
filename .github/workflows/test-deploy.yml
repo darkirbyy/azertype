@@ -81,21 +81,21 @@ jobs:
       - name: Prepare shipping dir
         run: ./.github/prepare-dist.sh ${{ needs.test.outputs.new_version }}
 
-      - name: Deploy to prod on BAAL
+      - name: Deploy on server
         uses: easingthemes/ssh-deploy@main
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.BAAL_KEYS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SERV_KEYS }}
           ARGS: "--recursive --links --owner --group --perms --compress --checksum --verbose"
           SOURCE: "dist/"
-          REMOTE_HOST: ${{ vars.BAAL_ADDR }}
-          REMOTE_USER: ${{ secrets.BAAL_USER }}
-          REMOTE_PORT: ${{ secrets.BAAL_PORT }}
-          TARGET: ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }}
+          REMOTE_HOST: ${{ vars.SERV_ADDR }}
+          REMOTE_USER: ${{ secrets.SERV_USER }}
+          REMOTE_PORT: ${{ secrets.SERV_PORT }}
+          TARGET: ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }}
           SCRIPT_BEFORE: |
-            mkdir -p  ${{ vars.BAAL_PATH }}
+            mkdir -p  ${{ vars.SERV_PATH }}
           SCRIPT_AFTER: |
-            cp -p ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.old_version }}/var/database/main.db ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }}/var/database
-            ln -snfr ${{ vars.BAAL_PATH }}/${{ needs.test.outputs.new_version }} ${{ vars.BAAL_PATH }}/current
+            cp -p ${{ vars.SERV_PATH }}/${{ needs.test.outputs.old_version }}/var/database/main.db ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }}/var/database
+            ln -snfr ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }} ${{ vars.SERV_PATH }}/current
 
       - name: Update coverage badge
         uses: schneegans/dynamic-badges-action@v1.7.0
