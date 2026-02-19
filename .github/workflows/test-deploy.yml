@@ -94,6 +94,7 @@ jobs:
           SCRIPT_BEFORE: |
             mkdir -p  ${{ vars.SERV_PATH }}
           SCRIPT_AFTER: |
+            mkdir -p  ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }}/var/database
             cp -p ${{ vars.SERV_PATH }}/${{ needs.test.outputs.old_version }}/var/database/main.db ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }}/var/database
             ln -snfr ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }} ${{ vars.SERV_PATH }}/current
 

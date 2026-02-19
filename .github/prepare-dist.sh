@@ -12,7 +12,7 @@ sed -i -E 's#^APP_ENV=.+#APP_ENV="PROD"#' 'dist/.env'
 sed -i -E 's#^GENERATOR_NAME=.+#GENERATOR_NAME="Self"#' 'dist/.env'
 sed -i -E 's#^WORDS_PER_DRAW=.+#WORDS_PER_DRAW=10#' 'dist/.env'
 sed -i -E 's#^TIME_INTERVAL=.+#TIME_INTERVAL="00:05:00"#' 'dist/.env'
-sed -i -E 's#^API_URL=.+#API_URL="https://darkirby.ddns.net"#' 'dist/.env'
+sed -i -E 's#^API_URL=.+#API_URL="https://darkirby.fr"#' 'dist/.env'
 sed -i -E 's#^API_URI=.+#API_URI="/api/azertype/"#' 'dist/.env'
 sed -i -E 's#^API_COOKIE_PATH=.+#API_COOKIE_PATH="/azertype"#' 'dist/.env'
 
