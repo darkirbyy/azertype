@@ -97,6 +97,7 @@ jobs:
             mkdir -p  ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }}/var/database
             cp -p ${{ vars.SERV_PATH }}/${{ needs.test.outputs.old_version }}/var/database/main.db ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }}/var/database
             ln -snfr ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }} ${{ vars.SERV_PATH }}/current
+            sudo /usr/bin/docker exec -u php-fpm php-fpm opcache-clear-app ${{ vars.SERV_PATH }}
 
       - name: Update coverage badge
         uses: schneegans/dynamic-badges-action@v1.7.0
