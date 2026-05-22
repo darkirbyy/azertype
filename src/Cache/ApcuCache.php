@@ -12,7 +12,7 @@ class ApcuCache extends AbstractCache{
      * @param string $key The key identifying the cache
      */
     function __construct(string $key){
-        $this->key = $key;
+        $this->key = hash('crc32','azertype').':azertype.'.$key;
     }
 
 

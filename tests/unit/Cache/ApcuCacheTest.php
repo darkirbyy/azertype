@@ -10,11 +10,13 @@ use Tests\fixture\CacheFixture;
 final class ApcuCacheTest extends TestCase
 {
     private static string $key;
+    private static string $fullKey;
     private ApcuCache $cache;
 
     public static function setUpBeforeClass(): void
     {
-        self::$key = "UnitTestAcpu";
+        self::$key = "unit-test-apcu";
+        self::$fullKey = hash('crc32','azertype').':azertype.' . self::$key;
     }
 
     public function setUp():void
@@ -33,7 +35,7 @@ final class ApcuCacheTest extends TestCase
     }
 
     public function testReadArray(): void{
-        apcu_store(self::$key, CacheFixture::DRAW_GOOD_ARRAY);
+        apcu_store(self::$fullKey, CacheFixture::DRAW_GOOD_ARRAY);
         $outputArray = $this->cache->read();
 
         $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY,$outputArray);
@@ -42,33 +44,33 @@ final class ApcuCacheTest extends TestCase
     public function testStoreNull():void{
         $this->cache->store(null);
  
-        $this->assertFalse(apcu_exists(self::$key));
+        $this->assertFalse(apcu_exists(self::$fullKey));
     }
 
     public function testStoreArrayNewVariable():void{
         $this->cache->store(CacheFixture::DRAW_GOOD_ARRAY);
         
-        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY, apcu_fetch(self::$key));
+        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY, apcu_fetch(self::$fullKey));
     }
 
     public function testStoreArrayOnExistingVariable():void{
-        apcu_store(self::$key, CacheFixture::DRAW_OTHER_ARRAY);
+        apcu_store(self::$fullKey, CacheFixture::DRAW_OTHER_ARRAY);
         $this->cache->store(CacheFixture::DRAW_GOOD_ARRAY);
  
-        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY, apcu_fetch(self::$key));
+        $this->assertSame(CacheFixture::DRAW_GOOD_ARRAY, apcu_fetch(self::$fullKey));
     }
 
     public function testClearNonExistingVariable():void{
         $this->cache->clear();
  
-        $this->assertFalse(apcu_exists(self::$key));
+        $this->assertFalse(apcu_exists(self::$fullKey));
     }
 
     public function testClearExistingVariable():void{
-        apcu_store(self::$key, CacheFixture::DRAW_GOOD_ARRAY);
+        apcu_store(self::$fullKey, CacheFixture::DRAW_GOOD_ARRAY);
         $this->cache->clear();
  
-        $this->assertFalse(apcu_exists(self::$key));
+        $this->assertFalse(apcu_exists(self::$fullKey));
     }
 
 }
