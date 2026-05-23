@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  #     - develop
   workflow_dispatch:
 
 jobs:
@@ -16,7 +15,7 @@ jobs:
       old_version: ${{ steps.phpunit.outputs.old_version }}
     steps:
       - name: Checkout files in the runner
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-tags: true
 
@@ -31,7 +30,7 @@ jobs:
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: php-${{ hashFiles('composer.lock') }}
@@ -68,7 +67,7 @@ jobs:
           stack: dual
 
       - name: Checkout files in the runner
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup php 8.4
         uses: shivammathur/setup-php@v2
@@ -87,7 +86,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SERV_KEYS }}
           ARGS: "--recursive --links --owner --group --perms --compress --checksum --verbose"
           SOURCE: "dist/"
-          REMOTE_HOST: ${{ vars.SERV_ADDR }}
+          REMOTE_HOST: ${{ secrets.SERV_ADDR }}
           REMOTE_USER: ${{ secrets.SERV_USER }}
           REMOTE_PORT: ${{ secrets.SERV_PORT }}
           TARGET: ${{ vars.SERV_PATH }}/${{ needs.test.outputs.new_version }}
@@ -100,7 +99,7 @@ jobs:
             sudo /usr/bin/docker exec -u php-fpm php-fpm opcache-clear-app ${{ vars.SERV_PATH }} prod
 
       - name: Update coverage badge
-        uses: schneegans/dynamic-badges-action@v1.7.0
+        uses: schneegans/dynamic-badges-action@v1.8.0
         with:
           auth: ${{ secrets.GIST_KEY }}
           gistID: 07bb4b086f8e7dea73754e73bc5c1bb2
@@ -112,7 +111,7 @@ jobs:
           maxColorRange: 100
 
       - name: Update version badge
-        uses: schneegans/dynamic-badges-action@v1.7.0
+        uses: schneegans/dynamic-badges-action@v1.8.0
         with:
           auth: ${{ secrets.GIST_KEY }}
           gistID: 07bb4b086f8e7dea73754e73bc5c1bb2
